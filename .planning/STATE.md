@@ -46,7 +46,7 @@
 - [✓] 预计交付周期（20-24 周）
 
 **待执行：**
-- [ ] Phase 1 详细规划（使用 `/dw:plan-phase 1`）
+- [ ] Phase 1 详细规划（使用 `/gsd:plan-phase 1`）
 - [ ] Phase 1 执行（基础设施建立）
 - [ ] Phase 2-8 递进执行
 
@@ -196,7 +196,7 @@
 3. ROADMAP.md 已完成，定义了每个阶段的：
    - 目标、覆盖需求、关键交付物
    - 成功标准、风险预防、依赖关系
-4. 下一步动作：启动 `/dw:plan-phase 1` 进行 Phase 1 详细规划
+4. 下一步动作：启动 `/gsd:plan-phase 1` 进行 Phase 1 详细规划
 5. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束
 
 ---
@@ -229,4 +229,4 @@
 
 *项目状态文档 — v1*
 *创建日期：2026-01-30*
-*状态维护者：dw-roadmapper (Claude)*
+*状态维护者：gsd-roadmapper (Claude)*

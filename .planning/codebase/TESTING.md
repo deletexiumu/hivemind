@@ -77,7 +77,7 @@ If testing were to be implemented, these would be the critical paths:
 try {
   const cache = JSON.parse(fs.readFileSync(cacheFile, 'utf8'));
   if (cache.update_available) {
-    gsdUpdate = '\x1b[33m⬆ /dw:update\x1b[0m │ ';
+    gsdUpdate = '\x1b[33m⬆ /gsd:update\x1b[0m │ ';
   }
 } catch (e) {}  // Fail silently if cache missing/corrupted
 ```

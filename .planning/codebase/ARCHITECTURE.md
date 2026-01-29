@@ -20,7 +20,7 @@
 - Location: `commands/dw/` (slash command definitions), `hivemind/workflows/` (orchestration logic)
 - Contains: Command handlers that spawn agents, workflow coordination logic, state management
 - Depends on: File system for state, markdown parsing for frontmatter, subprocess spawning via Task tool
-- Used by: Claude Code user invoking `/dw:` commands
+- Used by: Claude Code user invoking `/gsd:` commands
 
 **Agent Layer:**
 - Purpose: Execute specialized work (planning, execution, verification, research) with full context
@@ -47,20 +47,20 @@
 
 **Phase Execution Flow (Primary):**
 
-1. User invokes `/dw:plan-phase` command
+1. User invokes `/gsd:plan-phase` command
 2. Orchestrator loads STATE.md, PROJECT.md, ROADMAP.md
-3. Orchestrator spawns `dw-planner` agent with phase requirements
+3. Orchestrator spawns `gsd-planner` agent with phase requirements
 4. Planner reads phase context, templates, prior decisions
 5. Planner generates `.planning/phases/NN-name/*-PLAN.md` files (wave-sorted, dependency-aware)
 6. Planner updates STATE.md with plan summary
 7. User reviews plans (checkpoints or automatic)
-8. User invokes `/dw:execute-phase`
+8. User invokes `/gsd:execute-phase`
 9. Orchestrator reads plans, analyzes wave dependencies
-10. Orchestrator spawns parallel `dw-executor` agents per wave
+10. Orchestrator spawns parallel `gsd-executor` agents per wave
 11. Each executor loads full PLAN context, executes tasks atomically
 12. Each executor commits per-task, creates SUMMARY.md
 13. Orchestrator collects summaries, updates STATE.md
-14. If verification enabled: orchestrator spawns `dw-verifier` to validate outputs
+14. If verification enabled: orchestrator spawns `gsd-verifier` to validate outputs
 15. Orchestrator reports completion, next steps
 
 **State Management:**
@@ -91,7 +91,7 @@
 
 **Agent:**
 - Purpose: Autonomous executor specialized for a domain (planning, execution, verification, research)
-- Examples: `agents/dw-executor.md`, `agents/dw-planner.md`, `agents/dw-verifier.md`
+- Examples: `agents/gsd-executor.md`, `agents/gsd-planner.md`, `agents/gsd-verifier.md`
 - Pattern: Role statement + execution flow + context requirements, spawned via Task tool
 
 **Template:**
@@ -107,7 +107,7 @@
 ## Entry Points
 
 **User Interaction Entry:**
-- Location: `/dw:<command>` slash commands in Claude Code interface
+- Location: `/gsd:<command>` slash commands in Claude Code interface
 - Triggers: User types command in Chat
 - Responsibilities: Parse arguments, validate preconditions, spawn orchestration workflow
 

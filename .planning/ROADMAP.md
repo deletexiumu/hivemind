@@ -875,36 +875,36 @@
 
 ```bash
 # 全新设计
-npm run gsd -- /dw:design-model \
+npm run gsd -- /gsd:design-model \
   --input ./my-new-model.md \
   --role modeler \
   --platform hive
 
 # 评审模型
-npm run gsd -- /dw:review-model \
+npm run gsd -- /gsd:review-model \
   --input ./my-existing-model.sql \
   --dbt-config ./models/my_model.yml
 
 # 生成 SQL
-npm run gsd -- /dw:generate-sql \
+npm run gsd -- /gsd:generate-sql \
   --requirement "最近 30 天订单额按城市聚合" \
   --source-tables dwd_fact_orders,dim_city
 
 # 定义指标
-npm run gsd -- /dw:define-metric \
+npm run gsd -- /gsd:define-metric \
   --name "订单总额" \
   --description "..."
 
 # 生成 DQ 规则
-npm run gsd -- /dw:generate-dq \
+npm run gsd -- /gsd:generate-dq \
   --model dwd_fact_orders
 
 # 分析血缘
-npm run gsd -- /dw:analyze-lineage \
+npm run gsd -- /gsd:analyze-lineage \
   --model dwd_fact_orders
 
 # 组装提示（高级用法）
-npm run gsd -- /dw:assemble-prompt \
+npm run gsd -- /gsd:assemble-prompt \
   --scenario design-new-model \
   --role architect \
   --context-level full
@@ -920,7 +920,7 @@ npm run gsd -- /dw:assemble-prompt \
 1. 提示组装工具能根据场景、角色、平台生成完整的组装提示（token 数 < 4000）
 2. 规格校验工具能检查输入/输出的 10+ 项规范要求，生成合规性报告
 3. 所有 6 个场景都有完整的输入模板、输出模板、案例库
-4. CLI 工具能集成到 HiveMind framework，支持 `/dw:*` 命令系列
+4. CLI 工具能集成到 HiveMind framework，支持 `/gsd:*` 命令系列
 5. 扩展文档明确说明如何添加新场景或新平台支持
 
 **风险预防：**
@@ -1022,7 +1022,7 @@ Phase 8: 工具化
 ## 下一步行动
 
 1. **用户审核本路线图** → 确认阶段划分、依赖关系、估算周期
-2. **启动 Phase 1** → 使用 `/dw:plan-phase 1` 命令开始详细规划
+2. **启动 Phase 1** → 使用 `/gsd:plan-phase 1` 命令开始详细规划
 3. **递进执行** → 逐阶段交付，每个 Phase 完成后更新 STATE.md 和进度表
 
 ---

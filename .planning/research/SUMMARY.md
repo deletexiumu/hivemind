@@ -94,7 +94,7 @@
 **推荐系统架构（纵向分层）：**
 
 ```
-应用层      → /dw:* 斜杠命令，agents/dw-*
+应用层      → /gsd:* 斜杠命令，agents/dw-*
 编排层      → HiveMind 工作流（复用现有 orchestration）
 提示层      → .claude/data-warehouse/{prompts/, context/}
 状态层      → .planning/ 项目状态
@@ -330,7 +330,7 @@
 
 ## 后续消费方指引
 
-### dw-roadmapper 使用本总结的方式
+### gsd-roadmapper 使用本总结的方式
 
 1. **技术可行性评估** → 参考"技术决策建议"和 STACK.md
 2. **功能划分** → 参考"关键发现"中的 6 场景复杂度表和实现优先级
@@ -363,5 +363,5 @@
 ---
 
 **研究综合完成日期：** 2026-01-30
-**综合者：** dw-research-synthesizer
-**下一步：** 将本文档及 4 个研究文件提交至 git，随后由 dw-roadmapper 消费生成阶段规划
+**综合者：** gsd-research-synthesizer
+**下一步：** 将本文档及 4 个研究文件提交至 git，随后由 gsd-roadmapper 消费生成阶段规划

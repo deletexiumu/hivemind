@@ -9,7 +9,7 @@
 - Files: `hivemind/templates/codebase/concerns.md` (references removed features), documentation scattered across multiple files
 - Why: Rapid decision to remove overengineered system; cleanup was incomplete
 - Impact: New contributors may reference removed features, obsolete patterns persist in templates
-- Fix approach: Audit all templates for dead references to `/dw:analyze-codebase` and intel hooks; update documentation to clarify system no longer exists
+- Fix approach: Audit all templates for dead references to `/gsd:analyze-codebase` and intel hooks; update documentation to clarify system no longer exists
 
 **Manual Orphaned File Cleanup Required:**
 - Issue: Multiple major version migrations require manual cleanup of old hook registrations and files from settings.json and file system

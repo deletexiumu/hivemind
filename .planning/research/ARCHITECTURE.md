@@ -663,10 +663,10 @@ knowledge/              # 项目特有知识（本次新增）
 
 | HiveMind 工作流 | 数仓提示系统集成点 |
 |-----------|-------------------|
-| `/dw:new-project` | 可选：初始化 data-warehouse/ 目录 |
-| `/dw:plan-phase` | 数仓场景可作为 phase 的一部分 |
-| `/dw:execute-phase` | 调用 `/dw:*` 命令执行数仓任务 |
-| `/dw:verify-work` | 使用 `/dw:review-model` 验证产出 |
+| `/gsd:new-project` | 可选：初始化 data-warehouse/ 目录 |
+| `/gsd:plan-phase` | 数仓场景可作为 phase 的一部分 |
+| `/gsd:execute-phase` | 调用 `/dw:*` 命令执行数仓任务 |
+| `/gsd:verify-work` | 使用 `/dw:review-model` 验证产出 |
 
 ### 与 dbt 项目的集成
 
