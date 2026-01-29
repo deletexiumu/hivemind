@@ -1,6 +1,6 @@
-# PROJECT STATE: GSD 数仓助手
+# PROJECT STATE: HiveMind 数仓助手
 
-**项目名称：** GSD 数仓助手（Hive + dbt 中文提示系统）
+**项目名称：** HiveMind 数仓助手（Hive + dbt 中文提示系统）
 **最后更新：** 2026-01-30
 **当前里程碑：** Roadmap 完成，准备进入 Phase 1 规划
 
@@ -46,7 +46,7 @@
 - [✓] 预计交付周期（20-24 周）
 
 **待执行：**
-- [ ] Phase 1 详细规划（使用 `/gsd:plan-phase 1`）
+- [ ] Phase 1 详细规划（使用 `/dw:plan-phase 1`）
 - [ ] Phase 1 执行（基础设施建立）
 - [ ] Phase 2-8 递进执行
 
@@ -196,7 +196,7 @@
 3. ROADMAP.md 已完成，定义了每个阶段的：
    - 目标、覆盖需求、关键交付物
    - 成功标准、风险预防、依赖关系
-4. 下一步动作：启动 `/gsd:plan-phase 1` 进行 Phase 1 详细规划
+4. 下一步动作：启动 `/dw:plan-phase 1` 进行 Phase 1 详细规划
 5. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束
 
 ---
@@ -229,4 +229,4 @@
 
 *项目状态文档 — v1*
 *创建日期：2026-01-30*
-*状态维护者：gsd-roadmapper (Claude)*
+*状态维护者：dw-roadmapper (Claude)*

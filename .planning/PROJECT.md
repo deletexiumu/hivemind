@@ -2,7 +2,7 @@
 
 ## What This Is
 
-一套面向 Hive+dbt 数仓研发的中文提示系统，提供"评审已有模型 / 设计新模型 / 生成导数 SQL / 定义指标口径 / 生成 DQ 规则 / 数据血缘分析"六大核心场景的标准化输出能力。基于 GSD 的多代理编排架构，通过可组合的提示包和规范上下文，实现可复用、可追溯、带质量门禁的数仓研发工作流。
+一套面向 Hive+dbt 数仓研发的中文提示系统，提供"评审已有模型 / 设计新模型 / 生成导数 SQL / 定义指标口径 / 生成 DQ 规则 / 数据血缘分析"六大核心场景的标准化输出能力。基于 HiveMind 的多代理编排架构，通过可组合的提示包和规范上下文，实现可复用、可追溯、带质量门禁的数仓研发工作流。
 
 ## Core Value
 
@@ -12,7 +12,7 @@
 
 ### Validated
 
-<!-- 从现有 GSD 代码库继承的已验证能力 -->
+<!-- 从现有 HiveMind 代码库继承的已验证能力 -->
 
 - ✓ 多代理编排架构 — existing
 - ✓ Markdown 提示与模板系统 — existing
@@ -70,7 +70,7 @@
 - 中英术语对照表
 
 **现有架构保留：**
-- 多代理编排：保留 GSD 的 Agent 层架构
+- 多代理编排：保留 HiveMind 的 Agent 层架构
 - 提示模板系统：继承 Markdown 提示与 XML/YAML frontmatter
 - 状态管理：保留基于文件的项目状态管理
 
@@ -79,7 +79,7 @@
 - **平台**: Hive 数仓 + dbt-hive adapter — 需遵守 dbt-hive 的能力边界（不支持 ephemeral、snapshots）
 - **时效**: 离线 T+1 — 增量策略基于分区回刷，默认 insert_overwrite
 - **语言**: 中文输出 — 所有提示、规范、输出模板均为中文
-- **依赖**: 零外部依赖 — 保持 GSD 的纯 Markdown/Node.js 架构
+- **依赖**: 零外部依赖 — 保持 HiveMind 的纯 Markdown/Node.js 架构
 
 ## Key Decisions
 

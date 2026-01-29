@@ -69,13 +69,13 @@
 ## File Structure
 
 **Installed Files:**
-- `bin/install.js` - Entry point for `get-shit-done-cc` command
+- `bin/install.js` - Entry point for `hivemind-cc` command
 - `hooks/dist/*.js` - Compiled hook scripts
-  - `gsd-statusline.js` - Status line showing model, task, context usage
-  - `gsd-check-update.js` - Background update checker (calls npm registry)
-- `commands/gsd/*.md` - Command definitions for Claude Code / OpenCode
-- `agents/gsd-*.md` - Sub-agents (planner, executor, debugger, etc.)
-- `get-shit-done/*` - GSD reference documentation and templates
+  - `dw-statusline.js` - Status line showing model, task, context usage
+  - `dw-check-update.js` - Background update checker (calls npm registry)
+- `commands/dw/*.md` - Command definitions for Claude Code / OpenCode
+- `agents/dw-*.md` - Sub-agents (planner, executor, debugger, etc.)
+- `hivemind/*` - HiveMind reference documentation and templates
 
 ## Code Style
 
@@ -94,24 +94,24 @@
 **Claude Code Hooks:**
 - Registered in `~/.claude/settings.json` under `hooks.SessionStart`
 - Hook type: `command` with Node.js script
-- Example: `node ~/.claude/hooks/gsd-statusline.js`
+- Example: `node ~/.claude/hooks/dw-statusline.js`
 
 **OpenCode Hooks:**
 - Permissions configured in `~/.config/opencode/opencode.json`
-- Read permissions required for GSD reference docs
+- Read permissions required for HiveMind reference docs
 - External directory permissions for custom config paths
 
 ## Update Mechanism
 
 **Version Tracking:**
 - `VERSION` file written to config directory on install
-- Checked against npm registry via `npm view get-shit-done-cc version`
+- Checked against npm registry via `npm view hivemind-cc version`
 - Background check runs on Claude Code session start
-- Cache stored in `~/.claude/cache/gsd-update-check.json`
+- Cache stored in `~/.claude/cache/dw-update-check.json`
 
 ## Tool Dependencies (Claude Code)
 
-These are Claude Code built-in tools available to GSD agents:
+These are Claude Code built-in tools available to HiveMind agents:
 
 **File Operations:**
 - `Read` - Read files from disk

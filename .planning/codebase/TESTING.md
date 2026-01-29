@@ -24,7 +24,7 @@
 
 **Analysis Approach:**
 Since this is an installer/CLI tool, testing is likely manual:
-1. Run installer via `npx get-shit-done-cc`
+1. Run installer via `npx hivemind-cc`
 2. Interactive prompts tested locally
 3. Cross-platform (Windows, Mac, Linux) tested before releases
 4. Hook execution verified manually in Claude Code sessions
@@ -33,8 +33,8 @@ Since this is an installer/CLI tool, testing is likely manual:
 
 **Primary Executable:**
 - `bin/install.js` — Installation orchestrator with interactive prompts
-- `hooks/gsd-check-update.js` — Background version checker
-- `hooks/gsd-statusline.js` — Claude Code statusline display
+- `hooks/dw-check-update.js` — Background version checker
+- `hooks/dw-statusline.js` — Claude Code statusline display
 - `scripts/build-hooks.js` — Build script to copy hooks to dist/
 
 **Testing Approach for These Files:**
@@ -60,11 +60,11 @@ If testing were to be implemented, these would be the critical paths:
 
 **Hook Execution:**
 ```javascript
-// hooks/gsd-check-update.js
-// Path: npm view get-shit-done-cc version - version detection
+// hooks/dw-check-update.js
+// Path: npm view hivemind-cc version - version detection
 // Path: file system reads - cache file existence
 
-// hooks/gsd-statusline.js
+// hooks/dw-statusline.js
 // Path: JSON parsing from stdin - robust error handling
 // Path: file system operations - find latest todo file
 ```
@@ -77,7 +77,7 @@ If testing were to be implemented, these would be the critical paths:
 try {
   const cache = JSON.parse(fs.readFileSync(cacheFile, 'utf8'));
   if (cache.update_available) {
-    gsdUpdate = '\x1b[33m⬆ /gsd:update\x1b[0m │ ';
+    gsdUpdate = '\x1b[33m⬆ /dw:update\x1b[0m │ ';
   }
 } catch (e) {}  // Fail silently if cache missing/corrupted
 ```
@@ -107,8 +107,8 @@ try {
 
 **Test File Location Pattern:**
 - `bin/install.test.js` (alongside `bin/install.js`)
-- `hooks/gsd-check-update.test.js` (alongside hook file)
-- `hooks/gsd-statusline.test.js` (alongside hook file)
+- `hooks/dw-check-update.test.js` (alongside hook file)
+- `hooks/dw-statusline.test.js` (alongside hook file)
 - `scripts/build-hooks.test.js` (alongside script file)
 
 **Test Runner (Recommended):**

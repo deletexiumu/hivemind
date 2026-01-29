@@ -7,7 +7,7 @@
 **NPM Registry:**
 - Service: npm JavaScript Package Registry
 - What it's used for: Version checking, package distribution
-- Integration point: `hooks/gsd-check-update.js` calls `npm view get-shit-done-cc version`
+- Integration point: `hooks/dw-check-update.js` calls `npm view hivemind-cc version`
 - Auth: None (public registry)
 
 **GitHub:**
@@ -26,15 +26,15 @@
 
 **Claude Code:**
 - Platform: Anthropic Claude Code IDE
-- How integrated: GSD installs to `~/.claude/` config directory
-- Components: Commands (`commands/gsd/`), agents (`agents/`), hooks (`hooks/`)
+- How integrated: HiveMind installs to `~/.claude/` config directory
+- Components: Commands (`commands/dw/`), agents (`agents/`), hooks (`hooks/`)
 - Configuration file: `~/.claude/settings.json`
 - Status line: Configured as custom command hook
 
 **OpenCode:**
 - Platform: Open source code assistant (alternative to Claude Code)
-- How integrated: GSD installs to `~/.config/opencode/` directory
-- Components: Flattened command structure in `command/gsd-*.md`
+- How integrated: HiveMind installs to `~/.config/opencode/` directory
+- Components: Flattened command structure in `command/dw-*.md`
 - Configuration file: `~/.config/opencode/opencode.json`
 - Permissions: Read/external_directory permissions configured during install
 - Frontmatter conversion: YAML tool definitions converted for OpenCode compatibility
@@ -55,7 +55,7 @@
 - `.planning/STATE.md` - Current phase execution state
 - `.planning/codebase/` - Codebase analysis documents
 - `.claude/todos/` - Todo tracking (session-based)
-- `.claude/cache/gsd-update-check.json` - Version check cache
+- `.claude/cache/dw-update-check.json` - Version check cache
 
 ## Authentication & Identity
 
@@ -83,7 +83,7 @@
 
 **Internal State Tracking:**
 - `.planning/STATE.md` - Phase execution progress
-- Hook cache: `~/.claude/cache/gsd-update-check.json`
+- Hook cache: `~/.claude/cache/dw-update-check.json`
 - Session todos: `~/.claude/todos/{session-id}-agent-*.json`
 
 ## CI/CD & Deployment
@@ -97,8 +97,8 @@
 - Manual testing and release process
 
 **Publishing:**
-- npm package: `get-shit-done-cc@latest`
-- Installation: `npx get-shit-done-cc` (pulls latest from npm)
+- npm package: `hivemind-cc@latest`
+- Installation: `npx hivemind-cc` (pulls latest from npm)
 - Update check: Background process compares installed version with npm registry
 
 ## Environment Configuration
@@ -125,14 +125,14 @@
 - None (no external webhooks triggered)
 
 **Hook System (Claude Code):**
-- `SessionStart` hook - Runs `gsd-check-update.js` background process
+- `SessionStart` hook - Runs `dw-check-update.js` background process
 - Statusline hook - Renders status line in Claude Code UI
 - Hook commands stored in `~/.claude/settings.json`
 
 ## Runtime Integration Points
 
 **Claude Code Built-in Tools:**
-- GSD agents use these tools for file operations and user interaction:
+- HiveMind agents use these tools for file operations and user interaction:
   - `Read` - Access codebase files
   - `Write` - Create/update project files
   - `Edit` - Modify existing files
@@ -163,14 +163,14 @@
 - Converts Claude Code frontmatter to OpenCode format
 - Maps tool names: `AskUserQuestion` → `question`, `SlashCommand` → `skill`
 - Converts color names to hex codes for OpenCode
-- Flattens nested command structure (`commands/gsd/help.md` → `command/gsd-help.md`)
+- Flattens nested command structure (`commands/dw/help.md` → `command/dw-help.md`)
 
 ## Version Management
 
 **Update Check Mechanism:**
 - Background process spawned on Claude Code session start
-- Compares `VERSION` file with `npm view get-shit-done-cc version`
-- Cache: `~/.claude/cache/gsd-update-check.json`
+- Compares `VERSION` file with `npm view hivemind-cc version`
+- Cache: `~/.claude/cache/dw-update-check.json`
 - Timeout: 10 seconds (non-blocking)
 
 **Installation Versioning:**

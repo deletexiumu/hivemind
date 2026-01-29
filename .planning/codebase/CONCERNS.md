@@ -6,10 +6,10 @@
 
 **Codebase Intelligence System Removed But Not Fully Cleaned:**
 - Issue: SQLite graph database and related intel system removed in v1.9.2 due to 21MB bundle size, but architectural references remain in templates and documentation
-- Files: `get-shit-done/templates/codebase/concerns.md` (references removed features), documentation scattered across multiple files
+- Files: `hivemind/templates/codebase/concerns.md` (references removed features), documentation scattered across multiple files
 - Why: Rapid decision to remove overengineered system; cleanup was incomplete
 - Impact: New contributors may reference removed features, obsolete patterns persist in templates
-- Fix approach: Audit all templates for dead references to `/gsd:analyze-codebase` and intel hooks; update documentation to clarify system no longer exists
+- Fix approach: Audit all templates for dead references to `/dw:analyze-codebase` and intel hooks; update documentation to clarify system no longer exists
 
 **Manual Orphaned File Cleanup Required:**
 - Issue: Multiple major version migrations require manual cleanup of old hook registrations and files from settings.json and file system
@@ -38,14 +38,14 @@
 **Context Window @ Reference Handling:**
 - Symptoms: Orchestrators using `@` syntax to reference files fail with context errors
 - Trigger: Task prompt contains `@file.md` reference to inline file contents
-- Files: Orchestrator agents across `agents/gsd-*.md`
+- Files: Orchestrator agents across `agents/dw-*.md`
 - Workaround: Orchestrators now inline file contents directly instead of using @ syntax
 - Root cause: Claude Code doesn't expand @ references in Task prompt context properly
 - Fixed in: v1.9.0
 
 **Installation on WSL2 Non-TTY Terminals:**
 - Symptoms: Interactive prompts hang or fail on WSL2/non-interactive environments (CI, Docker)
-- Trigger: Running `npx get-shit-done-cc` without explicit flags in non-TTY stdin
+- Trigger: Running `npx hivemind-cc` without explicit flags in non-TTY stdin
 - Files: `bin/install.js` (lines 1171, 1284)
 - Status: Fixed in v1.6.4 - detects non-TTY and defaults to global install with warning
 - Current mitigation: Automatic fallback to global install; users can specify flags to skip prompts
@@ -73,21 +73,21 @@
 **OpenCode Permissions Overwrite:**
 - Risk: Installation overwrites opencode.json permissions without merging, potentially removing user-configured permissions for other tools
 - Files: `bin/install.js` (lines 737-795, `configureOpencodePermissions()`)
-- Current mitigation: Reads existing config and preserves, only adds GSD permissions
+- Current mitigation: Reads existing config and preserves, only adds HiveMind permissions
 - Recommendations: Add explicit warning before overwriting; provide rollback mechanism
 
 ## Performance Bottlenecks
 
 **Update Check Hook Background Process:**
 - Problem: Background npm registry check on session start causes delay if npm registry is slow
-- File: `hooks/gsd-check-update.js` (lines 24-61)
+- File: `hooks/dw-check-update.js` (lines 24-61)
 - Measurement: Timeout set to 10 seconds, can block session initialization if exceeded
 - Cause: Synchronous spawn process waits for background task; no timeout mechanism if curl/npm hangs
 - Improvement path: Reduce timeout to 5s, implement timeout monitoring, skip update check if .npm cache recently checked
 
 **Statusline JSON Parsing on Every Session Start:**
 - Problem: Statusline reads and parses multiple JSON files (todos, cache) on every keystroke context event
-- File: `hooks/gsd-statusline.js` (lines 45-72)
+- File: `hooks/dw-statusline.js` (lines 45-72)
 - Measurement: Multiple fs.readdirSync and JSON.parse calls per session
 - Cause: No caching of parsed state between calls
 - Improvement path: Cache statusline state for 1-5 seconds; batch file reads; only parse when needed
@@ -95,7 +95,7 @@
 **Directory Traversal in copyWithPathReplacement:**
 - Problem: Recursive directory copy reads all files into memory for large directory trees
 - File: `bin/install.js` (lines 439-471)
-- Measurement: No impact on current GSD size (36KB total), but would be issue if commands/agents expand significantly
+- Measurement: No impact on current HiveMind size (36KB total), but would be issue if commands/agents expand significantly
 - Cause: fs.copyFileSync reads full file contents even for large binaries
 - Improvement path: Use streaming copy for files >1MB; consider tar-based approach for large installations
 
@@ -132,13 +132,13 @@
 ## Scaling Limits
 
 **File System Installation:**
-- Current capacity: ~100 projects with local GSD installs before disk I/O becomes noticeable
+- Current capacity: ~100 projects with local HiveMind installs before disk I/O becomes noticeable
 - Limit: Multiple copies of 36KB codebase per installation adds up with 100+ local installs
 - Symptoms at limit: Slow disk operations, installation time increases linearly
 - Scaling path: Move to symbolic linking for local installs, or implement package-local installation from npm cache
 
 **Markdown Documentation Volume:**
-- Current capacity: 16,731 lines in get-shit-done templates + 7,061 lines in commands (23,792 total)
+- Current capacity: 16,731 lines in hivemind templates + 7,061 lines in commands (23,792 total)
 - Limit: Context window consumption when loading all documentation (~2-3% of typical Claude context at 200K limit)
 - Symptoms at limit: Agents have less context for actual user request/codebase analysis
 - Scaling path: Implement lazy-loading of docs; split into separate reference files; compress documentation
@@ -178,7 +178,7 @@
 - Implementation complexity: Low (add --dry-run flag to uninstall function)
 
 **Multi-Runtime Update Path:**
-- Problem: Updating GSD when installed for both Claude Code and OpenCode requires two separate installs
+- Problem: Updating HiveMind when installed for both Claude Code and OpenCode requires two separate installs
 - Current workaround: Run installer twice with --claude and --opencode flags
 - Blocks: Inefficient update workflow for users with multiple runtimes
 - Implementation complexity: Medium (implement runtime detection and batch install)

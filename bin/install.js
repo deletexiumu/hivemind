@@ -133,7 +133,7 @@ console.log(banner);
 
 // Show help if requested
 if (hasHelp) {
-  console.log(`  ${yellow}Usage:${reset} npx get-shit-done-cc [options]
+  console.log(`  ${yellow}Usage:${reset} npx hivemind-cc [options]
 
   ${yellow}Options:${reset}
     ${cyan}-g, --global${reset}              Install globally (to config directory)
@@ -141,35 +141,35 @@ if (hasHelp) {
     ${cyan}--claude${reset}                  Install for Claude Code only
     ${cyan}--opencode${reset}                Install for OpenCode only
     ${cyan}--both${reset}                    Install for both Claude Code and OpenCode
-    ${cyan}-u, --uninstall${reset}           Uninstall GSD (remove all GSD files)
+    ${cyan}-u, --uninstall${reset}           Uninstall HiveMind (remove all HiveMind files)
     ${cyan}-c, --config-dir <path>${reset}   Specify custom config directory
     ${cyan}-h, --help${reset}                Show this help message
     ${cyan}--force-statusline${reset}        Replace existing statusline config
 
   ${yellow}Examples:${reset}
     ${dim}# Interactive install (prompts for runtime and location)${reset}
-    npx get-shit-done-cc
+    npx hivemind-cc
 
     ${dim}# Install for Claude Code globally${reset}
-    npx get-shit-done-cc --claude --global
+    npx hivemind-cc --claude --global
 
     ${dim}# Install for OpenCode globally${reset}
-    npx get-shit-done-cc --opencode --global
+    npx hivemind-cc --opencode --global
 
     ${dim}# Install for both runtimes globally${reset}
-    npx get-shit-done-cc --both --global
+    npx hivemind-cc --both --global
 
     ${dim}# Install to custom config directory${reset}
-    npx get-shit-done-cc --claude --global --config-dir ~/.claude-bc
+    npx hivemind-cc --claude --global --config-dir ~/.claude-bc
 
     ${dim}# Install to current project only${reset}
-    npx get-shit-done-cc --claude --local
+    npx hivemind-cc --claude --local
 
-    ${dim}# Uninstall GSD from Claude Code globally${reset}
-    npx get-shit-done-cc --claude --global --uninstall
+    ${dim}# Uninstall HiveMind from Claude Code globally${reset}
+    npx hivemind-cc --claude --global --uninstall
 
-    ${dim}# Uninstall GSD from current project${reset}
-    npx get-shit-done-cc --claude --local --uninstall
+    ${dim}# Uninstall HiveMind from current project${reset}
+    npx hivemind-cc --claude --local --uninstall
 
   ${yellow}Notes:${reset}
     The --config-dir option is useful when you have multiple Claude Code
@@ -277,8 +277,8 @@ function convertClaudeToOpencodeFrontmatter(content) {
   convertedContent = convertedContent.replace(/\bAskUserQuestion\b/g, 'question');
   convertedContent = convertedContent.replace(/\bSlashCommand\b/g, 'skill');
   convertedContent = convertedContent.replace(/\bTodoWrite\b/g, 'todowrite');
-  // Replace /gsd:command with /gsd-command for opencode (flat command structure)
-  convertedContent = convertedContent.replace(/\/gsd:/g, '/gsd-');
+  // Replace /dw:command with /dw-command for opencode (flat command structure)
+  convertedContent = convertedContent.replace(/\/dw:/g, '/dw-');
   // Replace ~/.claude with ~/.config/opencode (OpenCode's correct config location)
   convertedContent = convertedContent.replace(/~\/\.claude\b/g, '~/.config/opencode');
 
@@ -373,10 +373,10 @@ function convertClaudeToOpencodeFrontmatter(content) {
 
 /**
  * Copy commands to a flat structure for OpenCode
- * OpenCode expects: command/gsd-help.md (invoked as /gsd-help)
- * Source structure: commands/gsd/help.md
+ * OpenCode expects: command/dw-help.md (invoked as /dw-help)
+ * Source structure: commands/dw/help.md
  * 
- * @param {string} srcDir - Source directory (e.g., commands/gsd/)
+ * @param {string} srcDir - Source directory (e.g., commands/dw/)
  * @param {string} destDir - Destination directory (e.g., command/)
  * @param {string} prefix - Prefix for filenames (e.g., 'gsd')
  * @param {string} pathPrefix - Path prefix for file references
@@ -387,7 +387,7 @@ function copyFlattenedCommands(srcDir, destDir, prefix, pathPrefix, runtime) {
     return;
   }
   
-  // Remove old gsd-*.md files before copying new ones
+  // Remove old dw-*.md files before copying new ones
   if (fs.existsSync(destDir)) {
     for (const file of fs.readdirSync(destDir)) {
       if (file.startsWith(`${prefix}-`) && file.endsWith('.md')) {
@@ -405,10 +405,10 @@ function copyFlattenedCommands(srcDir, destDir, prefix, pathPrefix, runtime) {
     
     if (entry.isDirectory()) {
       // Recurse into subdirectories, adding to prefix
-      // e.g., commands/gsd/debug/start.md -> command/gsd-debug-start.md
+      // e.g., commands/dw/debug/start.md -> command/dw-debug-start.md
       copyFlattenedCommands(srcPath, destDir, `${prefix}-${entry.name}`, pathPrefix, runtime);
     } else if (entry.name.endsWith('.md')) {
-      // Flatten: help.md -> gsd-help.md
+      // Flatten: help.md -> dw-help.md
       const baseName = entry.name.replace('.md', '');
       const destName = `${prefix}-${baseName}.md`;
       const destPath = path.join(destDir, destName);
@@ -471,12 +471,12 @@ function copyWithPathReplacement(srcDir, destDir, pathPrefix, runtime) {
 }
 
 /**
- * Clean up orphaned files from previous GSD versions
+ * Clean up orphaned files from previous HiveMind versions
  */
 function cleanupOrphanedFiles(claudeDir) {
   const orphanedFiles = [
-    'hooks/gsd-notify.sh',  // Removed in v1.6.x
-    'hooks/statusline.js',  // Renamed to gsd-statusline.js in v1.9.0
+    'hooks/dw-notify.sh',  // Removed in v1.6.x
+    'hooks/statusline.js',  // Renamed to dw-statusline.js in v1.9.0
   ];
 
   for (const relPath of orphanedFiles) {
@@ -493,11 +493,11 @@ function cleanupOrphanedFiles(claudeDir) {
  */
 function cleanupOrphanedHooks(settings) {
   const orphanedHookPatterns = [
-    'gsd-notify.sh',  // Removed in v1.6.x
-    'hooks/statusline.js',  // Renamed to gsd-statusline.js in v1.9.0
-    'gsd-intel-index.js',  // Removed in v1.9.2
-    'gsd-intel-session.js',  // Removed in v1.9.2
-    'gsd-intel-prune.js',  // Removed in v1.9.2
+    'dw-notify.sh',  // Removed in v1.6.x
+    'hooks/statusline.js',  // Renamed to dw-statusline.js in v1.9.0
+    'dw-intel-index.js',  // Removed in v1.9.2
+    'dw-intel-session.js',  // Removed in v1.9.2
+    'dw-intel-prune.js',  // Removed in v1.9.2
   ];
 
   let cleaned = false;
@@ -534,7 +534,7 @@ function cleanupOrphanedHooks(settings) {
 }
 
 /**
- * Uninstall GSD from the specified directory for a specific runtime
+ * Uninstall HiveMind from the specified directory for a specific runtime
  * Removes only GSD-specific files/directories, preserves user content
  * @param {boolean} isGlobal - Whether to uninstall from global or local
  * @param {string} runtime - Target runtime ('claude' or 'opencode')
@@ -553,7 +553,7 @@ function uninstall(isGlobal, runtime = 'claude') {
     : targetDir.replace(process.cwd(), '.');
 
   const runtimeLabel = isOpencode ? 'OpenCode' : 'Claude Code';
-  console.log(`  Uninstalling GSD from ${cyan}${runtimeLabel}${reset} at ${cyan}${locationLabel}${reset}\n`);
+  console.log(`  Uninstalling HiveMind from ${cyan}${runtimeLabel}${reset} at ${cyan}${locationLabel}${reset}\n`);
 
   // Check if target directory exists
   if (!fs.existsSync(targetDir)) {
@@ -564,59 +564,59 @@ function uninstall(isGlobal, runtime = 'claude') {
 
   let removedCount = 0;
 
-  // 1. Remove GSD commands directory
+  // 1. Remove HiveMind commands directory
   if (isOpencode) {
-    // OpenCode: remove command/gsd-*.md files
+    // OpenCode: remove command/dw-*.md files
     const commandDir = path.join(targetDir, 'command');
     if (fs.existsSync(commandDir)) {
       const files = fs.readdirSync(commandDir);
       for (const file of files) {
-        if (file.startsWith('gsd-') && file.endsWith('.md')) {
+        if (file.startsWith('dw-') && file.endsWith('.md')) {
           fs.unlinkSync(path.join(commandDir, file));
           removedCount++;
         }
       }
-      console.log(`  ${green}✓${reset} Removed GSD commands from command/`);
+      console.log(`  ${green}✓${reset} Removed HiveMind commands from command/`);
     }
   } else {
-    // Claude Code: remove commands/gsd/ directory
+    // Claude Code: remove commands/dw/ directory
     const gsdCommandsDir = path.join(targetDir, 'commands', 'gsd');
     if (fs.existsSync(gsdCommandsDir)) {
       fs.rmSync(gsdCommandsDir, { recursive: true });
       removedCount++;
-      console.log(`  ${green}✓${reset} Removed commands/gsd/`);
+      console.log(`  ${green}✓${reset} Removed commands/dw/`);
     }
   }
 
-  // 2. Remove get-shit-done directory
-  const gsdDir = path.join(targetDir, 'get-shit-done');
+  // 2. Remove hivemind directory
+  const gsdDir = path.join(targetDir, 'hivemind');
   if (fs.existsSync(gsdDir)) {
     fs.rmSync(gsdDir, { recursive: true });
     removedCount++;
-    console.log(`  ${green}✓${reset} Removed get-shit-done/`);
+    console.log(`  ${green}✓${reset} Removed hivemind/`);
   }
 
-  // 3. Remove GSD agents (gsd-*.md files only)
+  // 3. Remove HiveMind agents (dw-*.md files only)
   const agentsDir = path.join(targetDir, 'agents');
   if (fs.existsSync(agentsDir)) {
     const files = fs.readdirSync(agentsDir);
     let agentCount = 0;
     for (const file of files) {
-      if (file.startsWith('gsd-') && file.endsWith('.md')) {
+      if (file.startsWith('dw-') && file.endsWith('.md')) {
         fs.unlinkSync(path.join(agentsDir, file));
         agentCount++;
       }
     }
     if (agentCount > 0) {
       removedCount++;
-      console.log(`  ${green}✓${reset} Removed ${agentCount} GSD agents`);
+      console.log(`  ${green}✓${reset} Removed ${agentCount} HiveMind agents`);
     }
   }
 
-  // 4. Remove GSD hooks
+  // 4. Remove HiveMind hooks
   const hooksDir = path.join(targetDir, 'hooks');
   if (fs.existsSync(hooksDir)) {
-    const gsdHooks = ['gsd-statusline.js', 'gsd-check-update.js', 'gsd-check-update.sh'];
+    const gsdHooks = ['dw-statusline.js', 'dw-check-update.js', 'dw-check-update.sh'];
     let hookCount = 0;
     for (const hook of gsdHooks) {
       const hookPath = path.join(hooksDir, hook);
@@ -627,32 +627,32 @@ function uninstall(isGlobal, runtime = 'claude') {
     }
     if (hookCount > 0) {
       removedCount++;
-      console.log(`  ${green}✓${reset} Removed ${hookCount} GSD hooks`);
+      console.log(`  ${green}✓${reset} Removed ${hookCount} HiveMind hooks`);
     }
   }
 
-  // 5. Clean up settings.json (remove GSD hooks and statusline)
+  // 5. Clean up settings.json (remove HiveMind hooks and statusline)
   const settingsPath = path.join(targetDir, 'settings.json');
   if (fs.existsSync(settingsPath)) {
     let settings = readSettings(settingsPath);
     let settingsModified = false;
 
-    // Remove GSD statusline if it references our hook
+    // Remove HiveMind statusline if it references our hook
     if (settings.statusLine && settings.statusLine.command &&
-        settings.statusLine.command.includes('gsd-statusline')) {
+        settings.statusLine.command.includes('dw-statusline')) {
       delete settings.statusLine;
       settingsModified = true;
-      console.log(`  ${green}✓${reset} Removed GSD statusline from settings`);
+      console.log(`  ${green}✓${reset} Removed HiveMind statusline from settings`);
     }
 
-    // Remove GSD hooks from SessionStart
+    // Remove HiveMind hooks from SessionStart
     if (settings.hooks && settings.hooks.SessionStart) {
       const before = settings.hooks.SessionStart.length;
       settings.hooks.SessionStart = settings.hooks.SessionStart.filter(entry => {
         if (entry.hooks && Array.isArray(entry.hooks)) {
-          // Filter out GSD hooks
+          // Filter out HiveMind hooks
           const hasGsdHook = entry.hooks.some(h =>
-            h.command && (h.command.includes('gsd-check-update') || h.command.includes('gsd-statusline'))
+            h.command && (h.command.includes('dw-check-update') || h.command.includes('dw-statusline'))
           );
           return !hasGsdHook;
         }
@@ -660,7 +660,7 @@ function uninstall(isGlobal, runtime = 'claude') {
       });
       if (settings.hooks.SessionStart.length < before) {
         settingsModified = true;
-        console.log(`  ${green}✓${reset} Removed GSD hooks from settings`);
+        console.log(`  ${green}✓${reset} Removed HiveMind hooks from settings`);
       }
       // Clean up empty array
       if (settings.hooks.SessionStart.length === 0) {
@@ -687,13 +687,13 @@ function uninstall(isGlobal, runtime = 'claude') {
         const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
         let modified = false;
 
-        // Remove GSD permission entries
+        // Remove HiveMind permission entries
         if (config.permission) {
           for (const permType of ['read', 'external_directory']) {
             if (config.permission[permType]) {
               const keys = Object.keys(config.permission[permType]);
               for (const key of keys) {
-                if (key.includes('get-shit-done')) {
+                if (key.includes('hivemind')) {
                   delete config.permission[permType][key];
                   modified = true;
                 }
@@ -712,7 +712,7 @@ function uninstall(isGlobal, runtime = 'claude') {
         if (modified) {
           fs.writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n');
           removedCount++;
-          console.log(`  ${green}✓${reset} Removed GSD permissions from opencode.json`);
+          console.log(`  ${green}✓${reset} Removed HiveMind permissions from opencode.json`);
         }
       } catch (e) {
         // Ignore JSON parse errors
@@ -721,18 +721,18 @@ function uninstall(isGlobal, runtime = 'claude') {
   }
 
   if (removedCount === 0) {
-    console.log(`  ${yellow}⚠${reset} No GSD files found to remove.`);
+    console.log(`  ${yellow}⚠${reset} No HiveMind files found to remove.`);
   }
 
   console.log(`
-  ${green}Done!${reset} GSD has been uninstalled from ${runtimeLabel}.
+  ${green}Done!${reset} HiveMind has been uninstalled from ${runtimeLabel}.
   Your other files and settings have been preserved.
 `);
 }
 
 /**
- * Configure OpenCode permissions to allow reading GSD reference docs
- * This prevents permission prompts when GSD accesses the get-shit-done directory
+ * Configure OpenCode permissions to allow reading HiveMind reference docs
+ * This prevents permission prompts when HiveMind accesses the hivemind directory
  */
 function configureOpencodePermissions() {
   // OpenCode config file is at ~/.config/opencode/opencode.json
@@ -758,12 +758,12 @@ function configureOpencodePermissions() {
     config.permission = {};
   }
 
-  // Build the GSD path using the actual config directory
+  // Build the HiveMind path using the actual config directory
   // Use ~ shorthand if it's in the default location, otherwise use full path
   const defaultConfigDir = path.join(os.homedir(), '.config', 'opencode');
   const gsdPath = opencodeConfigDir === defaultConfigDir
-    ? '~/.config/opencode/get-shit-done/*'
-    : `${opencodeConfigDir}/get-shit-done/*`;
+    ? '~/.config/opencode/hivemind/*'
+    : `${opencodeConfigDir}/hivemind/*`;
   
   let modified = false;
 
@@ -791,7 +791,7 @@ function configureOpencodePermissions() {
 
   // Write config back
   fs.writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n');
-  console.log(`  ${green}✓${reset} Configured read permission for GSD docs`);
+  console.log(`  ${green}✓${reset} Configured read permission for HiveMind docs`);
 }
 
 /**
@@ -861,21 +861,21 @@ function install(isGlobal, runtime = 'claude') {
   // Clean up orphaned files from previous versions
   cleanupOrphanedFiles(targetDir);
 
-  // OpenCode uses 'command/' (singular) with flat structure: command/gsd-help.md
-  // Claude Code uses 'commands/' (plural) with nested structure: commands/gsd/help.md
+  // OpenCode uses 'command/' (singular) with flat structure: command/dw-help.md
+  // Claude Code uses 'commands/' (plural) with nested structure: commands/dw/help.md
   if (isOpencode) {
     // OpenCode: flat structure in command/ directory
     const commandDir = path.join(targetDir, 'command');
     fs.mkdirSync(commandDir, { recursive: true });
     
-    // Copy commands/gsd/*.md as command/gsd-*.md (flatten structure)
+    // Copy commands/dw/*.md as command/dw-*.md (flatten structure)
     const gsdSrc = path.join(src, 'commands', 'gsd');
     copyFlattenedCommands(gsdSrc, commandDir, 'gsd', pathPrefix, runtime);
-    if (verifyInstalled(commandDir, 'command/gsd-*')) {
-      const count = fs.readdirSync(commandDir).filter(f => f.startsWith('gsd-')).length;
+    if (verifyInstalled(commandDir, 'command/dw-*')) {
+      const count = fs.readdirSync(commandDir).filter(f => f.startsWith('dw-')).length;
       console.log(`  ${green}✓${reset} Installed ${count} commands to command/`);
     } else {
-      failures.push('command/gsd-*');
+      failures.push('command/dw-*');
     }
   } else {
     // Claude Code: nested structure in commands/ directory
@@ -885,34 +885,34 @@ function install(isGlobal, runtime = 'claude') {
     const gsdSrc = path.join(src, 'commands', 'gsd');
     const gsdDest = path.join(commandsDir, 'gsd');
     copyWithPathReplacement(gsdSrc, gsdDest, pathPrefix, runtime);
-    if (verifyInstalled(gsdDest, 'commands/gsd')) {
-      console.log(`  ${green}✓${reset} Installed commands/gsd`);
+    if (verifyInstalled(gsdDest, 'commands/dw')) {
+      console.log(`  ${green}✓${reset} Installed commands/dw`);
     } else {
-      failures.push('commands/gsd');
+      failures.push('commands/dw');
     }
   }
 
-  // Copy get-shit-done skill with path replacement
-  const skillSrc = path.join(src, 'get-shit-done');
-  const skillDest = path.join(targetDir, 'get-shit-done');
+  // Copy hivemind skill with path replacement
+  const skillSrc = path.join(src, 'hivemind');
+  const skillDest = path.join(targetDir, 'hivemind');
   copyWithPathReplacement(skillSrc, skillDest, pathPrefix, runtime);
-  if (verifyInstalled(skillDest, 'get-shit-done')) {
-    console.log(`  ${green}✓${reset} Installed get-shit-done`);
+  if (verifyInstalled(skillDest, 'hivemind')) {
+    console.log(`  ${green}✓${reset} Installed hivemind`);
   } else {
-    failures.push('get-shit-done');
+    failures.push('hivemind');
   }
 
   // Copy agents to agents directory (subagents must be at root level)
-  // Only delete gsd-*.md files to preserve user's custom agents
+  // Only delete dw-*.md files to preserve user's custom agents
   const agentsSrc = path.join(src, 'agents');
   if (fs.existsSync(agentsSrc)) {
     const agentsDest = path.join(targetDir, 'agents');
     fs.mkdirSync(agentsDest, { recursive: true });
 
-    // Remove old GSD agents (gsd-*.md) before copying new ones
+    // Remove old HiveMind agents (dw-*.md) before copying new ones
     if (fs.existsSync(agentsDest)) {
       for (const file of fs.readdirSync(agentsDest)) {
-        if (file.startsWith('gsd-') && file.endsWith('.md')) {
+        if (file.startsWith('dw-') && file.endsWith('.md')) {
           fs.unlinkSync(path.join(agentsDest, file));
         }
       }
@@ -941,7 +941,7 @@ function install(isGlobal, runtime = 'claude') {
 
   // Copy CHANGELOG.md
   const changelogSrc = path.join(src, 'CHANGELOG.md');
-  const changelogDest = path.join(targetDir, 'get-shit-done', 'CHANGELOG.md');
+  const changelogDest = path.join(targetDir, 'hivemind', 'CHANGELOG.md');
   if (fs.existsSync(changelogSrc)) {
     fs.copyFileSync(changelogSrc, changelogDest);
     if (verifyFileInstalled(changelogDest, 'CHANGELOG.md')) {
@@ -952,7 +952,7 @@ function install(isGlobal, runtime = 'claude') {
   }
 
   // Write VERSION file for whats-new command
-  const versionDest = path.join(targetDir, 'get-shit-done', 'VERSION');
+  const versionDest = path.join(targetDir, 'hivemind', 'VERSION');
   fs.writeFileSync(versionDest, pkg.version);
   if (verifyFileInstalled(versionDest, 'VERSION')) {
     console.log(`  ${green}✓${reset} Wrote VERSION (${pkg.version})`);
@@ -984,7 +984,7 @@ function install(isGlobal, runtime = 'claude') {
   // If critical components failed, exit with error
   if (failures.length > 0) {
     console.error(`\n  ${yellow}Installation incomplete!${reset} Failed: ${failures.join(', ')}`);
-    console.error(`  Try running directly: node ~/.npm/_npx/*/node_modules/get-shit-done-cc/bin/install.js --global\n`);
+    console.error(`  Try running directly: node ~/.npm/_npx/*/node_modules/hivemind-cc/bin/install.js --global\n`);
     process.exit(1);
   }
 
@@ -992,11 +992,11 @@ function install(isGlobal, runtime = 'claude') {
   const settingsPath = path.join(targetDir, 'settings.json');
   const settings = cleanupOrphanedHooks(readSettings(settingsPath));
   const statuslineCommand = isGlobal
-    ? buildHookCommand(targetDir, 'gsd-statusline.js')
-    : 'node ' + dirName + '/hooks/gsd-statusline.js';
+    ? buildHookCommand(targetDir, 'dw-statusline.js')
+    : 'node ' + dirName + '/hooks/dw-statusline.js';
   const updateCheckCommand = isGlobal
-    ? buildHookCommand(targetDir, 'gsd-check-update.js')
-    : 'node ' + dirName + '/hooks/gsd-check-update.js';
+    ? buildHookCommand(targetDir, 'dw-check-update.js')
+    : 'node ' + dirName + '/hooks/dw-check-update.js';
 
   // Configure SessionStart hook for update checking (skip for opencode - different hook system)
   if (!isOpencode) {
@@ -1007,9 +1007,9 @@ function install(isGlobal, runtime = 'claude') {
       settings.hooks.SessionStart = [];
     }
 
-    // Check if GSD update hook already exists
+    // Check if HiveMind update hook already exists
     const hasGsdUpdateHook = settings.hooks.SessionStart.some(entry =>
-      entry.hooks && entry.hooks.some(h => h.command && h.command.includes('gsd-check-update'))
+      entry.hooks && entry.hooks.some(h => h.command && h.command.includes('dw-check-update'))
     );
 
     if (!hasGsdUpdateHook) {
@@ -1056,7 +1056,7 @@ function finishInstall(settingsPath, settings, statuslineCommand, shouldInstallS
   }
 
   const program = isOpencode ? 'OpenCode' : 'Claude Code';
-  const command = isOpencode ? '/gsd-help' : '/gsd:help';
+  const command = isOpencode ? '/dw-help' : '/dw:help';
   console.log(`
   ${green}Done!${reset} Launch ${program} and run ${cyan}${command}${reset}.
 
@@ -1104,13 +1104,13 @@ function handleStatusline(settings, isInteractive, callback) {
   Your current statusline:
     ${dim}command: ${existingCmd}${reset}
 
-  GSD includes a statusline showing:
+  HiveMind includes a statusline showing:
     • Model name
     • Current task (from todo list)
     • Context window usage (color-coded)
 
   ${cyan}1${reset}) Keep existing
-  ${cyan}2${reset}) Replace with GSD statusline
+  ${cyan}2${reset}) Replace with HiveMind statusline
 `);
 
   rl.question(`  Choice ${dim}[1]${reset}: `, (answer) => {
@@ -1216,7 +1216,7 @@ function promptLocation(runtimes) {
 }
 
 /**
- * Install GSD for all selected runtimes
+ * Install HiveMind for all selected runtimes
  * @param {string[]} runtimes - Array of runtimes to install for
  * @param {boolean} isGlobal - Whether to install globally
  * @param {boolean} isInteractive - Whether running interactively
@@ -1260,7 +1260,7 @@ if (hasGlobal && hasLocal) {
   // Uninstall mode
   if (!hasGlobal && !hasLocal) {
     console.error(`  ${yellow}--uninstall requires --global or --local${reset}`);
-    console.error(`  Example: npx get-shit-done-cc --claude --global --uninstall`);
+    console.error(`  Example: npx hivemind-cc --claude --global --uninstall`);
     process.exit(1);
   }
   const runtimes = selectedRuntimes.length > 0 ? selectedRuntimes : ['claude'];

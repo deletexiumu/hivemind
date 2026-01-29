@@ -95,7 +95,7 @@
 
 ```
 应用层      → /dw:* 斜杠命令，agents/dw-*
-编排层      → GSD 工作流（复用现有 orchestration）
+编排层      → HiveMind 工作流（复用现有 orchestration）
 提示层      → .claude/data-warehouse/{prompts/, context/}
 状态层      → .planning/ 项目状态
 ```
@@ -134,9 +134,9 @@
 | 7 | SQL 生成 | 场景 3（依赖指标基础） |
 | 8 | 工具化 | 提示组装工具、规格校验 |
 
-**与 GSD 的集成：** 完全兼容，无需修改 GSD 核心，作为 `data-warehouse/` 子域扩展
+**与 HiveMind 的集成：** 完全兼容，无需修改 HiveMind 核心，作为 `data-warehouse/` 子域扩展
 
-**置信度评估：** HIGH — 基于现有 GSD 架构分析，遵循现成最佳实践
+**置信度评估：** HIGH — 基于现有 HiveMind 架构分析，遵循现成最佳实践
 
 ---
 
@@ -293,7 +293,7 @@
 
 1. **Hive Metastore 中文支持** — 字段注释是否完整保留中文字符？
 2. **术语接受度** — "贴源层"vs"ODS"，用户实际偏好？
-3. **提示组装工具** — 是否基于现有 GSD 模板机制，还是新开发？
+3. **提示组装工具** — 是否基于现有 HiveMind 模板机制，还是新开发？
 
 ### Phase 2-3 中需验证
 
@@ -316,7 +316,7 @@
 |---------|----------|-----------|
 | STACK.md | dbt 官方文档 (90%)、PyPI (10%) | HIGH — 官方链接验证 |
 | FEATURES.md | dbt 文档 (60%)、dbt Hub (20%)、行业实践 (20%) | MEDIUM — 基于最佳实践但需验证 |
-| ARCHITECTURE.md | GSD 代码分析 (60%)、行业模式 (40%) | HIGH — 基于现成模式 |
+| ARCHITECTURE.md | HiveMind 代码分析 (60%)、行业模式 (40%) | HIGH — 基于现成模式 |
 | PITFALLS.md | dbt 官方 (40%)、Hive 文档 (30%)、社区经验 (30%) | MEDIUM — 多源交叉验证 |
 
 ### 整体研究完整性
@@ -330,7 +330,7 @@
 
 ## 后续消费方指引
 
-### gsd-roadmapper 使用本总结的方式
+### dw-roadmapper 使用本总结的方式
 
 1. **技术可行性评估** → 参考"技术决策建议"和 STACK.md
 2. **功能划分** → 参考"关键发现"中的 6 场景复杂度表和实现优先级
@@ -363,5 +363,5 @@
 ---
 
 **研究综合完成日期：** 2026-01-30
-**综合者：** gsd-research-synthesizer
-**下一步：** 将本文档及 4 个研究文件提交至 git，随后由 gsd-roadmapper 消费生成阶段规划
+**综合者：** dw-research-synthesizer
+**下一步：** 将本文档及 4 个研究文件提交至 git，随后由 dw-roadmapper 消费生成阶段规划

@@ -1,6 +1,6 @@
 # ROADMAP: Hive + dbt 数仓提示系统
 
-**项目名称：** GSD 数仓助手（Hive + dbt 中文提示系统）
+**项目名称：** HiveMind 数仓助手（Hive + dbt 中文提示系统）
 **版本：** v1
 **创建日期：** 2026-01-30
 **深度配置：** Standard (8 阶段)
@@ -869,9 +869,9 @@
         └── output.md
 ```
 
-**4. 集成框架 (`tools/gsd-dw-cli.js`)**
+**4. 集成框架 (`tools/dw-dw-cli.js`)**
 
-提供统一的 CLI 入口（GSD 框架扩展）：
+提供统一的 CLI 入口（HiveMind 框架扩展）：
 
 ```bash
 # 全新设计
@@ -913,18 +913,18 @@ npm run gsd -- /dw:assemble-prompt \
 **5. 配置与扩展文档 (`tools/README.md`)**
    - 工具使用指南
    - 自定义场景/角色的扩展说明
-   - 集成 GSD orchestrator 的说明
+   - 集成 HiveMind orchestrator 的说明
    - 多平台支持扩展（未来加入 Snowflake、BigQuery）
 
 **成功标准：**
 1. 提示组装工具能根据场景、角色、平台生成完整的组装提示（token 数 < 4000）
 2. 规格校验工具能检查输入/输出的 10+ 项规范要求，生成合规性报告
 3. 所有 6 个场景都有完整的输入模板、输出模板、案例库
-4. CLI 工具能集成到 GSD framework，支持 `/dw:*` 命令系列
+4. CLI 工具能集成到 HiveMind framework，支持 `/dw:*` 命令系列
 5. 扩展文档明确说明如何添加新场景或新平台支持
 
 **风险预防：**
-- 工具需与现有 GSD 架构兼容（使用相同的 Markdown/YAML 机制）
+- 工具需与现有 HiveMind 架构兼容（使用相同的 Markdown/YAML 机制）
 - 提示组装逻辑需确保 token 数可控（避免超过 Claude 上下文）
 
 **依赖关系：** 依赖 Phase 1-7（所有前置能力完整）
@@ -1015,14 +1015,14 @@ Phase 8: 工具化
 4. **规范：** 所有文档与代码符合 Phase 1 定义的规范（命名、术语、token）
 5. **可维护性：** 模块化架构，任何一个提示都能独立维护和升级
 6. **可扩展性：** 支持添加新场景和新平台（framework 已就位）
-7. **兼容性：** 与现有 GSD framework 无缝集成
+7. **兼容性：** 与现有 HiveMind framework 无缝集成
 
 ---
 
 ## 下一步行动
 
 1. **用户审核本路线图** → 确认阶段划分、依赖关系、估算周期
-2. **启动 Phase 1** → 使用 `/gsd:plan-phase 1` 命令开始详细规划
+2. **启动 Phase 1** → 使用 `/dw:plan-phase 1` 命令开始详细规划
 3. **递进执行** → 逐阶段交付，每个 Phase 完成后更新 STATE.md 和进度表
 
 ---

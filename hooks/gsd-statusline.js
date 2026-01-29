@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Claude Code Statusline - GSD Edition
+// Claude Code Statusline - HiveMind Edition
 // Shows: model | current task | directory | context usage
 
 const fs = require('fs');
@@ -59,14 +59,14 @@ process.stdin.on('end', () => {
       }
     }
 
-    // GSD update available?
+    // HiveMind update available?
     let gsdUpdate = '';
-    const cacheFile = path.join(homeDir, '.claude', 'cache', 'gsd-update-check.json');
+    const cacheFile = path.join(homeDir, '.claude', 'cache', 'dw-update-check.json');
     if (fs.existsSync(cacheFile)) {
       try {
         const cache = JSON.parse(fs.readFileSync(cacheFile, 'utf8'));
         if (cache.update_available) {
-          gsdUpdate = '\x1b[33m⬆ /gsd:update\x1b[0m │ ';
+          gsdUpdate = '\x1b[33m⬆ /dw:update\x1b[0m │ ';
         }
       } catch (e) {}
     }

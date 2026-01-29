@@ -5,7 +5,7 @@
 ## Naming Patterns
 
 **Files:**
-- kebab-case for all executable scripts and modules (`build-hooks.js`, `gsd-check-update.js`)
+- kebab-case for all executable scripts and modules (`build-hooks.js`, `dw-check-update.js`)
 - kebab-case for markdown commands (`execute-phase.md`, `map-codebase.md`)
 - No test files in this codebase (not tested via automated test suite)
 

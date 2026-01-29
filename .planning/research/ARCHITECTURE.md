@@ -1,8 +1,8 @@
 # 架构研究：数仓提示系统
 
-**领域：** 数仓提示系统（基于 GSD 架构扩展）
+**领域：** 数仓提示系统（基于 HiveMind 架构扩展）
 **研究日期：** 2026-01-30
-**置信度：** HIGH（基于现有 GSD 架构分析 + 行业最佳实践）
+**置信度：** HIGH（基于现有 HiveMind 架构分析 + 行业最佳实践）
 
 ## 系统总览
 
@@ -21,10 +21,10 @@
 │                         提示组装引擎 (prompt assembler)                   │
 │         按场景+角色+平台自动选择并注入 context 片段                       │
 ├─────────────────────────────────────────────────────────────────────────┤
-│                         GSD 编排层 (orchestration)                        │
+│                         HiveMind 编排层 (orchestration)                        │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐    │
 │  │  commands/  │  │   agents/   │  │ workflows/  │  │  templates/ │    │
-│  │    gsd/     │  │    gsd-*    │  │   *.md      │  │    *.md     │    │
+│  │    gsd/     │  │    dw-*    │  │   *.md      │  │    *.md     │    │
 │  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────┘    │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                         文件系统层 (file-based state)                     │
@@ -37,12 +37,12 @@
 
 ### 组件职责
 
-| 组件 | 职责 | 与现有 GSD 的关系 |
+| 组件 | 职责 | 与现有 HiveMind 的关系 |
 |------|------|------------------|
 | **prompts/** | 提示模板库（按场景/角色组织） | 新增，类似 templates/ 但面向数仓场景 |
 | **context/** | 领域知识库（规范、方法论、平台约束） | 新增，作为提示的上下文注入源 |
-| **commands/dw/** | 数仓专用斜杠命令 | 扩展现有 commands/gsd/ 模式 |
-| **agents/dw-*** | 数仓专用代理 | 扩展现有 agents/gsd-* 模式 |
+| **commands/dw/** | 数仓专用斜杠命令 | 扩展现有 commands/dw/ 模式 |
+| **agents/dw-*** | 数仓专用代理 | 扩展现有 agents/dw-* 模式 |
 | **assembler** | 提示组装工具 | 新增工具，按场景组合 prompts + context |
 
 ## 推荐目录结构
@@ -151,12 +151,12 @@
 - **platform/** — 平台特定约束（Hive、dbt-hive）
 - **glossary/** — 术语表，确保一致性
 
-### 与现有 GSD 结构的整合
+### 与现有 HiveMind 结构的整合
 
 ```
 .claude/
 ├── commands/
-│   ├── gsd/                         # 保留：GSD 通用命令
+│   ├── gsd/                         # 保留：HiveMind 通用命令
 │   └── dw/                          # 新增：数仓专用命令
 │       ├── review-model.md          # /dw:review-model
 │       ├── design-model.md          # /dw:design-model
@@ -166,7 +166,7 @@
 │       └── analyze-lineage.md       # /dw:analyze-lineage
 │
 ├── agents/
-│   ├── gsd-*.md                     # 保留：GSD 通用代理
+│   ├── dw-*.md                     # 保留：HiveMind 通用代理
 │   ├── dw-modeler.md                # 新增：数据建模代理
 │   ├── dw-reviewer.md               # 新增：模型评审代理
 │   └── dw-developer.md              # 新增：SQL 生成代理
@@ -175,7 +175,7 @@
 │   ├── prompts/                     # 提示模板库（见上文）
 │   └── context/                     # 领域知识库（见上文）
 │
-├── get-shit-done/                   # 保留：GSD 核心资源
+├── hivemind/                   # 保留：HiveMind 核心资源
 │   ├── templates/
 │   ├── references/
 │   └── workflows/
@@ -186,7 +186,7 @@
 **整合原则：**
 
 1. **命名空间隔离** — `dw/` 与 `gsd/` 平行，互不干扰
-2. **复用 GSD 基础设施** — agents、commands、workflows 模式保持一致
+2. **复用 HiveMind 基础设施** — agents、commands、workflows 模式保持一致
 3. **独立资源目录** — `data-warehouse/` 作为数仓资源根目录
 
 ## 数据流
@@ -659,14 +659,14 @@ knowledge/              # 项目特有知识（本次新增）
 
 ## 集成点
 
-### 与现有 GSD 工作流的集成
+### 与现有 HiveMind 工作流的集成
 
-| GSD 工作流 | 数仓提示系统集成点 |
+| HiveMind 工作流 | 数仓提示系统集成点 |
 |-----------|-------------------|
-| `/gsd:new-project` | 可选：初始化 data-warehouse/ 目录 |
-| `/gsd:plan-phase` | 数仓场景可作为 phase 的一部分 |
-| `/gsd:execute-phase` | 调用 `/dw:*` 命令执行数仓任务 |
-| `/gsd:verify-work` | 使用 `/dw:review-model` 验证产出 |
+| `/dw:new-project` | 可选：初始化 data-warehouse/ 目录 |
+| `/dw:plan-phase` | 数仓场景可作为 phase 的一部分 |
+| `/dw:execute-phase` | 调用 `/dw:*` 命令执行数仓任务 |
+| `/dw:verify-work` | 使用 `/dw:review-model` 验证产出 |
 
 ### 与 dbt 项目的集成
 
@@ -681,9 +681,9 @@ knowledge/              # 项目特有知识（本次新增）
 
 ### 现有代码库分析
 
-- GSD 架构分析：`.claude/agents/gsd-*.md`, `.claude/commands/gsd/`, `.claude/get-shit-done/`
-- GSD 模板系统：`.claude/get-shit-done/templates/`
-- GSD 工作流：`.claude/get-shit-done/workflows/`
+- HiveMind 架构分析：`.claude/agents/dw-*.md`, `.claude/commands/dw/`, `.claude/hivemind/`
+- HiveMind 模板系统：`.claude/hivemind/templates/`
+- HiveMind 工作流：`.claude/hivemind/workflows/`
 
 ### 行业最佳实践
 
@@ -696,7 +696,7 @@ knowledge/              # 项目特有知识（本次新增）
 
 | 领域 | 置信度 | 说明 |
 |-----|-------|------|
-| 目录结构设计 | HIGH | 基于现有 GSD 架构和 dbt 最佳实践 |
+| 目录结构设计 | HIGH | 基于现有 HiveMind 架构和 dbt 最佳实践 |
 | prompts/ 组织 | HIGH | 参考 MCP 协议和提示管理最佳实践 |
 | context/ 组织 | HIGH | 基于 Kimball 方法论和国内数仓实践 |
 | 构建顺序 | MEDIUM | 基于依赖分析，可能需要实践调整 |

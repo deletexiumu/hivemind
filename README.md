@@ -79,7 +79,7 @@ hivemind/
 │   ├── model_design/           # 模型设计样例
 │   ├── model_review/           # 模型评审样例
 │   └── sql_gen/                # SQL 生成样例
-└── .planning/                  # GSD 规划文件
+└── .planning/                  # HiveMind 规划文件
     ├── PROJECT.md              # 项目定义
     ├── REQUIREMENTS.md         # 需求列表
     ├── ROADMAP.md              # 路线图
@@ -102,21 +102,21 @@ hivemind/
 git clone https://github.com/deletexiumu/hivemind.git
 cd hivemind
 
-# 安装 GSD 命令（如未安装）
-npx get-shit-done-cc --claude --local
+# 安装 HiveMind 命令（如未安装）
+npx hivemind-cc --claude --local
 ```
 
 ### 使用
 
 ```bash
 # 查看项目进度
-/gsd:progress
+/dw:progress
 
 # 规划下一阶段
-/gsd:plan-phase 1
+/dw:plan-phase 1
 
 # 执行阶段
-/gsd:execute-phase 1
+/dw:execute-phase 1
 ```
 
 ---
