@@ -35,12 +35,12 @@
 
 ## 当前位置
 
-**Phase:** 2 of 8 (方法论库) - **In Progress**
-**Plan:** 3 of 4 complete
-**Status:** Phase 2 In Progress
-**Last activity:** 2026-01-31 - Completed 02-03-PLAN.md
+**Phase:** 2 of 8 (方法论库) - **Complete**
+**Plan:** 3 of 3 complete
+**Status:** Phase 2 Complete
+**Last activity:** 2026-01-31 - Completed 02-02-PLAN.md (事实表类型 + SCD 策略)
 
-**Progress:** █████░░░░░ 31.25% (5/16 plans)
+**Progress:** █████░░░░░ 37.5% (6/16 plans)
 
 **已完成：**
 - [✓] 48 个 v1 需求分析
@@ -53,11 +53,10 @@
 - [✓] **01-01: 目录结构 + 术语表（89 条）**
 - [✓] **01-02: 命名规范 + 提示规范 + Token 预算**
 - [✓] **02-01: 方法论索引页 + Kimball 维度建模文档（METHOD-01）**
-- [✓] **02-02: 事实表类型指南（METHOD-02）**
+- [✓] **02-02: 事实表类型指南（METHOD-02）+ SCD 策略指南（METHOD-03）**
 - [✓] **02-03: 分层体系规范（METHOD-04）**
 
 **待执行：**
-- [ ] Phase 2 剩余：SCD 策略（METHOD-03）
 - [ ] Phase 3-8 递进执行
 
 ---
@@ -84,6 +83,10 @@
 | 维度表落层 | DWD 层，dim_ 前缀 | 与事实表并列，支持一致性维度 | ✓ 02-03 确认 |
 | 维度表跨层引用 | 允许多层引用 | 一致性维度设计需求 | ✓ 02-03 确认 |
 | 回刷窗口约束 | ODS 7天/DWD-DWS 30天/ADS 90天 | 平衡数据完整性与运维成本 | ✓ 02-03 确认 |
+| SCD2 区间语义 | 右开区间 [start, end) | 避免边界日期重复命中 | ✓ 02-02 确认 |
+| SCD2 当前记录 | effective_end = 9999-12-31 | NULL 比较复杂，固定值更易处理 | ✓ 02-02 确认 |
+| 迟到维处理 | Unknown 成员占位 (sk=-1) | 保证事实表外键完整性 | ✓ 02-02 确认 |
+| 大小维表策略 | 小表全量重建，大表拆分 | 性能与维护成本平衡 | ✓ 02-02 确认 |
 
 ---
 
@@ -92,14 +95,14 @@
 | Phase | 目标 | 需求数 | 状态 | 完成% |
 |-------|------|--------|------|--------|
 | **1** | 基础设施 | 4 | **Complete** | 100% |
-| **2** | 方法论库 | 4 | **In Progress** | 75% |
+| **2** | 方法论库 | 4 | **Complete** | 100% |
 | **3** | 平台约束 | 3 | Pending | 0% |
 | **4** | 设计场景 | 6 | Pending | 0% |
 | **5** | 评审场景 | 8 | Pending | 0% |
 | **6** | 治理场景 | 13 | Pending | 0% |
 | **7** | SQL 生成 + 血缘 | 12 | Pending | 0% |
 | **8** | 工具化 | 3 | Pending | 0% |
-| **整体** | **全系统 v1** | **48** | **In Progress** | **31.25%** |
+| **整体** | **全系统 v1** | **48** | **In Progress** | **37.5%** |
 
 ---
 
@@ -124,7 +127,8 @@
 | .planning/phases/02-methodology/02-02-SUMMARY.md | 1.0 | 2026-01-31 | **新增** |
 | .claude/data-warehouse/context/methodology/fact-table-types.md | 1.0 | 2026-01-31 | **新增** |
 | .planning/phases/02-methodology/02-03-SUMMARY.md | 1.0 | 2026-01-31 | **新增** |
-| .claude/data-warehouse/context/layers/layering-system.md | 1.0 | 2026-01-31 | **新增** |
+| .claude/data-warehouse/context/layers/layering-system.md | 1.0 | 2026-01-31 | 完成 |
+| .claude/data-warehouse/context/methodology/scd-strategies.md | 1.0 | 2026-01-31 | **新增** |
 
 ---
 
@@ -224,8 +228,8 @@
 
 ## 会话连续性要点
 
-**Last session:** 2026-01-31T03:00:53Z
-**Stopped at:** Completed 02-03-PLAN.md (Phase 2 Plan 03 Complete)
+**Last session:** 2026-01-31T03:02:00Z
+**Stopped at:** Completed 02-02-PLAN.md (Phase 2 Complete)
 **Resume file:** None
 
 **如果重启对话，这些是最关键的上下文：**
@@ -238,13 +242,12 @@
 4. **Phase 1 已完成**：
    - 01-01: 目录结构 + 89 条术语表
    - 01-02: 命名规范 + 提示规范 + Token 预算
-5. **Phase 2 进行中（75%）**：
+5. **Phase 2 已完成**：
    - 02-01: 方法论索引页 + Kimball 维度建模文档（METHOD-01）✓
-   - 02-02: 事实表类型指南（METHOD-02）✓
+   - 02-02: 事实表类型指南（METHOD-02）+ SCD 策略指南（METHOD-03）✓
    - 02-03: 分层体系规范（METHOD-04）✓
-   - 02-04: SCD 策略（METHOD-03）待执行
-6. **下一步动作**：执行 Phase 2 最后一个计划（02-04 SCD 策略）
-7. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束 + 命名规范 + Token 限制 + 星型模型优先 + 双受众文档 + 维度表落层 DWD + 回刷窗口约束
+6. **下一步动作**：规划并执行 Phase 3（平台约束库）
+7. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束 + 命名规范 + Token 限制 + 星型模型优先 + 双受众文档 + 维度表落层 DWD + 回刷窗口约束 + SCD2 右开区间
 
 ---
 
