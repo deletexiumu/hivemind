@@ -36,11 +36,11 @@
 ## 当前位置
 
 **Phase:** 5 of 8 (评审场景) - In Progress
-**Plan:** 1 of 3 complete
+**Plan:** 2 of 3 complete
 **Status:** Phase 5 In Progress
-**Last activity:** 2026-02-01 - Completed 05-01-PLAN.md (问题分级与检查清单)
+**Last activity:** 2026-02-01 - Completed 05-02-PLAN.md (主提示与输出模板)
 
-**Progress:** ████████░░ 75% (12/16 plans)
+**Progress:** █████████░ 81% (13/16 plans)
 
 **已完成：**
 - [✓] 48 个 v1 需求分析
@@ -61,9 +61,9 @@
 - [✓] **04-02: 场景提示 prompt.md + 输出模板（两段式交互）**
 - [✓] **04-03: 3 个案例（电商订单/用户行为/财务收入）**
 - [✓] **05-01: 问题分级（P0-P3）+ 检查清单（33 条规则）**
+- [✓] **05-02: 主提示文件 prompt.md + 输出模板 + 修复建议模板**
 
 **待执行：**
-- [ ] **05-02: 主提示文件 prompt.md + 输出模板**
 - [ ] **05-03: 评审案例（2-3 个）**
 - [ ] Phase 6-8 递进执行
 
@@ -109,6 +109,9 @@
 | 质量分计算 | P1(-10)/P2(-3)/P3(-1)，初始 100 分 | 可量化可比较 | ✓ 05-01 确认 |
 | 三态结论 | 不通过/通过/有条件通过 | 清晰决策边界 | ✓ 05-01 确认 |
 | 检查项 ID 格式 | {维度前缀}{序号}，如 N01/L01/G01 | 便于引用和追踪 | ✓ 05-01 确认 |
+| 评审两段式交互 | Stage 1 问题概览 + Stage 2 详细修复 | 减少返工，聚焦关键问题 | ✓ 05-02 确认 |
+| 智能范围评审 | 根据输入内容确定可评审维度 | 信息不足时仍可部分评审 | ✓ 05-02 确认 |
+| 修复建议分档 | S/M/L/XL 四档详细度规则 | 确保输出一致性和可操作性 | ✓ 05-02 确认 |
 
 ---
 
@@ -120,7 +123,7 @@
 | **2** | 方法论库 | 4 | **Complete** | 100% |
 | **3** | 平台约束 | 3 | **Complete** | 100% |
 | **4** | 设计场景 | 6 | **Complete** | 100% |
-| **5** | 评审场景 | 8 | **In Progress** | 33% |
+| **5** | 评审场景 | 8 | **In Progress** | 67% |
 | **6** | 治理场景 | 13 | Pending | 0% |
 | **7** | SQL 生成 + 血缘 | 12 | Pending | 0% |
 | **8** | 工具化 | 3 | Pending | 0% |
@@ -176,6 +179,10 @@
 | .planning/phases/05-review-existing-model/05-01-SUMMARY.md | 1.0 | 2026-02-01 | **新增** |
 | .claude/data-warehouse/prompts/scenarios/review-existing-model/issue-classification.md | 1.0 | 2026-02-01 | **新增** |
 | .claude/data-warehouse/prompts/scenarios/review-existing-model/review-checklist.md | 1.0 | 2026-02-01 | **新增** |
+| .planning/phases/05-review-existing-model/05-02-SUMMARY.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/prompts/scenarios/review-existing-model/prompt.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/prompts/scenarios/review-existing-model/output-template.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/prompts/scenarios/review-existing-model/fix-suggestions.md | 1.0 | 2026-02-01 | **新增** |
 
 ---
 
@@ -275,8 +282,8 @@
 
 ## 会话连续性要点
 
-**Last session:** 2026-02-01T00:48:00Z
-**Stopped at:** Completed 05-01-PLAN.md (问题分级与检查清单)
+**Last session:** 2026-02-01T16:50:00Z
+**Stopped at:** Completed 05-02-PLAN.md (主提示与输出模板)
 **Resume file:** None
 
 **如果重启对话，这些是最关键的上下文：**
@@ -302,7 +309,7 @@
    - 04-03: 3 个案例（电商订单/用户行为/财务收入）✓
 8. **Phase 5 进行中**：
    - 05-01: 问题分级（P0-P3）+ 检查清单（33 条规则）✓
-   - 05-02: 主提示文件 prompt.md + 输出模板（待执行）
+   - 05-02: 主提示文件 prompt.md + 输出模板 + 修复建议模板 ✓
    - 05-03: 评审案例（待执行）
 9. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束 + 命名规范 + Token 限制 + 星型模型优先 + 双受众文档 + 维度表落层 DWD + 回刷窗口约束 + SCD2 右开区间 + lookback 分层配置 + P0 门禁机制 + 质量分计算
 
