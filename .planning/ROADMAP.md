@@ -156,9 +156,11 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — 方法论索引页 + Kimball 维度建模核心概念 (METHOD-01)
-- [ ] 02-02-PLAN.md — 事实表类型指南 (METHOD-02) + SCD 策略指南 (METHOD-03)
-- [ ] 02-03-PLAN.md — 分层体系规范 (METHOD-04)
+- [x] 02-01-PLAN.md — 方法论索引页 + Kimball 维度建模核心概念 (METHOD-01) ✓
+- [x] 02-02-PLAN.md — 事实表类型指南 (METHOD-02) + SCD 策略指南 (METHOD-03) ✓
+- [x] 02-03-PLAN.md — 分层体系规范 (METHOD-04) ✓
+
+**Phase Status:** Complete (2026-01-31)
 
 ---
 
@@ -969,15 +971,15 @@ npm run gsd -- /gsd:assemble-prompt \
 
 | Phase | 目标 | 需求数 | 状态 | 完成度 |
 |-------|------|--------|------|--------|
-| 1 | 基础设施 | 4 | Pending | 0% |
-| 2 | 方法论库 | 4 | Pending | 0% |
+| 1 | 基础设施 | 4 | ✓ Complete | 100% |
+| 2 | 方法论库 | 4 | ✓ Complete | 100% |
 | 3 | 平台约束 | 3 | Pending | 0% |
 | 4 | 设计场景 | 6 | Pending | 0% |
 | 5 | 评审场景 | 8 | Pending | 0% |
 | 6 | 治理场景 | 13 | Pending | 0% |
 | 7 | SQL 生成 | 12 | Pending | 0% |
 | 8 | 工具化 | 3 | Pending | 0% |
-| **总计** | **全系统** | **48** | **Pending** | **0%** |
+| **总计** | **全系统** | **48** | **In Progress** | **25%** |
 
 ---
 
