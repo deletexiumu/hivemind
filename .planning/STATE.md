@@ -2,7 +2,7 @@
 
 **项目名称：** HiveMind 数仓助手（Hive + dbt 中文提示系统）
 **最后更新：** 2026-01-31
-**当前里程碑：** Phase 3 Complete
+**当前里程碑：** Phase 4 In Progress
 
 ---
 
@@ -35,12 +35,12 @@
 
 ## 当前位置
 
-**Phase:** 3 of 8 (平台约束库) - Complete
-**Plan:** 2 of 2 complete (Plan 01/02 并行执行)
-**Status:** Phase 3 Complete
-**Last activity:** 2026-01-31 - Completed 03-02-PLAN.md (dbt-hive + incremental strategies)
+**Phase:** 4 of 8 (设计场景) - In Progress
+**Plan:** 1 of 3 complete
+**Status:** Phase 4 In Progress
+**Last activity:** 2026-01-31 - Completed 04-01-PLAN.md (精简版上下文文件)
 
-**Progress:** ██████░░░░ 50% (8/16 plans)
+**Progress:** ██████░░░░ 56% (9/16 plans)
 
 **已完成：**
 - [✓] 48 个 v1 需求分析
@@ -57,9 +57,12 @@
 - [✓] **02-03: 分层体系规范（METHOD-04）**
 - [✓] **03-01: 平台约束索引页 + Hive 约束文档（PLATFORM-01）**
 - [✓] **03-02: dbt-hive 限制文档（PLATFORM-02）+ 增量策略文档（PLATFORM-03）**
+- [✓] **04-01: 7 个精简版上下文文件（*-core.md）**
 
 **待执行：**
-- [ ] Phase 4-8 递进执行
+- [ ] 04-02: 场景提示 prompt.md + 输出模板
+- [ ] 04-03: 输入模板 + 案例 + 质量门禁
+- [ ] Phase 5-8 递进执行
 
 ---
 
@@ -92,6 +95,8 @@
 | dbt-hive 限制模板 | ID + 原因 + 后果 + 规避方案 + 示例 | 统一格式便于查阅 | ✓ 03-02 确认 |
 | lookback 分层配置 | ODS 7天/DWD-DWS 30天/ADS 90天 | 平衡迟到数据覆盖与性能 | ✓ 03-02 确认 |
 | 分区内去重 | row_number + ORDER BY updated_at DESC | 取最新版本，简单可靠 | ✓ 03-02 确认 |
+| 精简版上下文 tokens | 单文件 600-1000，7 文件合计 <6000 | 控制运行时注入预算 | ✓ 04-01 确认 |
+| 精简版格式 | frontmatter + 表格/决策树/检查清单 + Source 标注 | 统一格式便于自动化 | ✓ 04-01 确认 |
 
 ---
 
@@ -102,12 +107,12 @@
 | **1** | 基础设施 | 4 | **Complete** | 100% |
 | **2** | 方法论库 | 4 | **Complete** | 100% |
 | **3** | 平台约束 | 3 | **Complete** | 100% |
-| **4** | 设计场景 | 6 | Pending | 0% |
+| **4** | 设计场景 | 6 | **In Progress** | 33% |
 | **5** | 评审场景 | 8 | Pending | 0% |
 | **6** | 治理场景 | 13 | Pending | 0% |
 | **7** | SQL 生成 + 血缘 | 12 | Pending | 0% |
 | **8** | 工具化 | 3 | Pending | 0% |
-| **整体** | **全系统 v1** | **48** | Complete | **50%** |
+| **整体** | **全系统 v1** | **48** | In Progress | **56%** |
 
 ---
 
@@ -141,6 +146,14 @@
 | .planning/phases/03-platform-constraints/03-01-SUMMARY.md | 1.0 | 2026-01-31 | **新增** |
 | .claude/data-warehouse/context/platform/hive-constraints.md | 1.0 | 2026-01-31 | **新增** |
 | .planning/phases/03-platform-constraints/03-VERIFICATION.md | 1.0 | 2026-01-31 | **新增** |
+| .planning/phases/04-design-new-model/04-01-SUMMARY.md | 1.0 | 2026-01-31 | **新增** |
+| .claude/data-warehouse/context/methodology/dimensional-modeling-core.md | 1.0 | 2026-01-31 | **新增** |
+| .claude/data-warehouse/context/methodology/fact-table-types-core.md | 1.0 | 2026-01-31 | **新增** |
+| .claude/data-warehouse/context/methodology/scd-strategies-core.md | 1.0 | 2026-01-31 | **新增** |
+| .claude/data-warehouse/context/layers/layering-system-core.md | 1.0 | 2026-01-31 | **新增** |
+| .claude/data-warehouse/context/platform/hive-constraints-core.md | 1.0 | 2026-01-31 | **新增** |
+| .claude/data-warehouse/context/platform/dbt-hive-limitations-core.md | 1.0 | 2026-01-31 | **新增** |
+| .claude/data-warehouse/docs/naming-core.md | 1.0 | 2026-01-31 | **新增** |
 
 ---
 
@@ -240,8 +253,8 @@
 
 ## 会话连续性要点
 
-**Last session:** 2026-01-31T07:13:26Z
-**Stopped at:** Completed 03-02-PLAN.md (dbt-hive + incremental strategies)
+**Last session:** 2026-01-31T11:00:42Z
+**Stopped at:** Completed 04-01-PLAN.md (精简版上下文文件)
 **Resume file:** None
 
 **如果重启对话，这些是最关键的上下文：**
@@ -261,7 +274,11 @@
 6. **Phase 3 已完成**：
    - 03-01: 平台约束索引页 + Hive 平台约束文档（PLATFORM-01）✓
    - 03-02: dbt-hive 限制文档 + 增量策略文档（PLATFORM-02/03）✓
-7. **下一步动作**：进入 Phase 4（设计场景）
+7. **Phase 4 进行中**：
+   - 04-01: 7 个精简版上下文文件（*-core.md）✓
+   - 04-02: 场景提示 prompt.md + 输出模板（待执行）
+   - 04-03: 输入模板 + 案例 + 质量门禁（待执行）
+8. **下一步动作**：继续 Phase 4（04-02 场景提示）
 8. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束 + 命名规范 + Token 限制 + 星型模型优先 + 双受众文档 + 维度表落层 DWD + 回刷窗口约束 + SCD2 右开区间 + lookback 分层配置
 
 ---
