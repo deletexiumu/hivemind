@@ -476,5 +476,78 @@ SHOW PARTITIONS dwd_fact_order;
 
 ---
 
+## Codex Review 补充内容
+
+（基于 Hive 3.x + dbt-hive 1.10.x，经 Claude 与 Codex 讨论确认）
+
+### 1) 表类型矩阵（非 ACID ORC / ACID ORC / Iceberg）
+
+| 表类型 | 可用增量策略（Hive 3.x + dbt-hive 1.10.x 视角） | 是否支持 MERGE | 其他关键约束 |
+|---|---|---|---|
+| 非 ACID ORC | **INSERT OVERWRITE（分区回刷）**：主路径，配 lookback N 天<br>INSERT INTO（纯追加）：仅适用于"绝不更新/绝无迟到"的数据 | 否 | 不支持 UPDATE/DELETE；并发回刷同一分区结果不可预期；强依赖"分区幂等 + 分区裁剪"；`SELECT *`/列漂移风险高 |
+| ACID ORC | MERGE/UPDATE/DELETE/INSERT（行级变更）<br>也可继续用 INSERT OVERWRITE（但通常是"非 ACID 思路"） | 是（事务表） | 需要 `transactional=true` 等事务链路配置；有 compaction 运维与性能开销；分区列一般不可更新（改分区=搬家，建议回刷重建分区） |
+| Iceberg | 追加写 + 覆盖写（INSERT OVERWRITE / replace）<br>增量读（snapshot 级别）<br>行级改写（MERGE/UPDATE/DELETE）**取决于你实际用的计算引擎与 Iceberg 版本** | 视引擎而定 | 需要 Iceberg catalog/metastore + 元数据维护（snapshots/manifests/清理）；在"Hive 3.x + dbt-hive"栈里通常属于高级/补充选项，需单独约束章节 |
+
+### 2) 新增/补强 P0 约束（最常踩、会出错的）
+
+- **P0：禁止 `SELECT *`**（列新增/重排会静默错列、错数）
+- **P0：分区列 `dt` 必须 NOT NULL，且必须为 `yyyy-MM-dd` 字符串**（否则落入默认分区/漏数/分区裁剪失效）
+- **P0：同一表同一 `dt` 分区只允许单写者**（禁止并发回刷同分区）
+- **P0：分区内必须去重（业务键 + dt 唯一）**（迟到/多版本取最新）
+- **P0：字段合同（Schema Contract）**：列只追加；禁止改名/改类型/重排/删除（破坏性变更走新版本或全量重建）
+
+### 3) T+1 + lookback 模式（默认 7 天，dt 为 `yyyy-MM-dd` 字符串）
+
+**目标：** 每天跑 `ds`（如 `2026-01-31`）时，重算 `[ds-7, ds]` 这段分区窗口，覆盖迟到/修正数据。
+**默认：** `lookback_days = 7`（可按业务迟到分布调整）。
+
+**dbt 模型示例（insert_overwrite + 7 天回刷）：**
+
+```sql
+-- models/dwd/dwd_fact_orders.sql
+{{
+  config(
+    materialized='incremental',
+    incremental_strategy='insert_overwrite',
+    partition_by=['dt'],
+    file_format='orc'
+  )
+}}
+
+SELECT
+    order_id,
+    user_id,
+    order_amount,
+    updated_at,
+    -- P0：分区列必须在最后（动态分区写入）
+    dt
+FROM {{ source('ods', 'orders') }}
+WHERE dt >= date_sub('{{ var("ds") }}', {{ var("lookback_days", 7) }})
+  AND dt <= '{{ var("ds") }}'
+  AND dt IS NOT NULL
+  AND dt RLIKE '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'
+```
+
+**运行参数示例：**
+
+- `dbt run --select dwd_fact_orders --vars '{"ds":"2026-01-31","lookback_days":7}'`
+
+### 4) P0 约束清单表格（8 条，可落 CI/dbt tests）
+
+| 规则（P0） | 原因 | 反例 | 推荐写法 | 可自动检查项 |
+|---|---|---|---|---|
+| 禁止 `SELECT *` | 列新增/重排导致静默错列 | `SELECT * FROM stg_x` | 显式列清单，固定顺序 | SQL lint（AST/正则），dbt compile 后扫描 |
+| `dt` 必须 NOT NULL | NULL 会落默认分区/漏数 | `dt` 由空时间戳派生为 NULL | `WHERE dt IS NOT NULL` | dbt test：`not_null`（dt） |
+| `dt` 必须为 `yyyy-MM-dd` | 字符串比较/分区裁剪依赖格式稳定 | `20260131` / `2026-1-1` | `dt RLIKE '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'` | 自定义 dbt test（正则） |
+| 动态分区写入：分区列在 SELECT 末尾 | Hive 语法要求（否则直接报错） | `SELECT id, dt, name ...` | `SELECT id, name, dt ...` | SQL lint（检查列顺序） |
+| 非 ACID 增量必须用 `insert_overwrite` + `partition_by=['dt']` | 非 ACID 无行级改写；append 会重复/错数 | `incremental_strategy='append'` 做"伪 upsert" | `incremental_strategy='insert_overwrite'` | 静态检查 dbt config（强制策略） |
+| INSERT OVERWRITE 必须"分区级"且有窗口裁剪 | 防止误覆盖全表/误扫全量 | `INSERT OVERWRITE TABLE t SELECT ...` | 分区回刷 + `dt BETWEEN ds-N AND ds` | SQL lint（必须出现分区谓词） |
+| 同表同分区单写者（禁止并发回刷同 dt） | 并发 overwrite 结果不可预期 | 两个任务同时回刷 `dt=同一天` | 调度层加互斥/分区锁（每表每 dt 单活） | 调度配置审计（DAG 并发/锁/Pool） |
+| 分区内去重（业务键 + dt 唯一，取最新） | 重复会放大指标且难回滚 | 同 `order_id` 多版本都入仓 | `row_number() over(partition by order_id, dt order by updated_at desc)=1` | dbt test：唯一性（业务键+dt）+ 重复率阈值 |
+| 字段合同：仅允许追加列，禁止改名/改类型/重排/删除 | 下游依赖 + ORC 读取风险 | 直接改类型 `string->bigint` | 新增列/新版本表；必要时全量重建 | schema diff（CI），变更需评审 |
+
+---
+
 *Phase: 03-platform-constraints*
 *Research completed: 2026-01-31*
+*Codex review: 2026-01-31*
