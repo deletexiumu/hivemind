@@ -36,14 +36,14 @@
 - [ ] **REVIEW-07**: 系统检查字段类型合理性和注释完整性
 - [ ] **REVIEW-08**: 系统检查 dbt 配置完整性（description、tests）
 
-### 场景2: 设计新模型 (DESIGN)
+### 场景2: 设计新模型 (DESIGN) — Complete ✓
 
-- [ ] **DESIGN-01**: 用户可输入业务事件/指标/粒度描述，系统输出星型模型设计
-- [ ] **DESIGN-02**: 输出包含事实表定义（粒度声明、度量字段、DDL + schema.yml）
-- [ ] **DESIGN-03**: 输出包含维度表定义（SCD 策略、自然键/代理键、DDL + schema.yml）
-- [ ] **DESIGN-04**: 输出包含分层落点建议（DWD/DWS 分配及理由）
-- [ ] **DESIGN-05**: 输出包含 dbt model 模板（可直接使用的骨架代码）
-- [ ] **DESIGN-06**: 事实表必须包含标准字段（etl_date、is_deleted 等）
+- [x] **DESIGN-01**: 用户可输入业务事件/指标/粒度描述，系统输出星型模型设计
+- [x] **DESIGN-02**: 输出包含事实表定义（粒度声明、度量字段、DDL + schema.yml）
+- [x] **DESIGN-03**: 输出包含维度表定义（SCD 策略、自然键/代理键、DDL + schema.yml）
+- [x] **DESIGN-04**: 输出包含分层落点建议（DWD/DWS 分配及理由）
+- [x] **DESIGN-05**: 输出包含 dbt model 模板（可直接使用的骨架代码）
+- [x] **DESIGN-06**: 事实表必须包含标准字段（etl_date、is_deleted 等）
 
 ### 场景3: 生成导数SQL (SQLGEN)
 
