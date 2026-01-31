@@ -5,12 +5,12 @@
 
 ## v1 Requirements
 
-### 基础设施 (INFRA)
+### 基础设施 (INFRA) — Complete ✓
 
-- [ ] **INFRA-01**: 建立 `.claude/data-warehouse/` 目录结构（prompts/ + context/）
-- [ ] **INFRA-02**: 编写中英术语对照表 `glossary/zh-en-mapping.md`，覆盖维度建模核心术语
-- [ ] **INFRA-03**: 编写命名规范文档 `governance/naming-conventions.md`，定义表/字段/指标命名规则
-- [ ] **INFRA-04**: 建立提示 token 限制规范（单文件 <2000 tokens）
+- [x] **INFRA-01**: 建立 `.claude/data-warehouse/` 目录结构（prompts/ + context/）
+- [x] **INFRA-02**: 编写中英术语对照表 `glossary/terms.md`，覆盖维度建模核心术语（89 条）
+- [x] **INFRA-03**: 编写命名规范文档 `docs/naming.md`，定义表/字段/指标命名规则
+- [x] **INFRA-04**: 建立提示 token 限制规范（单文件 <2000 tokens）
 
 ### 方法论库 (METHOD)
 
