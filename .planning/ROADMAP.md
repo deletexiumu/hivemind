@@ -270,34 +270,10 @@ Plans:
    - 分层落点表（表名、分层、理由）
    - dbt 源模型与 ref 依赖关系
 
-3. dbt 骨架代码生成 (`prompts/scenarios/design-new-model/dbt-template-generator.md`)
-   - 事实表模板生成器
-     - 基于粒度和度量字段生成 SQL 框架
-     - 包含 INSERT_OVERWRITE（Hive 默认增量）
-     - 包含标准字段填充
-     - 包含分区字段声明（dbt 配置）
-   - 维度表模板生成器
-     - 基于 SCD 策略生成对应 SQL
-     - SCD Type 1 template（CTAS）
-     - SCD Type 2 template（insert_overwrite + 有效期）
-     - SCD Type 3 template（当前/前值并存）
-   - schema.yml 生成
-     - 自动生成 description、tests（unique、not_null）
-     - 标记主键和外键
-
-4. 设计检查清单 (`prompts/scenarios/design-new-model/design-checklist.md`)
-   - 粒度是否清晰且一致性维度完整
-   - 度量字段的可加总性是否标记
-   - SCD 策略选择是否有依据
-   - 标准字段是否完整
-   - 分层落点是否符合 ODS/DWD/DWS/ADS 规范
-   - dbt 配置是否完整（description、tests、meta）
-
-5. 成功标准文档 (`prompts/scenarios/design-new-model/success-criteria.md`)
-   - 用户可读性：设计文档清晰，无歧义
-   - 实施可行性：DDL 和 SQL 框架可直接用于 dbt 项目
-   - 合规性：满足分层、命名、标准字段规范
-   - 完整性：包含事实表、所有维度、dbt 配置
+3. 案例库 (`prompts/scenarios/design-new-model/examples/`)
+   - 电商订单案例（复杂，多维度 + SCD Type 2）
+   - 用户行为案例（中等，事件类）
+   - 财务收入案例（中等，周期快照类型）
 
 **成功标准：**
 1. 提示系统能接受结构化输入（业务事件、粒度、字段），生成完整的星型设计
@@ -312,6 +288,12 @@ Plans:
 
 **依赖关系：** 依赖 Phase 1 (基础)、Phase 2 (方法论)、Phase 3 (平台约束)
 **后续赋能：** Phase 5 (评审) 可复用分层、命名、标准字段的检查逻辑
+
+**Plans:** 2 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — 主提示 prompt.md + 输出模板 output-template.md
+- [ ] 04-02-PLAN.md — 案例库（电商订单 + 用户行为 + 财务收入）
 
 ---
 
@@ -982,7 +964,7 @@ npm run gsd -- /gsd:assemble-prompt \
 | 1 | 基础设施 | 4 | ✓ Complete | 100% |
 | 2 | 方法论库 | 4 | ✓ Complete | 100% |
 | 3 | 平台约束 | 3 | ✓ Complete | 100% |
-| 4 | 设计场景 | 6 | Pending | 0% |
+| 4 | 设计场景 | 6 | Planned | 0% |
 | 5 | 评审场景 | 8 | Pending | 0% |
 | 6 | 治理场景 | 13 | Pending | 0% |
 | 7 | SQL 生成 | 12 | Pending | 0% |
