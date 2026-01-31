@@ -26,8 +26,10 @@ updated_at: 2026-01-31
 | HIVE-004 | 分区并发控制 | P0 | 禁止并发回刷同一分区 | [hive-constraints.md](./hive-constraints.md#hive-004) |
 | HIVE-010 | MERGE 表类型 | P0 | MERGE 仅支持 ACID 表 | [hive-constraints.md](./hive-constraints.md#hive-010) |
 | HIVE-011 | 行级更新表类型 | P0 | UPDATE/DELETE 仅支持 ACID 表 | [hive-constraints.md](./hive-constraints.md#hive-011) |
+| HIVE-012 | ACID 表不支持 INSERT OVERWRITE | P0 | ACID 表用 TRUNCATE + INSERT | [hive-constraints.md](./hive-constraints.md#hive-012) |
 | HIVE-014 | 禁止 SELECT * | P0 | 列漂移导致静默错数 | [hive-constraints.md](./hive-constraints.md#hive-014) |
 | HIVE-015 | 分区内去重 | P0 | 业务键 + dt 唯一，取最新版本 | [hive-constraints.md](./hive-constraints.md#hive-015) |
+| HIVE-016 | Schema 变更合同 | P0 | 仅允许追加列，禁止破坏性变更 | [hive-constraints.md](./hive-constraints.md#hive-016) |
 | HIVE-018 | 分区裁剪 | P0 | WHERE 必须包含分区条件 | [hive-constraints.md](./hive-constraints.md#hive-018) |
 | DBT-HIVE-001 | 不支持 Snapshots | P0 | 用增量模型 + SCD2 替代 | [dbt-hive-limitations.md](./dbt-hive-limitations.md#dbt-hive-001) |
 | DBT-HIVE-002 | 不支持 Ephemeral | P0 | 使用 View 物化替代 | [dbt-hive-limitations.md](./dbt-hive-limitations.md#dbt-hive-002) |
@@ -39,7 +41,7 @@ updated_at: 2026-01-31
 
 | 文档 | 覆盖需求 | 聚焦领域 | 一句话描述 | 状态 |
 |------|---------|---------|-----------|------|
-| [hive-constraints.md](./hive-constraints.md) | PLATFORM-01 | Hive 平台约束 | 分区/ORC/ACID/性能优化约束 | planned |
+| [hive-constraints.md](./hive-constraints.md) | PLATFORM-01 | Hive 平台约束 | 分区/ORC/ACID/性能优化约束 | stable |
 | [dbt-hive-limitations.md](./dbt-hive-limitations.md) | PLATFORM-02 | dbt-hive 限制 | Snapshots/Ephemeral/分区列限制 | planned |
 | [incremental-strategies.md](./incremental-strategies.md) | PLATFORM-03 | 增量策略 | T+1/insert_overwrite/lookback 模式 | planned |
 
