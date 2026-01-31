@@ -1,7 +1,7 @@
 ---
 type: context
 title: 平台约束库索引
-status: draft
+status: stable
 version: 1.0.0
 domain: platform
 owner: data-platform
@@ -33,7 +33,9 @@ updated_at: 2026-01-31
 | HIVE-018 | 分区裁剪 | P0 | WHERE 必须包含分区条件 | [hive-constraints.md](./hive-constraints.md#hive-018) |
 | DBT-HIVE-001 | 不支持 Snapshots | P0 | 用增量模型 + SCD2 替代 | [dbt-hive-limitations.md](./dbt-hive-limitations.md#dbt-hive-001) |
 | DBT-HIVE-002 | 不支持 Ephemeral | P0 | 使用 View 物化替代 | [dbt-hive-limitations.md](./dbt-hive-limitations.md#dbt-hive-002) |
-| DBT-HIVE-003 | insert_overwrite 必须配分区 | P0 | 否则全表覆盖 | [dbt-hive-limitations.md](./dbt-hive-limitations.md#dbt-hive-003) |
+| DBT-HIVE-003 | 分区列必须在 SELECT 末尾 | P0 | Hive 动态分区语法要求 | [dbt-hive-limitations.md](./dbt-hive-limitations.md#dbt-hive-003) |
+| DBT-HIVE-004 | insert_overwrite 必须配分区 | P0 | 否则全表覆盖 | [dbt-hive-limitations.md](./dbt-hive-limitations.md#dbt-hive-004) |
+| DBT-HIVE-005 | 非 ACID 表不支持 merge | P0 | 使用 insert_overwrite 替代 | [dbt-hive-limitations.md](./dbt-hive-limitations.md#dbt-hive-005) |
 
 ---
 
@@ -42,8 +44,8 @@ updated_at: 2026-01-31
 | 文档 | 覆盖需求 | 聚焦领域 | 一句话描述 | 状态 |
 |------|---------|---------|-----------|------|
 | [hive-constraints.md](./hive-constraints.md) | PLATFORM-01 | Hive 平台约束 | 分区/ORC/ACID/性能优化约束 | stable |
-| [dbt-hive-limitations.md](./dbt-hive-limitations.md) | PLATFORM-02 | dbt-hive 限制 | Snapshots/Ephemeral/分区列限制 | planned |
-| [incremental-strategies.md](./incremental-strategies.md) | PLATFORM-03 | 增量策略 | T+1/insert_overwrite/lookback 模式 | planned |
+| [dbt-hive-limitations.md](./dbt-hive-limitations.md) | PLATFORM-02 | dbt-hive 限制 | Snapshots/Ephemeral/分区列限制 | stable |
+| [incremental-strategies.md](./incremental-strategies.md) | PLATFORM-03 | 增量策略 | T+1/insert_overwrite/lookback 模式 | stable |
 
 ---
 
