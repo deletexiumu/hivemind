@@ -244,14 +244,18 @@ Plans:
 - DESIGN-06: 事实表必须包含标准字段（etl_date、is_deleted 等）
 
 **关键交付物：**
-1. 新模型设计提示 (`prompts/scenarios/design-new-model/prompt.md`)
+1. 精简版上下文文件 (`*-core.md` 系列，7 个文件)
+   - 供场景提示运行时注入的精简版知识库
+   - 单文件控制在 1k-2k tokens，避免组装时超出预算
+
+2. 新模型设计提示 (`prompts/scenarios/design-new-model/prompt.md`)
    - 系统角色：数据建模师（协助用户进行 Kimball 维度建模）
    - 输入结构化说明（业务事件、指标需求、粒度、字段清单）
    - 输出步骤（星型设计 → 事实表定义 → 维度识别 → SCD 选型 → 分层映射）
    - 决策逻辑（何时使用周期快照 vs 事务事实、何时选择 SCD Type 2）
-   - 包含 2-3 个完整案例（电商订单、流量、成本维度）
+   - 两段式交互（Stage 1 建模规格书 + Stage 2 完整产物）
 
-2. 输出模板 (`prompts/scenarios/design-new-model/output-template.md`)
+3. 输出模板 (`prompts/scenarios/design-new-model/output-template.md`)
    - 星型设计可视化（Mermaid 图表）
    - 事实表规格
      - 粒度声明（何时、何物、何值）
@@ -270,7 +274,7 @@ Plans:
    - 分层落点表（表名、分层、理由）
    - dbt 源模型与 ref 依赖关系
 
-3. 案例库 (`prompts/scenarios/design-new-model/examples/`)
+4. 案例库 (`prompts/scenarios/design-new-model/examples/`)
    - 电商订单案例（复杂，多维度 + SCD Type 2）
    - 用户行为案例（中等，事件类）
    - 财务收入案例（中等，周期快照类型）
@@ -289,11 +293,12 @@ Plans:
 **依赖关系：** 依赖 Phase 1 (基础)、Phase 2 (方法论)、Phase 3 (平台约束)
 **后续赋能：** Phase 5 (评审) 可复用分层、命名、标准字段的检查逻辑
 
-**Plans:** 2 plans
+**Plans:** 3 plans
 
 Plans:
-- [ ] 04-01-PLAN.md — 主提示 prompt.md + 输出模板 output-template.md
-- [ ] 04-02-PLAN.md — 案例库（电商订单 + 用户行为 + 财务收入）
+- [ ] 04-01-PLAN.md — 创建 7 个 *-core.md 精简版上下文文件
+- [ ] 04-02-PLAN.md — 主提示 prompt.md + 输出模板 output-template.md
+- [ ] 04-03-PLAN.md — 案例库（电商订单 + 用户行为 + 财务收入）
 
 ---
 
