@@ -2,7 +2,7 @@
 
 **项目名称：** HiveMind 数仓助手（Hive + dbt 中文提示系统）
 **最后更新：** 2026-01-31
-**当前里程碑：** Phase 2 进行中
+**当前里程碑：** Phase 3 进行中
 
 ---
 
@@ -35,12 +35,12 @@
 
 ## 当前位置
 
-**Phase:** 2 of 8 (方法论库) - **Complete**
-**Plan:** 3 of 3 complete
-**Status:** Phase 2 Complete
-**Last activity:** 2026-01-31 - Phase 2 Complete (all 3 plans verified)
+**Phase:** 3 of 8 (平台约束库) - **In Progress**
+**Plan:** 2 of 2 complete (Plan 01/02 并行执行)
+**Status:** Phase 3 In Progress
+**Last activity:** 2026-01-31 - Completed 03-02-PLAN.md (dbt-hive + incremental strategies)
 
-**Progress:** █████░░░░░ 37.5% (6/16 plans)
+**Progress:** ██████░░░░ 50% (8/16 plans)
 
 **已完成：**
 - [✓] 48 个 v1 需求分析
@@ -55,9 +55,11 @@
 - [✓] **02-01: 方法论索引页 + Kimball 维度建模文档（METHOD-01）**
 - [✓] **02-02: 事实表类型指南（METHOD-02）+ SCD 策略指南（METHOD-03）**
 - [✓] **02-03: 分层体系规范（METHOD-04）**
+- [✓] **03-02: dbt-hive 限制文档（PLATFORM-02）+ 增量策略文档（PLATFORM-03）**
 
 **待执行：**
-- [ ] Phase 3-8 递进执行
+- [ ] 03-01 完成确认（与 03-02 并行执行）
+- [ ] Phase 4-8 递进执行
 
 ---
 
@@ -87,6 +89,9 @@
 | SCD2 当前记录 | effective_end = 9999-12-31 | NULL 比较复杂，固定值更易处理 | ✓ 02-02 确认 |
 | 迟到维处理 | Unknown 成员占位 (sk=-1) | 保证事实表外键完整性 | ✓ 02-02 确认 |
 | 大小维表策略 | 小表全量重建，大表拆分 | 性能与维护成本平衡 | ✓ 02-02 确认 |
+| dbt-hive 限制模板 | ID + 原因 + 后果 + 规避方案 + 示例 | 统一格式便于查阅 | ✓ 03-02 确认 |
+| lookback 分层配置 | ODS 7天/DWD-DWS 30天/ADS 90天 | 平衡迟到数据覆盖与性能 | ✓ 03-02 确认 |
+| 分区内去重 | row_number + ORDER BY updated_at DESC | 取最新版本，简单可靠 | ✓ 03-02 确认 |
 
 ---
 
@@ -96,13 +101,13 @@
 |-------|------|--------|------|--------|
 | **1** | 基础设施 | 4 | **Complete** | 100% |
 | **2** | 方法论库 | 4 | **Complete** | 100% |
-| **3** | 平台约束 | 3 | Pending | 0% |
+| **3** | 平台约束 | 3 | **In Progress** | 67% |
 | **4** | 设计场景 | 6 | Pending | 0% |
 | **5** | 评审场景 | 8 | Pending | 0% |
 | **6** | 治理场景 | 13 | Pending | 0% |
 | **7** | SQL 生成 + 血缘 | 12 | Pending | 0% |
 | **8** | 工具化 | 3 | Pending | 0% |
-| **整体** | **全系统 v1** | **48** | **In Progress** | **37.5%** |
+| **整体** | **全系统 v1** | **48** | **In Progress** | **50%** |
 
 ---
 
@@ -129,6 +134,10 @@
 | .planning/phases/02-methodology/02-03-SUMMARY.md | 1.0 | 2026-01-31 | **新增** |
 | .claude/data-warehouse/context/layers/layering-system.md | 1.0 | 2026-01-31 | 完成 |
 | .claude/data-warehouse/context/methodology/scd-strategies.md | 1.0 | 2026-01-31 | **新增** |
+| .planning/phases/03-platform-constraints/03-02-SUMMARY.md | 1.0 | 2026-01-31 | **新增** |
+| .claude/data-warehouse/context/platform/index.md | 1.0 | 2026-01-31 | **新增** |
+| .claude/data-warehouse/context/platform/dbt-hive-limitations.md | 1.0 | 2026-01-31 | **新增** |
+| .claude/data-warehouse/context/platform/incremental-strategies.md | 1.0 | 2026-01-31 | **新增** |
 
 ---
 
@@ -228,8 +237,8 @@
 
 ## 会话连续性要点
 
-**Last session:** 2026-01-31T03:02:00Z
-**Stopped at:** Completed 02-02-PLAN.md (Phase 2 Complete)
+**Last session:** 2026-01-31T07:13:26Z
+**Stopped at:** Completed 03-02-PLAN.md (dbt-hive + incremental strategies)
 **Resume file:** None
 
 **如果重启对话，这些是最关键的上下文：**
@@ -246,16 +255,19 @@
    - 02-01: 方法论索引页 + Kimball 维度建模文档（METHOD-01）✓
    - 02-02: 事实表类型指南（METHOD-02）+ SCD 策略指南（METHOD-03）✓
    - 02-03: 分层体系规范（METHOD-04）✓
-6. **下一步动作**：规划并执行 Phase 3（平台约束库）
-7. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束 + 命名规范 + Token 限制 + 星型模型优先 + 双受众文档 + 维度表落层 DWD + 回刷窗口约束 + SCD2 右开区间
+6. **Phase 3 进行中**（Plan 01/02 并行执行）：
+   - 03-01: Hive 平台约束文档（PLATFORM-01）— 与 03-02 并行
+   - 03-02: dbt-hive 限制文档 + 增量策略文档（PLATFORM-02/03）✓
+7. **下一步动作**：确认 03-01 完成，然后进入 Phase 4（设计场景）
+8. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束 + 命名规范 + Token 限制 + 星型模型优先 + 双受众文档 + 维度表落层 DWD + 回刷窗口约束 + SCD2 右开区间 + lookback 分层配置
 
 ---
 
 ## 待办事项（宏观）
 
 - [x] **Phase 1 规划与执行** — 建立基础设施（目录、术语表、命名规范、提示规范）
-- [ ] **Phase 2 方法论库编写** — Kimball 文档、事实表、维度、SCD、分层
-- [ ] **Phase 3 平台约束库编写** — Hive、dbt-hive、增量策略文档
+- [x] **Phase 2 方法论库编写** — Kimball 文档、事实表、维度、SCD、分层
+- [ ] **Phase 3 平台约束库编写** — Hive、dbt-hive、增量策略文档（03-02 完成，03-01 进行中）
 - [ ] **Phase 4 设计新模型实现** — 提示、模板、案例、评审
 - [ ] **Phase 5 评审已有模型实现** — 提示、检查清单、修复建议、评审
 - [ ] **Phase 6 治理场景实现** — 指标、DQ、基础血缘、评审
