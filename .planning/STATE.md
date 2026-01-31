@@ -1,8 +1,8 @@
 # PROJECT STATE: HiveMind 数仓助手
 
 **项目名称：** HiveMind 数仓助手（Hive + dbt 中文提示系统）
-**最后更新：** 2026-01-31
-**当前里程碑：** Phase 4 In Progress
+**最后更新：** 2026-02-01
+**当前里程碑：** Phase 5 In Progress
 
 ---
 
@@ -35,12 +35,12 @@
 
 ## 当前位置
 
-**Phase:** 4 of 8 (设计场景) - Complete
-**Plan:** 3 of 3 complete
-**Status:** Phase 4 Complete
-**Last activity:** 2026-01-31 - Completed 04-03-PLAN.md (案例库)
+**Phase:** 5 of 8 (评审场景) - In Progress
+**Plan:** 1 of 3 complete
+**Status:** Phase 5 In Progress
+**Last activity:** 2026-02-01 - Completed 05-01-PLAN.md (问题分级与检查清单)
 
-**Progress:** ███████░░░ 69% (11/16 plans)
+**Progress:** ████████░░ 75% (12/16 plans)
 
 **已完成：**
 - [✓] 48 个 v1 需求分析
@@ -60,9 +60,12 @@
 - [✓] **04-01: 7 个精简版上下文文件（*-core.md）**
 - [✓] **04-02: 场景提示 prompt.md + 输出模板（两段式交互）**
 - [✓] **04-03: 3 个案例（电商订单/用户行为/财务收入）**
+- [✓] **05-01: 问题分级（P0-P3）+ 检查清单（33 条规则）**
 
 **待执行：**
-- [ ] Phase 5-8 递进执行
+- [ ] **05-02: 主提示文件 prompt.md + 输出模板**
+- [ ] **05-03: 评审案例（2-3 个）**
+- [ ] Phase 6-8 递进执行
 
 ---
 
@@ -102,6 +105,10 @@
 | 输出交付契约 | `### File: {path}` 格式 | 便于后续工具化自动落盘 | ✓ 04-02 确认 |
 | 案例结构统一 | 输入 -> Stage 1 -> Stage 2 -> 要点 | 一致性便于参考学习 | ✓ 04-03 确认 |
 | 周期快照落层 | DWS（不是 DWD） | 汇总层非原子粒度 | ✓ 04-03 确认 |
+| P0 门禁机制 | P0>0 则不通过，与 quality_score 解耦 | 严重问题阻断上线 | ✓ 05-01 确认 |
+| 质量分计算 | P1(-10)/P2(-3)/P3(-1)，初始 100 分 | 可量化可比较 | ✓ 05-01 确认 |
+| 三态结论 | 不通过/通过/有条件通过 | 清晰决策边界 | ✓ 05-01 确认 |
+| 检查项 ID 格式 | {维度前缀}{序号}，如 N01/L01/G01 | 便于引用和追踪 | ✓ 05-01 确认 |
 
 ---
 
@@ -113,11 +120,11 @@
 | **2** | 方法论库 | 4 | **Complete** | 100% |
 | **3** | 平台约束 | 3 | **Complete** | 100% |
 | **4** | 设计场景 | 6 | **Complete** | 100% |
-| **5** | 评审场景 | 8 | Pending | 0% |
+| **5** | 评审场景 | 8 | **In Progress** | 33% |
 | **6** | 治理场景 | 13 | Pending | 0% |
 | **7** | SQL 生成 + 血缘 | 12 | Pending | 0% |
 | **8** | 工具化 | 3 | Pending | 0% |
-| **整体** | **全系统 v1** | **48** | In Progress | **69%** |
+| **整体** | **全系统 v1** | **48** | In Progress | **75%** |
 
 ---
 
@@ -129,7 +136,7 @@
 | .planning/REQUIREMENTS.md | 1.0 | 2026-01-30 | 已更新（需求映射确认） |
 | .planning/PROJECT.md | 1.0 | 2026-01-30 | 确认 |
 | .planning/research/SUMMARY.md | 1.0 | 2026-01-30 | 已消费 |
-| .planning/STATE.md | 1.2 | 2026-01-31 | 当前文档 |
+| .planning/STATE.md | 1.3 | 2026-02-01 | 当前文档 |
 | .planning/phases/01-infrastructure/01-01-SUMMARY.md | 1.0 | 2026-01-31 | 完成 |
 | .planning/phases/01-infrastructure/01-02-SUMMARY.md | 1.0 | 2026-01-31 | **新增** |
 | .claude/data-warehouse/glossary/terms.md | 1.0 | 2026-01-31 | 完成 |
@@ -166,6 +173,9 @@
 | .claude/data-warehouse/prompts/scenarios/design-new-model/examples/e-commerce-order.md | 1.0 | 2026-01-31 | **新增** |
 | .claude/data-warehouse/prompts/scenarios/design-new-model/examples/user-behavior-pv.md | 1.0 | 2026-01-31 | **新增** |
 | .claude/data-warehouse/prompts/scenarios/design-new-model/examples/finance-revenue.md | 1.0 | 2026-01-31 | **新增** |
+| .planning/phases/05-review-existing-model/05-01-SUMMARY.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/prompts/scenarios/review-existing-model/issue-classification.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/prompts/scenarios/review-existing-model/review-checklist.md | 1.0 | 2026-02-01 | **新增** |
 
 ---
 
@@ -265,8 +275,8 @@
 
 ## 会话连续性要点
 
-**Last session:** 2026-01-31T11:08:00Z
-**Stopped at:** Completed 04-03-PLAN.md (案例库) - Phase 4 Complete
+**Last session:** 2026-02-01T00:48:00Z
+**Stopped at:** Completed 05-01-PLAN.md (问题分级与检查清单)
 **Resume file:** None
 
 **如果重启对话，这些是最关键的上下文：**
@@ -290,8 +300,11 @@
    - 04-01: 7 个精简版上下文文件（*-core.md）✓
    - 04-02: 场景提示 prompt.md + 输出模板（两段式交互）✓
    - 04-03: 3 个案例（电商订单/用户行为/财务收入）✓
-8. **下一步动作**：开始 Phase 5（评审已有模型场景）
-8. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束 + 命名规范 + Token 限制 + 星型模型优先 + 双受众文档 + 维度表落层 DWD + 回刷窗口约束 + SCD2 右开区间 + lookback 分层配置
+8. **Phase 5 进行中**：
+   - 05-01: 问题分级（P0-P3）+ 检查清单（33 条规则）✓
+   - 05-02: 主提示文件 prompt.md + 输出模板（待执行）
+   - 05-03: 评审案例（待执行）
+9. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束 + 命名规范 + Token 限制 + 星型模型优先 + 双受众文档 + 维度表落层 DWD + 回刷窗口约束 + SCD2 右开区间 + lookback 分层配置 + P0 门禁机制 + 质量分计算
 
 ---
 
