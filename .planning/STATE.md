@@ -35,12 +35,12 @@
 
 ## 当前位置
 
-**Phase:** 4 of 8 (设计场景) - In Progress
-**Plan:** 2 of 3 complete
-**Status:** Phase 4 In Progress
-**Last activity:** 2026-01-31 - Completed 04-02-PLAN.md (场景提示 + 输出模板)
+**Phase:** 4 of 8 (设计场景) - Complete
+**Plan:** 3 of 3 complete
+**Status:** Phase 4 Complete
+**Last activity:** 2026-01-31 - Completed 04-03-PLAN.md (案例库)
 
-**Progress:** ██████░░░░ 63% (10/16 plans)
+**Progress:** ███████░░░ 69% (11/16 plans)
 
 **已完成：**
 - [✓] 48 个 v1 需求分析
@@ -59,9 +59,9 @@
 - [✓] **03-02: dbt-hive 限制文档（PLATFORM-02）+ 增量策略文档（PLATFORM-03）**
 - [✓] **04-01: 7 个精简版上下文文件（*-core.md）**
 - [✓] **04-02: 场景提示 prompt.md + 输出模板（两段式交互）**
+- [✓] **04-03: 3 个案例（电商订单/用户行为/财务收入）**
 
 **待执行：**
-- [ ] 04-03: 输入模板 + 案例 + 质量门禁
 - [ ] Phase 5-8 递进执行
 
 ---
@@ -100,6 +100,8 @@
 | 两段式交互 | Stage 1 规格书 + Stage 2 完整产物 | 减少返工，先确认再生成代码 | ✓ 04-02 确认 |
 | 必填最小集 | 业务事件 + 粒度，指标需求为推荐 | 少追问多推断，提高效率 | ✓ 04-02 确认 |
 | 输出交付契约 | `### File: {path}` 格式 | 便于后续工具化自动落盘 | ✓ 04-02 确认 |
+| 案例结构统一 | 输入 -> Stage 1 -> Stage 2 -> 要点 | 一致性便于参考学习 | ✓ 04-03 确认 |
+| 周期快照落层 | DWS（不是 DWD） | 汇总层非原子粒度 | ✓ 04-03 确认 |
 
 ---
 
@@ -110,12 +112,12 @@
 | **1** | 基础设施 | 4 | **Complete** | 100% |
 | **2** | 方法论库 | 4 | **Complete** | 100% |
 | **3** | 平台约束 | 3 | **Complete** | 100% |
-| **4** | 设计场景 | 6 | **In Progress** | 67% |
+| **4** | 设计场景 | 6 | **Complete** | 100% |
 | **5** | 评审场景 | 8 | Pending | 0% |
 | **6** | 治理场景 | 13 | Pending | 0% |
 | **7** | SQL 生成 + 血缘 | 12 | Pending | 0% |
 | **8** | 工具化 | 3 | Pending | 0% |
-| **整体** | **全系统 v1** | **48** | In Progress | **63%** |
+| **整体** | **全系统 v1** | **48** | In Progress | **69%** |
 
 ---
 
@@ -160,6 +162,10 @@
 | .planning/phases/04-design-new-model/04-02-SUMMARY.md | 1.0 | 2026-01-31 | **新增** |
 | .claude/data-warehouse/prompts/scenarios/design-new-model/prompt.md | 1.0 | 2026-01-31 | **新增** |
 | .claude/data-warehouse/prompts/scenarios/design-new-model/output-template.md | 1.0 | 2026-01-31 | **新增** |
+| .planning/phases/04-design-new-model/04-03-SUMMARY.md | 1.0 | 2026-01-31 | **新增** |
+| .claude/data-warehouse/prompts/scenarios/design-new-model/examples/e-commerce-order.md | 1.0 | 2026-01-31 | **新增** |
+| .claude/data-warehouse/prompts/scenarios/design-new-model/examples/user-behavior-pv.md | 1.0 | 2026-01-31 | **新增** |
+| .claude/data-warehouse/prompts/scenarios/design-new-model/examples/finance-revenue.md | 1.0 | 2026-01-31 | **新增** |
 
 ---
 
@@ -259,8 +265,8 @@
 
 ## 会话连续性要点
 
-**Last session:** 2026-01-31T11:05:59Z
-**Stopped at:** Completed 04-02-PLAN.md (场景提示 + 输出模板)
+**Last session:** 2026-01-31T11:08:00Z
+**Stopped at:** Completed 04-03-PLAN.md (案例库) - Phase 4 Complete
 **Resume file:** None
 
 **如果重启对话，这些是最关键的上下文：**
@@ -280,11 +286,11 @@
 6. **Phase 3 已完成**：
    - 03-01: 平台约束索引页 + Hive 平台约束文档（PLATFORM-01）✓
    - 03-02: dbt-hive 限制文档 + 增量策略文档（PLATFORM-02/03）✓
-7. **Phase 4 进行中**：
+7. **Phase 4 已完成**：
    - 04-01: 7 个精简版上下文文件（*-core.md）✓
    - 04-02: 场景提示 prompt.md + 输出模板（两段式交互）✓
-   - 04-03: 输入模板 + 案例 + 质量门禁（待执行）
-8. **下一步动作**：继续 Phase 4（04-03 输入模板 + 案例）
+   - 04-03: 3 个案例（电商订单/用户行为/财务收入）✓
+8. **下一步动作**：开始 Phase 5（评审已有模型场景）
 8. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束 + 命名规范 + Token 限制 + 星型模型优先 + 双受众文档 + 维度表落层 DWD + 回刷窗口约束 + SCD2 右开区间 + lookback 分层配置
 
 ---
@@ -294,7 +300,7 @@
 - [x] **Phase 1 规划与执行** — 建立基础设施（目录、术语表、命名规范、提示规范）
 - [x] **Phase 2 方法论库编写** — Kimball 文档、事实表、维度、SCD、分层
 - [x] **Phase 3 平台约束库编写** — Hive、dbt-hive、增量策略文档
-- [ ] **Phase 4 设计新模型实现** — 提示、模板、案例、评审
+- [x] **Phase 4 设计新模型实现** — 提示、模板、案例、评审
 - [ ] **Phase 5 评审已有模型实现** — 提示、检查清单、修复建议、评审
 - [ ] **Phase 6 治理场景实现** — 指标、DQ、基础血缘、评审
 - [ ] **Phase 7 SQL 生成 + 血缘增强** — SQL 生成、血缘追踪、影响评估、评审
