@@ -371,9 +371,11 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 05-01-PLAN.md — 问题分级文档 + 检查清单文档
-- [ ] 05-02-PLAN.md — 主提示 prompt.md + 输出模板 + 修复建议模板
-- [ ] 05-03-PLAN.md — 案例库（高质量模型 + 命名问题 + 多问题严重缺陷）
+- [x] 05-01-PLAN.md — 问题分级文档 + 检查清单文档 ✓
+- [x] 05-02-PLAN.md — 主提示 prompt.md + 输出模板 + 修复建议模板 ✓
+- [x] 05-03-PLAN.md — 案例库（高质量模型 + 命名问题 + 多问题严重缺陷）✓
+
+**Phase Status:** Complete (2026-02-01)
 
 ---
 
@@ -944,11 +946,11 @@ npm run gsd -- /gsd:assemble-prompt \
 | 2 | 方法论库 | 4 | ✓ Complete | 100% |
 | 3 | 平台约束 | 3 | ✓ Complete | 100% |
 | 4 | 设计场景 | 6 | ✓ Complete | 100% |
-| 5 | 评审场景 | 8 | In Progress | 0% |
+| 5 | 评审场景 | 8 | ✓ Complete | 100% |
 | 6 | 治理场景 | 13 | Pending | 0% |
 | 7 | SQL 生成 | 12 | Pending | 0% |
 | 8 | 工具化 | 3 | Pending | 0% |
-| **总计** | **全系统** | **48** | **In Progress** | **50%** |
+| **总计** | **全系统** | **48** | **In Progress** | **63%** |
 
 ---
 
