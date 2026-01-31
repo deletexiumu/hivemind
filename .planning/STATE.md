@@ -2,7 +2,7 @@
 
 **项目名称：** HiveMind 数仓助手（Hive + dbt 中文提示系统）
 **最后更新：** 2026-02-01
-**当前里程碑：** Phase 5 In Progress
+**当前里程碑：** Phase 5 Complete
 
 ---
 
@@ -35,12 +35,12 @@
 
 ## 当前位置
 
-**Phase:** 5 of 8 (评审场景) - In Progress
-**Plan:** 2 of 3 complete
-**Status:** Phase 5 In Progress
-**Last activity:** 2026-02-01 - Completed 05-02-PLAN.md (主提示与输出模板)
+**Phase:** 5 of 8 (评审场景) - Complete
+**Plan:** 3 of 3 complete
+**Status:** Phase 5 Complete
+**Last activity:** 2026-02-01 - Completed 05-03-PLAN.md (评审案例库)
 
-**Progress:** █████████░ 81% (13/16 plans)
+**Progress:** █████████░ 88% (14/16 plans)
 
 **已完成：**
 - [✓] 48 个 v1 需求分析
@@ -62,9 +62,9 @@
 - [✓] **04-03: 3 个案例（电商订单/用户行为/财务收入）**
 - [✓] **05-01: 问题分级（P0-P3）+ 检查清单（33 条规则）**
 - [✓] **05-02: 主提示文件 prompt.md + 输出模板 + 修复建议模板**
+- [✓] **05-03: 3 个评审案例（good-model/naming-issues/multiple-issues）**
 
 **待执行：**
-- [ ] **05-03: 评审案例（2-3 个）**
 - [ ] Phase 6-8 递进执行
 
 ---
@@ -112,6 +112,8 @@
 | 评审两段式交互 | Stage 1 问题概览 + Stage 2 详细修复 | 减少返工，聚焦关键问题 | ✓ 05-02 确认 |
 | 智能范围评审 | 根据输入内容确定可评审维度 | 信息不足时仍可部分评审 | ✓ 05-02 确认 |
 | 修复建议分档 | S/M/L/XL 四档详细度规则 | 确保输出一致性和可操作性 | ✓ 05-02 确认 |
+| 案例质量等级覆盖 | 高/中/低三级（通过/有条件通过/不通过） | 覆盖完整评审结论范围 | ✓ 05-03 确认 |
+| 案例规则 ID 引用 | 每个问题关联 review-checklist.md 规则 ID | 确保案例与检查清单一致性 | ✓ 05-03 确认 |
 
 ---
 
@@ -123,11 +125,11 @@
 | **2** | 方法论库 | 4 | **Complete** | 100% |
 | **3** | 平台约束 | 3 | **Complete** | 100% |
 | **4** | 设计场景 | 6 | **Complete** | 100% |
-| **5** | 评审场景 | 8 | **In Progress** | 67% |
+| **5** | 评审场景 | 8 | **Complete** | 100% |
 | **6** | 治理场景 | 13 | Pending | 0% |
 | **7** | SQL 生成 + 血缘 | 12 | Pending | 0% |
 | **8** | 工具化 | 3 | Pending | 0% |
-| **整体** | **全系统 v1** | **48** | In Progress | **75%** |
+| **整体** | **全系统 v1** | **48** | In Progress | **79%** |
 
 ---
 
@@ -183,6 +185,10 @@
 | .claude/data-warehouse/prompts/scenarios/review-existing-model/prompt.md | 1.0 | 2026-02-01 | **新增** |
 | .claude/data-warehouse/prompts/scenarios/review-existing-model/output-template.md | 1.0 | 2026-02-01 | **新增** |
 | .claude/data-warehouse/prompts/scenarios/review-existing-model/fix-suggestions.md | 1.0 | 2026-02-01 | **新增** |
+| .planning/phases/05-review-existing-model/05-03-SUMMARY.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/prompts/scenarios/review-existing-model/examples/good-model.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/prompts/scenarios/review-existing-model/examples/naming-issues.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/prompts/scenarios/review-existing-model/examples/multiple-issues.md | 1.0 | 2026-02-01 | **新增** |
 
 ---
 
@@ -282,8 +288,8 @@
 
 ## 会话连续性要点
 
-**Last session:** 2026-02-01T16:50:00Z
-**Stopped at:** Completed 05-02-PLAN.md (主提示与输出模板)
+**Last session:** 2026-02-01T00:50:00Z
+**Stopped at:** Completed 05-03-PLAN.md (评审案例库) - Phase 5 Complete
 **Resume file:** None
 
 **如果重启对话，这些是最关键的上下文：**
@@ -307,10 +313,10 @@
    - 04-01: 7 个精简版上下文文件（*-core.md）✓
    - 04-02: 场景提示 prompt.md + 输出模板（两段式交互）✓
    - 04-03: 3 个案例（电商订单/用户行为/财务收入）✓
-8. **Phase 5 进行中**：
+8. **Phase 5 已完成**：
    - 05-01: 问题分级（P0-P3）+ 检查清单（33 条规则）✓
    - 05-02: 主提示文件 prompt.md + 输出模板 + 修复建议模板 ✓
-   - 05-03: 评审案例（待执行）
+   - 05-03: 3 个评审案例（good-model/naming-issues/multiple-issues）✓
 9. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束 + 命名规范 + Token 限制 + 星型模型优先 + 双受众文档 + 维度表落层 DWD + 回刷窗口约束 + SCD2 右开区间 + lookback 分层配置 + P0 门禁机制 + 质量分计算
 
 ---
@@ -321,7 +327,7 @@
 - [x] **Phase 2 方法论库编写** — Kimball 文档、事实表、维度、SCD、分层
 - [x] **Phase 3 平台约束库编写** — Hive、dbt-hive、增量策略文档
 - [x] **Phase 4 设计新模型实现** — 提示、模板、案例、评审
-- [ ] **Phase 5 评审已有模型实现** — 提示、检查清单、修复建议、评审
+- [x] **Phase 5 评审已有模型实现** — 提示、检查清单、修复建议、案例
 - [ ] **Phase 6 治理场景实现** — 指标、DQ、基础血缘、评审
 - [ ] **Phase 7 SQL 生成 + 血缘增强** — SQL 生成、血缘追踪、影响评估、评审
 - [ ] **Phase 8 工具化** — CLI 工具、规格校验、集成框架、完整文档
