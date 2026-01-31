@@ -2,7 +2,7 @@
 
 **项目名称：** HiveMind 数仓助手（Hive + dbt 中文提示系统）
 **最后更新：** 2026-01-31
-**当前里程碑：** Phase 1 完成
+**当前里程碑：** Phase 2 进行中
 
 ---
 
@@ -35,12 +35,12 @@
 
 ## 当前位置
 
-**Phase:** 1 of 8 (基础设施) - **COMPLETE**
-**Plan:** 2 of 2 complete
-**Status:** Phase 1 Complete
-**Last activity:** 2026-01-31 - Completed 01-02-PLAN.md
+**Phase:** 2 of 8 (方法论库) - **In Progress**
+**Plan:** 1 of 3 complete
+**Status:** Phase 2 In Progress
+**Last activity:** 2026-01-31 - Completed 02-01-PLAN.md
 
-**Progress:** ██░░░░░░░░ 12.5% (2/16 plans)
+**Progress:** ███░░░░░░░ 18.75% (3/16 plans)
 
 **已完成：**
 - [✓] 48 个 v1 需求分析
@@ -52,9 +52,10 @@
 - [✓] 预计交付周期（20-24 周）
 - [✓] **01-01: 目录结构 + 术语表（89 条）**
 - [✓] **01-02: 命名规范 + 提示规范 + Token 预算**
+- [✓] **02-01: 方法论索引页 + Kimball 维度建模文档（METHOD-01）**
 
 **待执行：**
-- [ ] Phase 2: 方法论库（Kimball、事实表、维度、SCD、分层）
+- [ ] Phase 2 剩余：事实表类型（METHOD-02）、SCD 策略（METHOD-03）、分层体系（METHOD-04）
 - [ ] Phase 3-8 递进执行
 
 ---
@@ -76,6 +77,8 @@
 | 字段命名 | snake_case + 类型后缀（_id/_amt/_cnt/_date） | 类型一目了然 | ✓ 01-02 确认 |
 | Token 估算 | 保守 1:1（1 token ≈ 1 中文字符） | 避免运行时超限 | ✓ 01-02 确认 |
 | 文件命名 | kebab-case（文档）vs snake_case（模型） | 解耦文件与数仓对象 | ✓ 01-02 确认 |
+| 星型模型优先 | Hive 场景星型 > 雪花 | 分布式 JOIN 成本高，减少连接 | ✓ 02-01 确认 |
+| 文档双受众 | [Analyst]/[Engineer] 同页双轨 | 避免概念与实现漂移 | ✓ 02-01 确认 |
 
 ---
 
@@ -84,14 +87,14 @@
 | Phase | 目标 | 需求数 | 状态 | 完成% |
 |-------|------|--------|------|--------|
 | **1** | 基础设施 | 4 | **Complete** | 100% |
-| **2** | 方法论库 | 4 | Pending | 0% |
+| **2** | 方法论库 | 4 | **In Progress** | 33% |
 | **3** | 平台约束 | 3 | Pending | 0% |
 | **4** | 设计场景 | 6 | Pending | 0% |
 | **5** | 评审场景 | 8 | Pending | 0% |
 | **6** | 治理场景 | 13 | Pending | 0% |
 | **7** | SQL 生成 + 血缘 | 12 | Pending | 0% |
 | **8** | 工具化 | 3 | Pending | 0% |
-| **整体** | **全系统 v1** | **48** | **In Progress** | **12.5%** |
+| **整体** | **全系统 v1** | **48** | **In Progress** | **18.75%** |
 
 ---
 
@@ -110,6 +113,9 @@
 | .claude/data-warehouse/docs/naming.md | 1.0 | 2026-01-31 | **新增** |
 | .claude/data-warehouse/docs/prompting.md | 1.0 | 2026-01-31 | **新增** |
 | .claude/data-warehouse/docs/token-budget.md | 1.0 | 2026-01-31 | **新增** |
+| .planning/phases/02-methodology/02-01-SUMMARY.md | 1.0 | 2026-01-31 | **新增** |
+| .claude/data-warehouse/context/methodology/index.md | 1.0 | 2026-01-31 | **新增** |
+| .claude/data-warehouse/context/methodology/dimensional-modeling.md | 1.0 | 2026-01-31 | **新增** |
 
 ---
 
@@ -209,9 +215,9 @@
 
 ## 会话连续性要点
 
-**Last session:** 2026-01-31T01:18:19Z
-**Stopped at:** Completed 01-02-PLAN.md (Phase 1 Complete)
-**Resume file:** None (Phase 2 planning needed)
+**Last session:** 2026-01-31T11:03:00Z
+**Stopped at:** Completed 02-01-PLAN.md (Phase 2 Plan 01 Complete)
+**Resume file:** None
 
 **如果重启对话，这些是最关键的上下文：**
 
@@ -223,8 +229,11 @@
 4. **Phase 1 已完成**：
    - 01-01: 目录结构 + 89 条术语表
    - 01-02: 命名规范 + 提示规范 + Token 预算
-5. **下一步动作**：规划并执行 Phase 2（方法论库）
-6. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束 + 命名规范 + Token 限制
+5. **Phase 2 进行中**：
+   - 02-01: 方法论索引页 + Kimball 维度建模文档（METHOD-01）✓
+   - 02-02/03: 事实表、SCD、分层文档待执行
+6. **下一步动作**：执行 Phase 2 剩余计划（02-02、02-03）
+7. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束 + 命名规范 + Token 限制 + 星型模型优先 + 双受众文档
 
 ---
 
