@@ -1,6 +1,7 @@
 # Phase 02: 方法论库 (Methodology Library) - Research
 
 **Researched:** 2026-01-31
+**Updated:** 2026-01-31 (Codex 讨论补充)
 **Domain:** Kimball 维度建模方法论文档、技术文档写作、Mermaid 图表
 **Confidence:** HIGH
 
@@ -8,9 +9,11 @@
 
 本阶段研究了如何构建高质量的 Kimball 维度建模方法论文档库。研究覆盖四个核心领域：文档结构与写作模式、Kimball 方法论核心概念、Mermaid 决策树图表语法、以及反模式/误区的呈现方式。
 
-研究发现，Kimball 维度建模的官方技术文档（Kimball Group 网站和《数据仓库工具箱》第三版）提供了权威的概念定义和方法论框架。文档写作方面，采用"TL;DR + 原理 + 实操 + 检查清单"的四段式结构是技术手册的最佳实践。Mermaid 的 flowchart 图表类型完全支持决策树场景，使用菱形节点（`{}`）表示决策点。反模式部分建议采用"错误示例 + 正确示例 + 原因"的三段式对比格式。
+研究发现，Kimball 维度建模的官方技术文档（Kimball Group 网站和《数据仓库工具箱》第三版）提供了权威的概念定义和方法论框架。文档写作方面，采用"适用范围 + TL;DR + 原理 + 实操 + 检查清单"的七段式结构是技术手册的最佳实践。Mermaid 的 flowchart 图表类型完全支持决策树场景，使用菱形节点（`{}`）表示决策点。反模式部分建议采用"错误示例 + 正确示例 + 原因"的三段式对比格式。
 
-**Primary recommendation:** 采用"TL;DR 摘要 + 核心概念 + 选型决策树(Mermaid) + 实操指南 + 误区/反模式 + 检查清单"的六段式文档结构，每篇 1500-2500 字，通过 term_id 链接到 glossary/terms.md 实现术语一致性。
+**双受众设计：** 文档同时服务数仓开发/数据工程（写 dbt 模型）和数据分析/用数人员（理解口径与模型），采用同页双轨标识 `[Analyst]/[Engineer]` 穿插呈现，避免拆分文档导致概念与实现漂移。
+
+**Primary recommendation:** 采用"适用范围&前置假设 + 读者导航(双轨) + TL;DR + 核心概念 + 选型决策树(Mermaid) + 实操指南 + 误区/反模式 + 检查清单"的七段式文档结构，每篇 1500-2500 字，通过 term_id 链接到 glossary/terms.md 实现术语一致性。
 
 ## Standard Stack
 
@@ -56,15 +59,16 @@ methodology/
 └── layering-system.md            # METHOD-04: 分层体系规范
 ```
 
-### Pattern 1: 六段式文档结构
+### Pattern 1: 七段式文档结构（双受众）
 
-**What:** 每篇方法论文档的标准章节组织
+**What:** 每篇方法论文档的标准章节组织，支持开发与分析双受众
 **When to use:** 所有 METHOD-* 文档
 **Structure:**
 
 ```markdown
 ---
 type: methodology
+method_id: METHOD-XX
 title: <文档标题>
 version: 1.0.0
 updated_at: 2026-01-31
@@ -72,11 +76,26 @@ updated_at: 2026-01-31
 
 # <标题>
 
+## 适用范围 & 前置假设
+
+- T+1 离线数仓场景
+- Hive 非 ACID 模式
+- dbt-hive 不支持 snapshots/ephemeral
+- 增量以分区回刷为主
+
+## 读者导航（双轨）
+
+- **[Analyst]** 你会得到：口径定义、查询模式、解读指南
+- **[Engineer]** 你会得到：字段合同、建表/增量骨架、质量门禁（dbt tests）
+
 ## TL;DR
 
 > 一段话总结核心要点，不超过 3 句话。
 
 ## 核心概念
+
+> **[Analyst]** 概念的"口径合同"：业务含义、如何解释数据
+> **[Engineer]** 概念的"数据合同"：技术实现、字段规范、约束条件
 
 ### 概念 A
 <定义 + 为什么重要 + 1-2 个案例>
@@ -95,6 +114,9 @@ flowchart TD
 ## 实操指南
 
 ### 场景 1: <具体场景名>
+> **[Engineer]** 表设计与增量逻辑
+> **[Analyst]** 查询模式与使用方式
+
 <步骤 + SQL 骨架示例>
 
 ## 误区与反模式
@@ -105,9 +127,8 @@ flowchart TD
 
 ## 检查清单
 
-- [ ] 检查项 1
-- [ ] 检查项 2
-- [ ] 检查项 3
+- [ ] **[Engineer]** 工程侧检查项
+- [ ] **[Analyst]** 分析侧检查项
 
 ---
 
@@ -115,7 +136,7 @@ flowchart TD
 **版本:** 1.0.0 | **更新日期:** 2026-01-31
 ```
 
-Source: 技术文档写作最佳实践 + CONTEXT.md 用户决策
+Source: 技术文档写作最佳实践 + CONTEXT.md 用户决策 + Codex 讨论（双受众方案）
 
 ### Pattern 2: Mermaid 决策树语法
 
@@ -458,6 +479,65 @@ Source: [Kimball Dimensional Modeling Techniques](https://www.kimballgroup.com/d
 **What's unclear:** 索引页是简单链接列表还是包含摘要
 **Recommendation:** 采用"链接 + 一句话描述"格式，便于快速定位
 
+## Codex 讨论补充（2026-01-31）
+
+### 各 METHOD 文档核心内容分配
+
+| 文档 | 聚焦领域 | 核心内容 |
+|------|---------|---------|
+| **METHOD-01** | 模式与一致性 | Kimball 四步法、Grain 合同、星型/雪花、Conformed Dimension、Bus Matrix（订单/履约/会员贯穿）、维度模式（退化/Junk/Role-playing/Factless/Bridge M2M） |
+| **METHOD-02** | 事实与口径 | 事务/周期快照/累积快照判别与案例、Additive/半可加/不可加与正确聚合、分析侧"标准查询模式"、工程侧"增量回刷窗口与迟到事实处理" |
+| **METHOD-03** | 历史与回溯 | Type 1/2/3 选型、SCD2 字段合同（区间右开、current 唯一、区间不重叠）、乱序/同刻多变更的 tie-breaker、实现路径（全量重建 vs current/history 拆分）、迟到维与 Unknown 成员 |
+| **METHOD-04** | 落层与治理边界 | ODS/DWD/DWS/ADS 定义与跨层规则、口径与模型的落层边界、回刷/重算窗口在跨层的约束 |
+
+### 遗漏概念补充
+
+原研究遗漏的 Kimball 核心概念，需补充到对应文档：
+
+| 概念 | 放置位置 | 理由 |
+|------|---------|------|
+| Conformed Dimension（一致性维度） | METHOD-01 | 企业级一致性与可组合数据集市的地基 |
+| Bus Matrix（总线矩阵） | METHOD-01 | 用"订单/履约/会员"案例贯穿，连接事实表与分层 |
+| Additive/Semi-additive/Non-additive | METHOD-02 | 事实表类型必须绑定可加性与正确聚合方式 |
+| Late-arriving Dimensions（迟到维度） | METHOD-03 | 影响 SCD2 区间、Unknown 成员、回刷窗口 |
+| Late-arriving Facts（迟到事实） | METHOD-02 | 影响快照回刷与补数策略 |
+| Junk/Degenerate/Role-playing/Factless/Bridge | METHOD-01 | 复杂模型的分水岭，概念与模式库 |
+
+### SCD2 实现补充要求
+
+原研究的 SCD2 方案需补充以下约束：
+
+1. **区间语义**：采用 `[effective_start, effective_end)` 右开区间
+2. **Current 唯一约束**：每个自然键最多一条 `is_current=1`
+3. **区间不重叠**：任意日期 as-of 只能命中一行
+4. **Tie-breaker 规则**：处理同一自然键同一时刻多次变更/乱序到达
+   - 可用 `updated_at`、`loaded_at` 或属性 hash 作为裁决依据
+5. **可验证实现合同（dbt tests）**：
+   - `is_current=1` 唯一性测试
+   - 区间不重叠测试
+   - `effective_start < effective_end` 测试
+   - 自然键 + effective_start 唯一性测试
+
+### Hive/dbt-hive 实现路径
+
+在 Hive 非 ACID + dbt-hive 无 Snapshots 限制下，推荐两条主路径：
+
+```mermaid
+flowchart TD
+    A{维度表规模?} -->|小维表| FULL[全量重建<br/>最稳定，成本可控时优先]
+    A -->|大维表| SPLIT[Current/History 拆分]
+
+    SPLIT --> SPLIT_DETAIL["dim_x_current: 每自然键 1 行，每天回刷<br/>dim_x_hist: 只追加新版本<br/>dim_x: 对外 UNION VIEW"]
+```
+
+### 文档交付三件套
+
+方法论文档的价值不止"定义"，每篇文档应交付：
+
+1. **口径合同**：业务含义、粒度定义、时间口径、去重口径
+2. **可用查询模式**：当前视图、as-of 回溯视图、变更审计视图
+3. **可验证实现合同**：可落成 dbt tests 的检查项
+
 ## Sources
 
 ### Primary (HIGH confidence)
@@ -479,10 +559,18 @@ Source: [Kimball Dimensional Modeling Techniques](https://www.kimballgroup.com/d
 
 **Confidence breakdown:**
 - Standard Stack: HIGH - 基于 Mermaid 官方文档和 Markdown 标准
-- Architecture Patterns: HIGH - 基于 CONTEXT.md 用户决策 + 技术写作最佳实践
+- Architecture Patterns: HIGH - 基于 CONTEXT.md 用户决策 + 技术写作最佳实践 + Codex 讨论
 - Kimball Concepts: HIGH - 基于 Kimball Group 官方资料
 - Pitfalls: MEDIUM - 基于社区经验和最佳实践文档
 - Code Examples: HIGH - 基于官方语法和用户决策的 SCD 字段组合
+- 双受众方案: HIGH - 基于 Codex 讨论，选定同页双轨标识方案
+- METHOD 内容分配: HIGH - 基于 Codex 讨论，明确各文档聚焦领域
 
 **Research date:** 2026-01-31
+**Codex 讨论日期:** 2026-01-31
 **Valid until:** 2026-03-31（60 天，文档写作规范相对稳定）
+
+**Codex 讨论记录:**
+- Thread ID: 019c11d3-06ed-7ef1-9b8a-2af83cd6bac7
+- 讨论主题: 双受众文档结构、遗漏概念补充、SCD2 实现约束、METHOD 内容分配
+- 关键决策: 采用同页双轨标识 `[Analyst]/[Engineer]`，Bus Matrix 用订单/履约/会员案例贯穿
