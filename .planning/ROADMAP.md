@@ -153,6 +153,13 @@ Plans:
 **依赖关系：** 依赖 Phase 1（术语表）
 **后续赋能：** Phase 4 (设计) 和 Phase 5 (评审) 的理论基础
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — 方法论索引页 + Kimball 维度建模核心概念 (METHOD-01)
+- [ ] 02-02-PLAN.md — 事实表类型指南 (METHOD-02) + SCD 策略指南 (METHOD-03)
+- [ ] 02-03-PLAN.md — 分层体系规范 (METHOD-04)
+
 ---
 
 ### Phase 3: 平台约束库
