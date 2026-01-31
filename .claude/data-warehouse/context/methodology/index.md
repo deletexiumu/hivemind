@@ -21,7 +21,7 @@ updated_at: 2026-01-31
 | [dimensional-modeling.md](./dimensional-modeling.md) | METHOD-01 | 模式与一致性 | Kimball 四步法、星型/雪花、一致性维度、Bus Matrix、特殊维度模式 | stable |
 | [fact-table-types.md](./fact-table-types.md) | METHOD-02 | 事实与口径 | 事务/周期快照/累积快照、可加性、查询模式 | planned |
 | [scd-strategies.md](./scd-strategies.md) | METHOD-03 | 历史与回溯 | SCD Type 1/2/3 选型、dbt-hive 实现（无 Snapshots） | planned |
-| [layering-system.md](../layers/layering-system.md) | METHOD-04 | 落层与治理边界 | ODS/DWD/DWS/ADS 定义、跨层规则 | planned |
+| [layering-system.md](../layers/layering-system.md) | METHOD-04 | 落层与治理边界 | ODS/DWD/DWS/ADS 定义、跨层规则 | stable |
 
 > **注意**: 以上四个文档由 Phase 02 的计划分别创建。当前索引页创建时，仅 `dimensional-modeling.md` 可用。
 
