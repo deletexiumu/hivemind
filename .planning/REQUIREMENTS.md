@@ -12,18 +12,18 @@
 - [x] **INFRA-03**: 编写命名规范文档 `docs/naming.md`，定义表/字段/指标命名规则
 - [x] **INFRA-04**: 建立提示 token 限制规范（单文件 <2000 tokens）
 
-### 方法论库 (METHOD)
+### 方法论库 (METHOD) — Complete ✓
 
-- [ ] **METHOD-01**: 编写 Kimball 维度建模概念文档（事实表、维度表、星型/雪花模型）
-- [ ] **METHOD-02**: 编写事实表类型指南（事务事实、周期快照、累积快照）
-- [ ] **METHOD-03**: 编写 SCD 策略指南（Type 1/2/3 选型与实现，无 Snapshots 方案）
-- [ ] **METHOD-04**: 编写分层体系规范（ODS/DWD/DWS/ADS 定义与跨层规则）
+- [x] **METHOD-01**: 编写 Kimball 维度建模概念文档（事实表、维度表、星型/雪花模型）
+- [x] **METHOD-02**: 编写事实表类型指南（事务事实、周期快照、累积快照）
+- [x] **METHOD-03**: 编写 SCD 策略指南（Type 1/2/3 选型与实现，无 Snapshots 方案）
+- [x] **METHOD-04**: 编写分层体系规范（ODS/DWD/DWS/ADS 定义与跨层规则）
 
-### 平台约束库 (PLATFORM)
+### 平台约束库 (PLATFORM) — Complete ✓
 
-- [ ] **PLATFORM-01**: 编写 Hive 平台约束文档（分区策略、存储格式、性能优化）
-- [ ] **PLATFORM-02**: 编写 dbt-hive 能力边界文档（不支持 Snapshots/Ephemeral、分区列限制）
-- [ ] **PLATFORM-03**: 编写增量策略文档（insert_overwrite、T+1 回刷模式）
+- [x] **PLATFORM-01**: 编写 Hive 平台约束文档（分区策略、存储格式、性能优化）
+- [x] **PLATFORM-02**: 编写 dbt-hive 能力边界文档（不支持 Snapshots/Ephemeral、分区列限制）
+- [x] **PLATFORM-03**: 编写增量策略文档（insert_overwrite、T+1 回刷模式）
 
 ### 场景1: 评审已有模型 (REVIEW)
 
@@ -141,17 +141,17 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INFRA-01 | Phase 1 | Pending |
-| INFRA-02 | Phase 1 | Pending |
-| INFRA-03 | Phase 1 | Pending |
-| INFRA-04 | Phase 1 | Pending |
-| METHOD-01 | Phase 2 | Pending |
-| METHOD-02 | Phase 2 | Pending |
-| METHOD-03 | Phase 2 | Pending |
-| METHOD-04 | Phase 2 | Pending |
-| PLATFORM-01 | Phase 3 | Pending |
-| PLATFORM-02 | Phase 3 | Pending |
-| PLATFORM-03 | Phase 3 | Pending |
+| INFRA-01 | Phase 1 | Complete |
+| INFRA-02 | Phase 1 | Complete |
+| INFRA-03 | Phase 1 | Complete |
+| INFRA-04 | Phase 1 | Complete |
+| METHOD-01 | Phase 2 | Complete |
+| METHOD-02 | Phase 2 | Complete |
+| METHOD-03 | Phase 2 | Complete |
+| METHOD-04 | Phase 2 | Complete |
+| PLATFORM-01 | Phase 3 | Complete |
+| PLATFORM-02 | Phase 3 | Complete |
+| PLATFORM-03 | Phase 3 | Complete |
 | DESIGN-01 | Phase 4 | Pending |
 | DESIGN-02 | Phase 4 | Pending |
 | DESIGN-03 | Phase 4 | Pending |
@@ -203,4 +203,4 @@
 ---
 
 *Requirements defined: 2026-01-30*
-*Last updated: 2026-01-30 after roadmap synthesis*
+*Last updated: 2026-01-31 after Phase 3 completion*

@@ -55,10 +55,10 @@
 - [✓] **02-01: 方法论索引页 + Kimball 维度建模文档（METHOD-01）**
 - [✓] **02-02: 事实表类型指南（METHOD-02）+ SCD 策略指南（METHOD-03）**
 - [✓] **02-03: 分层体系规范（METHOD-04）**
+- [✓] **03-01: 平台约束索引页 + Hive 约束文档（PLATFORM-01）**
 - [✓] **03-02: dbt-hive 限制文档（PLATFORM-02）+ 增量策略文档（PLATFORM-03）**
 
 **待执行：**
-- [✓] **03-01: 平台约束索引页 + Hive 约束文档（PLATFORM-01）**
 - [ ] Phase 4-8 递进执行
 
 ---
@@ -101,7 +101,7 @@
 |-------|------|--------|------|--------|
 | **1** | 基础设施 | 4 | **Complete** | 100% |
 | **2** | 方法论库 | 4 | **Complete** | 100% |
-| **3** | 平台约束 | 3 | Complete | 67% |
+| **3** | 平台约束 | 3 | **Complete** | 100% |
 | **4** | 设计场景 | 6 | Pending | 0% |
 | **5** | 评审场景 | 8 | Pending | 0% |
 | **6** | 治理场景 | 13 | Pending | 0% |
@@ -138,6 +138,9 @@
 | .claude/data-warehouse/context/platform/index.md | 1.0 | 2026-01-31 | **新增** |
 | .claude/data-warehouse/context/platform/dbt-hive-limitations.md | 1.0 | 2026-01-31 | **新增** |
 | .claude/data-warehouse/context/platform/incremental-strategies.md | 1.0 | 2026-01-31 | **新增** |
+| .planning/phases/03-platform-constraints/03-01-SUMMARY.md | 1.0 | 2026-01-31 | **新增** |
+| .claude/data-warehouse/context/platform/hive-constraints.md | 1.0 | 2026-01-31 | **新增** |
+| .planning/phases/03-platform-constraints/03-VERIFICATION.md | 1.0 | 2026-01-31 | **新增** |
 
 ---
 
@@ -256,9 +259,9 @@
    - 02-02: 事实表类型指南（METHOD-02）+ SCD 策略指南（METHOD-03）✓
    - 02-03: 分层体系规范（METHOD-04）✓
 6. **Phase 3 已完成**：
-   - 03-01: Hive 平台约束文档（PLATFORM-01）— 与 03-02 并行
+   - 03-01: 平台约束索引页 + Hive 平台约束文档（PLATFORM-01）✓
    - 03-02: dbt-hive 限制文档 + 增量策略文档（PLATFORM-02/03）✓
-7. **下一步动作**：确认 03-01 完成，然后进入 Phase 4（设计场景）
+7. **下一步动作**：进入 Phase 4（设计场景）
 8. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束 + 命名规范 + Token 限制 + 星型模型优先 + 双受众文档 + 维度表落层 DWD + 回刷窗口约束 + SCD2 右开区间 + lookback 分层配置
 
 ---

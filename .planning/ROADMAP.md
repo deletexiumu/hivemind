@@ -224,8 +224,10 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — 平台约束索引 + Hive 平台约束 (PLATFORM-01)
-- [ ] 03-02-PLAN.md — dbt-hive 能力边界 (PLATFORM-02) + 增量策略 (PLATFORM-03)
+- [x] 03-01-PLAN.md — 平台约束索引 + Hive 平台约束 (PLATFORM-01) ✓
+- [x] 03-02-PLAN.md — dbt-hive 能力边界 (PLATFORM-02) + 增量策略 (PLATFORM-03) ✓
+
+**Phase Status:** Complete (2026-01-31)
 
 ---
 
@@ -979,13 +981,13 @@ npm run gsd -- /gsd:assemble-prompt \
 |-------|------|--------|------|--------|
 | 1 | 基础设施 | 4 | ✓ Complete | 100% |
 | 2 | 方法论库 | 4 | ✓ Complete | 100% |
-| 3 | 平台约束 | 3 | Planned | 0% |
+| 3 | 平台约束 | 3 | ✓ Complete | 100% |
 | 4 | 设计场景 | 6 | Pending | 0% |
 | 5 | 评审场景 | 8 | Pending | 0% |
 | 6 | 治理场景 | 13 | Pending | 0% |
 | 7 | SQL 生成 | 12 | Pending | 0% |
 | 8 | 工具化 | 3 | Pending | 0% |
-| **总计** | **全系统** | **48** | **In Progress** | **25%** |
+| **总计** | **全系统** | **48** | **In Progress** | **37.5%** |
 
 ---
 
