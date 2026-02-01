@@ -720,215 +720,34 @@ Plans:
 
 **关键交付物：**
 
-**1. 提示包组装框架 (`TOOLS-01`)**
+**1. 配置文件与 Schema（Wave 1）**
+- `config/scenarios.yaml` — 6 场景配置映射
+- `config/platforms.yaml` — 平台上下文配置
+- `config/assembly-rules.yaml` — 组装规则（token 预算、优先级）
+- `schemas/input/*.schema.json` — 6 场景输入校验 Schema
+- `schemas/output/*.schema.json` — 6 场景输出校验 Schema
 
-- `tools/prompt-assembler.js` (Node.js CLI)
-  ```bash
-  # 使用示例
-  node prompt-assembler.js \
-    --scenario design-new-model \
-    --role modeler \
-    --platform hive \
-    --context-level full \
-    --output-format markdown
+**2. 输入模板（Wave 1）**
+- 6 个 `input-template.md` 文件（每场景一个）
 
-  # 输出：
-  # 1. 系统提示（角色定义、约束）
-  # 2. 方法论 context（Phase 2 的相关文档）
-  # 3. 平台约束 context（Phase 3 的相关文档）
-  # 4. 场景主提示（Phase 4-7 的提示）
-  # 5. 输出模板
-  ```
+**3. 辅助脚本（Wave 2）**
+- `scripts/assemble.js` — 提示组装逻辑
+- `scripts/validate.js` — 规格校验逻辑
+- `scripts/scaffold.js` — 脚手架生成
+- `package.json` — 依赖声明
 
-- 组装逻辑
-  - 根据场景选择主提示（`prompts/scenarios/{scenario}/prompt.md`）
-  - 根据角色选择系统角色定义（`prompts/system/{role}.md`）
-  - 根据平台注入约束 context（`context/platform/{platform}/...`)
-  - 根据 context-level 调整方法论库深度（minimal/standard/full）
-  - 组合输出为单个 Markdown 文档（token 数 < 4000，确保 Claude 上下文容纳）
+**4. Claude Code 命令（Wave 2）**
+- 9 个命令文件：`/dw:design`, `/dw:review`, `/dw:generate-sql`, `/dw:define-metric`, `/dw:generate-dq`, `/dw:analyze-lineage`, `/dw:assemble`, `/dw:validate`, `/dw:new-scenario`
 
-- 组装配置文件 (`tools/assembler-config.yaml`)
-  ```yaml
-  scenarios:
-    design-new-model:
-      role: [modeler, architect]
-      requires_context: [methodology, platform]
-      max_tokens: 3500
-
-    review-existing-model:
-      role: [reviewer, architect]
-      requires_context: [methodology, governance, platform]
-      max_tokens: 3500
-
-    # ... 其他 6 个场景
-
-  platforms:
-    hive:
-      context_files:
-        - context/platform/hive/hive-constraints.md
-        - context/platform/hive/incremental-strategy.md
-        - context/platform/dbt-hive/dbt-hive-capabilities.md
-  ```
-
-**2. 规格校验工具 (`TOOLS-02`)**
-
-- `tools/schema-validator.js`
-  - 验证输入模板是否包含所有必填字段
-  - 验证输出是否符合预期结构
-  - 生成合规性报告
-
-- 验证规则 (schema definition)
-  ```yaml
-  # 输入模板校验
-  design-new-model-input:
-    required_fields:
-      - business_events: "业务事件清单"
-      - metrics: "指标需求"
-      - grain: "粒度定义"
-      - fields: "字段清单"
-    field_rules:
-      business_events:
-        type: array
-        min_items: 1
-        items:
-          type: object
-          required: [name, description]
-      grain:
-        type: string
-        min_length: 10
-
-  # 输出模板校验
-  design-new-model-output:
-    required_sections:
-      - fact_table_definition
-      - dimension_definitions (count >= 1)
-      - layer_mapping
-      - dbt_template
-    validation_rules:
-      fact_table_definition:
-        must_contain: [grain, measures, dimensions, standard_fields]
-      dbt_template:
-        ddl_format: valid_hive_sql
-        schema_yml_format: valid_yaml
-  ```
-
-- 校验报告格式
-  ```markdown
-  # 规格校验报告
-
-  场景：design-new-model
-  输入文件：input.md
-  输出文件：output.md
-
-  ## 输入校验
-  - [✓] business_events 已填写 (3 个事件)
-  - [✓] grain 已填写
-  - [✗] metrics 缺失 ← 必须补充
-
-  ## 输出校验
-  - [✓] fact_table_definition 完整
-  - [✓] dimension_definitions 包含 4 个维度
-  - [✓] dbt_template 可解析为有效 SQL
-  - [△] schema.yml 中 description 部分字段缺失 ← 建议完善
-
-  ## 合规性评分
-  - 输入完整度：100%
-  - 输出完整度：95%
-  - 总体状态：PASS (可用)
-  ```
-
-**3. 场景模板库整合 (`TOOLS-03`)**
-
-为每个场景（6 个）提供标准输入/输出模板：
-
-- 输入模板 (`prompts/scenarios/{scenario}/input-template.md`)
-  - 结构化字段定义（用户填空形式）
-  - 示例输入（展示如何填写）
-  - 常见错误提示
-
-- 输出模板 (`prompts/scenarios/{scenario}/output-template.md`)
-  - 标准输出结构（本阶段已在各场景中定义）
-  - 质量标准（什么是"好输出"）
-  - 验收清单
-
-- 案例库 (`prompts/scenarios/{scenario}/examples/`)
-  - 3-5 个完整的输入→输出案例
-  - 覆盖"简单"、"中等"、"复杂"难度
-  - 用于用户学习和质量参考
-
-**例：设计新模型场景的完整模板**
-
-```
-.claude/data-warehouse/prompts/scenarios/design-new-model/
-├── prompt.md                          # 核心提示
-├── input-template.md                  # 用户填空输入模板
-├── output-template.md                 # 标准输出结构
-├── success-criteria.md                # 成功标准
-├── dbt-template-generator.md          # dbt 代码生成逻辑
-└── examples/
-    ├── 01-simple-ecommerce-order/
-    │   ├── input.md
-    │   └── output.md
-    ├── 02-medium-user-behavior/
-    │   ├── input.md
-    │   └── output.md
-    └── 03-complex-cost-analysis/
-        ├── input.md
-        └── output.md
-```
-
-**4. 集成框架 (`tools/dw-dw-cli.js`)**
-
-提供统一的 CLI 入口（HiveMind 框架扩展）：
-
-```bash
-# 全新设计
-npm run gsd -- /gsd:design-model \
-  --input ./my-new-model.md \
-  --role modeler \
-  --platform hive
-
-# 评审模型
-npm run gsd -- /gsd:review-model \
-  --input ./my-existing-model.sql \
-  --dbt-config ./models/my_model.yml
-
-# 生成 SQL
-npm run gsd -- /gsd:generate-sql \
-  --requirement "最近 30 天订单额按城市聚合" \
-  --source-tables dwd_fact_orders,dim_city
-
-# 定义指标
-npm run gsd -- /gsd:define-metric \
-  --name "订单总额" \
-  --description "..."
-
-# 生成 DQ 规则
-npm run gsd -- /gsd:generate-dq \
-  --model dwd_fact_orders
-
-# 分析血缘
-npm run gsd -- /gsd:analyze-lineage \
-  --model dwd_fact_orders
-
-# 组装提示（高级用法）
-npm run gsd -- /gsd:assemble-prompt \
-  --scenario design-new-model \
-  --role architect \
-  --context-level full
-```
-
-**5. 配置与扩展文档 (`tools/README.md`)**
-   - 工具使用指南
-   - 自定义场景/角色的扩展说明
-   - 集成 HiveMind orchestrator 的说明
-   - 多平台支持扩展（未来加入 Snowflake、BigQuery）
+**5. 文档（Wave 3）**
+- `README.md` — 工具使用指南
+- `docs/extending.md` — 扩展开发指南
 
 **成功标准：**
 1. 提示组装工具能根据场景、角色、平台生成完整的组装提示（token 数 < 4000）
 2. 规格校验工具能检查输入/输出的 10+ 项规范要求，生成合规性报告
 3. 所有 6 个场景都有完整的输入模板、输出模板、案例库
-4. CLI 工具能集成到 HiveMind framework，支持 `/gsd:*` 命令系列
+4. CLI 工具能集成到 HiveMind framework，支持 `/dw:*` 命令系列
 5. 扩展文档明确说明如何添加新场景或新平台支持
 
 **风险预防：**
@@ -937,6 +756,17 @@ npm run gsd -- /gsd:assemble-prompt \
 
 **依赖关系：** 依赖 Phase 1-7（所有前置能力完整）
 **后续赋能：** 系统完成，可作为独立产品发布或集成到更大平台
+
+**Plans:** 5 plans
+
+Plans:
+- [ ] 08-01-PLAN.md — 配置文件 + JSON Schema（scenarios.yaml, platforms.yaml, assembly-rules.yaml, 12 个 schema）
+- [ ] 08-02-PLAN.md — 6 个场景输入模板（input-template.md）
+- [ ] 08-03-PLAN.md — 辅助脚本（assemble.js, validate.js, scaffold.js, package.json）
+- [ ] 08-04-PLAN.md — 9 个 /dw:* 命令文件
+- [ ] 08-05-PLAN.md — 使用文档（README.md, extending.md）
+
+**Phase Status:** Pending
 
 ---
 
