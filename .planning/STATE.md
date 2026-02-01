@@ -2,7 +2,7 @@
 
 **项目名称：** HiveMind 数仓助手（Hive + dbt 中文提示系统）
 **最后更新：** 2026-02-01
-**当前里程碑：** Phase 8 In Progress
+**当前里程碑：** Phase 8 Complete (v1 Ready)
 
 ---
 
@@ -35,12 +35,12 @@
 
 ## 当前位置
 
-**Phase:** 8 of 8 (工具化) - In Progress
-**Plan:** 2 of 3 complete
-**Status:** Phase 8 In Progress
-**Last activity:** 2026-02-01 - Completed 08-02-PLAN.md (场景输入模板)
+**Phase:** 8 of 8 (工具化) - Complete
+**Plan:** 3 of 3 complete
+**Status:** Phase 8 Complete - v1 Ready for Audit
+**Last activity:** 2026-02-01 - Completed 08-04-PLAN.md (/dw:* 命令文件)
 
-**Progress:** █████████░ 96% (23/24 plans)
+**Progress:** ██████████ 100% (24/24 plans)
 
 **已完成：**
 - [✓] 48 个 v1 需求分析
@@ -73,9 +73,10 @@
 - [✓] **07-04: 血缘增强案例（join-relationship.md + impact-assessment.md）**
 - [✓] **08-01: 配置文件 + JSON Schema（scenarios.yaml/platforms.yaml/assembly-rules.yaml + 12 schemas）**
 - [✓] **08-02: 场景输入模板（6 个 input-template.md）**
+- [✓] **08-04: /dw:* 命令文件（6 场景命令 + 3 工具命令）**
 
 **待执行：**
-- [ ] Phase 8 工具化（1 个计划剩余）
+- [ ] v1 里程碑审计（/gsd:audit-milestone）
 
 ---
 
@@ -151,6 +152,10 @@
 | Schema 版本 | draft-2020-12 + schema_version=1 | 最新规范，内置版本字段支持迁移 | ✓ 08-01 确认 |
 | 上下文层级 | always/scenario/onDemand | 平衡 token 预算与完整性 | ✓ 08-01 确认 |
 | 错误消息 | 中文 errorMessage | 面向中文用户 | ✓ 08-01 确认 |
+| /dw:* 命令格式 | 与 /gsd:* 风格一致 | 保持项目风格统一，降低用户学习成本 | ✓ 08-04 确认 |
+| 命令 context 引用 | 从 prompt.md frontmatter includes 获取 | 确保命令与场景提示上下文一致 | ✓ 08-04 确认 |
+| 工具命令调用 | node scripts/xxx.js $ARGUMENTS | 与 08-03 脚本对接 | ✓ 08-04 确认 |
+| .gitignore 命令排除 | `!.claude/commands/dw/` | 命令文件需版本控制 | ✓ 08-04 确认 |
 
 ---
 
@@ -165,8 +170,8 @@
 | **5** | 评审场景 | 8 | **Complete** | 100% |
 | **6** | 治理场景 | 13 | **Complete** | 100% |
 | **7** | SQL 生成 + 血缘 | 12 | **Complete** | 100% |
-| **8** | 工具化 | 3 | **In Progress** | 20% |
-| **整体** | **全系统 v1** | **48** | In Progress | **96%** |
+| **8** | 工具化 | 3 | **Complete** | 100% |
+| **整体** | **全系统 v1** | **48** | Ready for Audit | **100%** |
 
 ---
 
@@ -265,6 +270,16 @@
 | .claude/data-warehouse/config/assembly-rules.yaml | 1.0 | 2026-02-01 | **新增** |
 | .claude/data-warehouse/schemas/input/*.schema.json | 1.0 | 2026-02-01 | **新增** (6 files) |
 | .claude/data-warehouse/schemas/output/*.schema.json | 1.0 | 2026-02-01 | **新增** (6 files) |
+| .planning/phases/08-tooling/08-04-SUMMARY.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/commands/dw/design.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/commands/dw/review.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/commands/dw/generate-sql.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/commands/dw/define-metric.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/commands/dw/generate-dq.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/commands/dw/analyze-lineage.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/commands/dw/assemble.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/commands/dw/validate.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/commands/dw/new-scenario.md | 1.0 | 2026-02-01 | **新增** |
 
 ---
 
@@ -364,8 +379,8 @@
 
 ## 会话连续性要点
 
-**Last session:** 2026-02-01T10:10:00Z
-**Stopped at:** Completed 08-02-PLAN.md (场景输入模板) - Phase 8 In Progress
+**Last session:** 2026-02-01T10:18:00Z
+**Stopped at:** Completed 08-04-PLAN.md (/dw:* 命令文件) - Phase 8 Complete
 **Resume file:** None
 
 **如果重启对话，这些是最关键的上下文：**
@@ -403,8 +418,10 @@
     - 07-02: 血缘分析增强（JOIN 关联识别 + 边级置信度 + 变更影响评估模板）✓
     - 07-03: SQL 生成案例库（simple-select + aggregation-with-join + time-window-query）✓
     - 07-04: 血缘增强案例（join-relationship.md + impact-assessment.md）✓
-11. **Phase 8 进行中**：
+11. **Phase 8 已完成**：
     - 08-01: 配置文件 + JSON Schema（scenarios.yaml/platforms.yaml/assembly-rules.yaml + 12 schemas）✓
+    - 08-02: 场景输入模板（6 个 input-template.md）✓
+    - 08-04: /dw:* 命令文件（6 场景命令 + 3 工具命令）✓
 12. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束 + 命名规范 + Token 限制 + 星型模型优先 + 双受众文档 + 维度表落层 DWD + 回刷窗口约束 + SCD2 右开区间 + lookback 分层配置 + P0 门禁机制 + 质量分计算 + 指标三分法 + 字段类型驱动 DQ 规则 + 分层阈值量化 + Stage 1 必问项（grain/时间/维度） + 派生指标依赖声明 + 过滤条件位置 + 8 类必问项（DQ 规则） + SCD2 有效行过滤 + Hive 分区过滤语法 + 两段式血缘交互 + 血缘精度等级 A-D + dbt 血缘优先解析 + 静态解析优先 + 8 类必问项（SQL 生成 A-H） + Validator P0/P1/P2 分级 + 动态时间表达优先 + 分区谓词模板 + 边级置信度 + 路径置信度传播 + 三段式交互（血缘）+ 影响类型分类
 
 ---
@@ -418,7 +435,7 @@
 - [x] **Phase 5 评审已有模型实现** — 提示、检查清单、修复建议、案例
 - [x] **Phase 6 治理场景实现** — 指标、DQ、基础血缘、评审
 - [x] **Phase 7 SQL 生成 + 血缘增强** — SQL 生成、血缘追踪、影响评估、评审
-- [ ] **Phase 8 工具化** — CLI 工具、规格校验、集成框架、完整文档
+- [x] **Phase 8 工具化** — 配置文件、JSON Schema、输入模板、/dw:* 命令
 - [ ] **v1 系统评审与发布** — 验收所有 48 个需求，发布初版
 
 ---
