@@ -551,10 +551,12 @@ Plans:
 **Plans:** 4 plans
 
 Plans:
-- [ ] 06-01-PLAN.md — 治理上下文（metrics-core.md + dq-rules-core.md）
-- [ ] 06-02-PLAN.md — 指标定义场景（METRICS）提示 + 模板 + 案例
-- [ ] 06-03-PLAN.md — DQ 规则生成场景（DQRULES）提示 + 模板 + 案例
-- [ ] 06-04-PLAN.md — 血缘分析场景（LINEAGE）提示 + 模板 + 案例
+- [x] 06-01-PLAN.md — 治理上下文（metrics-core.md + dq-rules-core.md）✓
+- [x] 06-02-PLAN.md — 指标定义场景（METRICS）提示 + 模板 + 案例 ✓
+- [x] 06-03-PLAN.md — DQ 规则生成场景（DQRULES）提示 + 模板 + 案例 ✓
+- [x] 06-04-PLAN.md — 血缘分析场景（LINEAGE）提示 + 模板 + 案例 ✓
+
+**Phase Status:** Complete (2026-02-01)
 
 ---
 
@@ -955,10 +957,10 @@ npm run gsd -- /gsd:assemble-prompt \
 | 3 | 平台约束 | 3 | ✓ Complete | 100% |
 | 4 | 设计场景 | 6 | ✓ Complete | 100% |
 | 5 | 评审场景 | 8 | ✓ Complete | 100% |
-| 6 | 治理场景 | 13 | Planned | 0% |
+| 6 | 治理场景 | 13 | ✓ Complete | 100% |
 | 7 | SQL 生成 | 12 | Pending | 0% |
 | 8 | 工具化 | 3 | Pending | 0% |
-| **总计** | **全系统** | **48** | **In Progress** | **63%** |
+| **总计** | **全系统** | **48** | **In Progress** | **79%** |
 
 ---
 
