@@ -2,8 +2,8 @@
 type: scenario-support
 scenario: analyze-lineage
 document: output-template
-version: 1.0.0
-token_budget: 700
+version: 1.1.0
+token_budget: 900
 ---
 
 # 血缘分析输出模板
@@ -17,6 +17,7 @@ token_budget: 700
 
 - [x] 表级血缘
 - [ ] 字段级血缘
+- [ ] 影响评估
 
 ## 解析精度
 
@@ -57,6 +58,30 @@ graph LR
 | ref | `{model_name}` | `ref('{model_name}')` | L{line} |
 | table | `{db}.{table}` | FROM/JOIN | L{line} |
 
+## JOIN 关联分析
+
+### 关联图
+
+```mermaid
+graph LR
+    A[fact_orders] -->|customer_id = customer_id| B[dim_customer]
+    A -->|product_id = product_id| C[dim_product]
+    B -->|city_id = city_id| D[dim_city]
+```
+
+### 关联清单
+
+| 左表 | 右表 | 关联类型 | 关联条件 | 边置信度 | 证据/位置 | 风险标记 |
+|------|------|----------|----------|----------|----------|----------|
+| `fact_orders` | `dim_customer` | LEFT JOIN | `customer_id = customer_id` | A | `L12: ON o.customer_id = c.customer_id` | `SCD2=is_current` |
+| `fact_orders` | `dim_product` | LEFT JOIN | `product_id = product_id` | B | `L15` | `M2M?` |
+
+### 关联风险
+
+- [ ] 笛卡尔积风险
+- [x] 多对多 JOIN 风险（`fact_orders` - `dim_product` 可能多对多）
+- [ ] SCD2 语义未明确
+
 ## 识别统计
 
 | 类型 | 数量 |
@@ -64,10 +89,11 @@ graph LR
 | source() 调用 | {N} |
 | ref() 调用 | {M} |
 | 原生表名 | {K} |
+| JOIN 关联 | {J} |
 
 ---
 
-回复"**字段级**"获取字段级血缘映射表。
+回复"**字段级**"获取字段级血缘映射表，或提供变更描述进行"**影响评估**"。
 ```
 
 ---
@@ -79,23 +105,30 @@ graph LR
 
 ## 字段映射表
 
-| 目标字段 | 源表 | 源字段 | 转换 | 置信度 | 方法 | 标记 |
-|----------|------|--------|------|--------|------|------|
-| `{target_col}` | `{source_table}` | `{source_col}` | 直接映射 | A | STATIC | - |
-| `{target_col}` | - | - | `md5(concat_ws(...))` | A | STATIC | GENERATED |
-| `{target_col}` | `{source_table}` | `{expr}` | 表达式计算 | B | STATIC | EXPR |
-| `{target_col}` | `{source_table}` | `{col1}, {col2}` | CASE WHEN | B | MIXED | CASE |
-| `{target_col}` | `{source_table}` | `*` | CTE 传递 | C | LLM | CTE |
-| `{target_col}` | ? | ? | UDF 黑盒 | D | LLM | UDF |
+| 源字段 | 目标字段 | 转换逻辑 | 边置信度 | 证据/位置 | 备注/风险 |
+|--------|----------|----------|----------|----------|-----------|
+| `ods.order_detail.order_amount` | `dwd_fact_order.line_amount` | `o.order_amount` | A | `L32: o.order_amount AS line_amount` | - |
+| `dim_customer.customer_level` | `ads_vip_daily.is_vip` | `CASE WHEN ...` | B | `L58: CASE WHEN ... END` | 语义变更风险 |
+| `cte_orders.*` | `fact_orders.order_id` | CTE 传递 | C | `L12` | CTE 遮蔽风险，需验证 |
+| `my_udf(col)` | `result_col` | UDF 黑盒 | D | `L45` | 需人工确认 |
+
+## 边置信度统计
+
+| 等级 | 数量 | 占比 |
+|------|------|------|
+| **A** | {N} | {X}% |
+| **B** | {M} | {Y}% |
+| **C** | {K} | {Z}% |
+| **D** | {J} | {W}% |
 
 ## 置信度说明
 
-| 等级 | 含义 | 数量 |
-|------|------|------|
-| **A** | 高置信 — 显式映射/别名/CAST | {N} |
-| **B** | 中置信 — 表达式/聚合/窗口 | {M} |
-| **C** | 低置信 — CTE/子查询/UNION | {K} |
-| **D** | 需人工确认 — UDF/动态 SQL | {J} |
+| 等级 | 含义 | 典型证据/位置 |
+|------|------|---------------|
+| **A** | 高置信 — 显式映射/别名/CAST，AST 可确定 | 行号 + 明确表达式 |
+| **B** | 中置信 — 表达式/聚合/窗口，可追溯 | CASE/窗口函数位置 |
+| **C** | 低置信 — CTE/子查询/UNION/`SELECT *`，需验证 | 推断依据说明 |
+| **D** | 需人工确认 — UDF/动态 SQL | 标注"需人工确认" |
 
 ## 标记说明
 
@@ -120,19 +153,36 @@ graph LR
 ## 详细 Mermaid 图（字段级）
 
 ```mermaid
-graph LR
-    subgraph Source["源表: {source_table}"]
-        S1[{source_col_1}]
-        S2[{source_col_2}]
+flowchart LR
+    subgraph Source1["源表: ods.order_detail"]
+        direction TB
+        S1[order_id]
+        S2[customer_id]
+        S3[order_amount]
     end
 
-    subgraph Target["目标表: {target_table}"]
-        T1[{target_col_1}]
-        T2[{target_col_2}]
+    subgraph Source2["源表: dim_customer"]
+        direction TB
+        S4[customer_sk]
+        S5[customer_name]
     end
 
-    S1 --> T1
-    S2 -->|CASE| T2
+    subgraph Target["目标表: dwd_fact_order_detail"]
+        direction TB
+        T1[order_detail_sk]
+        T2[customer_key]
+        T3[line_amount]
+        T4[customer_name]
+    end
+
+    S1 -->|"MD5 Hash · A"| T1
+    S4 -->|"直接映射 · A"| T2
+    S3 -->|"直接映射 · A"| T3
+    S5 -->|"JOIN · B"| T4
+
+    style Source1 fill:#e1f5fe
+    style Source2 fill:#fff9c4
+    style Target fill:#c8e6c9
 ```
 ```
 
@@ -158,3 +208,14 @@ graph LR
 | `ref` | dbt ref() 调用 |
 | `FROM` | 原生 SQL FROM 子句 |
 | `JOIN` | 原生 SQL JOIN 子句 |
+| `· A/B/C/D` | 边置信度后缀 |
+
+### 边置信度标注格式
+
+字段级 Mermaid 图中，边标签格式为：`"转换类型 · 置信度"`
+
+示例：
+- `-->|"直接映射 · A"|`
+- `-->|"CASE WHEN · B"|`
+- `-->|"SELECT * · C"|`
+- `-->|"UDF · D"|`
