@@ -35,12 +35,12 @@
 
 ## 当前位置
 
-**Phase:** 6 of 8 (治理场景) - In Progress
-**Plan:** 3 of 4 complete
-**Status:** Phase 6 In Progress
-**Last activity:** 2026-02-01 - Completed 06-03-PLAN.md (DQ 规则生成场景)
+**Phase:** 6 of 8 (治理场景) - Complete
+**Plan:** 4 of 4 complete
+**Status:** Phase 6 Complete
+**Last activity:** 2026-02-01 - Completed 06-04-PLAN.md (血缘分析场景)
 
-**Progress:** █████████░ 95% (17/18 plans)
+**Progress:** █████████░ 100% (18/18 plans)
 
 **已完成：**
 - [✓] 48 个 v1 需求分析
@@ -66,9 +66,10 @@
 - [✓] **06-01: 治理上下文基础（metrics-core.md + dq-rules-core.md）**
 - [✓] **06-02: 指标定义场景（prompt.md + output-template.md + 2 案例）**
 - [✓] **06-03: DQ 规则生成场景（prompt.md + output-template.md + 2 案例）**
+- [✓] **06-04: 血缘分析场景（prompt.md + output-template.md + 2 案例）**
 
 **待执行：**
-- [ ] Phase 6-8 递进执行（06-04 + Phase 7-8）
+- [ ] Phase 7-8 递进执行
 
 ---
 
@@ -126,6 +127,10 @@
 | 8 类必问项（DQ 规则） | 目标/字段/分区/窗口/SCD2/阈值/新鲜度/Hive 方言 | 覆盖 DQ 规则生成所有关键信息 | ✓ 06-03 确认 |
 | SCD2 有效行过滤 | where: "is_current = 1" | 历史行不参与自然键唯一性检测 | ✓ 06-03 确认 |
 | Hive 分区过滤语法 | date_sub(current_date, N) | 统一控制扫描范围 | ✓ 06-03 确认 |
+| 两段式血缘交互 | Stage 1 表级概览 + Stage 2 字段级详细 | 表级快速概览，字段级按需展开 | ✓ 06-04 确认 |
+| 血缘精度等级 | A/B/C/D 四级（高/中/低/需人工） | 平衡自动化与准确性，D 级需人工确认 | ✓ 06-04 确认 |
+| dbt 血缘优先解析 | ref()/source() > 原生表名 | dbt 项目中 ref/source 更可靠 | ✓ 06-04 确认 |
+| 静态解析优先 | AST 解析 > LLM 推断 | 静态解析确定性高 | ✓ 06-04 确认 |
 
 ---
 
@@ -138,7 +143,7 @@
 | **3** | 平台约束 | 3 | **Complete** | 100% |
 | **4** | 设计场景 | 6 | **Complete** | 100% |
 | **5** | 评审场景 | 8 | **Complete** | 100% |
-| **6** | 治理场景 | 13 | **In Progress** | 75% |
+| **6** | 治理场景 | 13 | **Complete** | 100% |
 | **7** | SQL 生成 + 血缘 | 12 | Pending | 0% |
 | **8** | 工具化 | 3 | Pending | 0% |
 | **整体** | **全系统 v1** | **48** | In Progress | **81%** |
@@ -214,6 +219,11 @@
 | .claude/data-warehouse/prompts/scenarios/generate-dq-rules/output-template.md | 1.0 | 2026-02-01 | **新增** |
 | .claude/data-warehouse/prompts/scenarios/generate-dq-rules/examples/fact-table-dq.md | 1.0 | 2026-02-01 | **新增** |
 | .claude/data-warehouse/prompts/scenarios/generate-dq-rules/examples/dim-table-dq.md | 1.0 | 2026-02-01 | **新增** |
+| .planning/phases/06-governance-scenarios/06-04-SUMMARY.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/prompts/scenarios/analyze-lineage/prompt.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/prompts/scenarios/analyze-lineage/output-template.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/prompts/scenarios/analyze-lineage/examples/table-level.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/prompts/scenarios/analyze-lineage/examples/column-level.md | 1.0 | 2026-02-01 | **新增** |
 
 ---
 
@@ -314,7 +324,7 @@
 ## 会话连续性要点
 
 **Last session:** 2026-02-01T02:00:00Z
-**Stopped at:** Completed 06-03-PLAN.md (DQ 规则生成场景) - Phase 6 In Progress
+**Stopped at:** Completed 06-04-PLAN.md (血缘分析场景) - Phase 6 Complete
 **Resume file:** None
 
 **如果重启对话，这些是最关键的上下文：**
@@ -342,12 +352,12 @@
    - 05-01: 问题分级（P0-P3）+ 检查清单（33 条规则）✓
    - 05-02: 主提示文件 prompt.md + 输出模板 + 修复建议模板 ✓
    - 05-03: 3 个评审案例（good-model/naming-issues/multiple-issues）✓
-9. **Phase 6 进行中**：
+9. **Phase 6 已完成**：
    - 06-01: 治理上下文基础（metrics-core.md + dq-rules-core.md）✓
    - 06-02: 指标定义场景（prompt.md + output-template.md + 2 案例）✓
    - 06-03: DQ 规则场景（prompt.md + output-template.md + 2 案例）✓
-   - 06-04: 血缘分析场景（待执行）
-10. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束 + 命名规范 + Token 限制 + 星型模型优先 + 双受众文档 + 维度表落层 DWD + 回刷窗口约束 + SCD2 右开区间 + lookback 分层配置 + P0 门禁机制 + 质量分计算 + 指标三分法 + 字段类型驱动 DQ 规则 + 分层阈值量化 + Stage 1 必问项（grain/时间/维度） + 派生指标依赖声明 + 过滤条件位置 + 8 类必问项（DQ 规则） + SCD2 有效行过滤 + Hive 分区过滤语法
+   - 06-04: 血缘分析场景（prompt.md + output-template.md + 2 案例）✓
+10. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束 + 命名规范 + Token 限制 + 星型模型优先 + 双受众文档 + 维度表落层 DWD + 回刷窗口约束 + SCD2 右开区间 + lookback 分层配置 + P0 门禁机制 + 质量分计算 + 指标三分法 + 字段类型驱动 DQ 规则 + 分层阈值量化 + Stage 1 必问项（grain/时间/维度） + 派生指标依赖声明 + 过滤条件位置 + 8 类必问项（DQ 规则） + SCD2 有效行过滤 + Hive 分区过滤语法 + 两段式血缘交互 + 血缘精度等级 A-D + dbt 血缘优先解析 + 静态解析优先
 
 ---
 
@@ -358,7 +368,7 @@
 - [x] **Phase 3 平台约束库编写** — Hive、dbt-hive、增量策略文档
 - [x] **Phase 4 设计新模型实现** — 提示、模板、案例、评审
 - [x] **Phase 5 评审已有模型实现** — 提示、检查清单、修复建议、案例
-- [ ] **Phase 6 治理场景实现** — 指标、DQ、基础血缘、评审
+- [x] **Phase 6 治理场景实现** — 指标、DQ、基础血缘、评审
 - [ ] **Phase 7 SQL 生成 + 血缘增强** — SQL 生成、血缘追踪、影响评估、评审
 - [ ] **Phase 8 工具化** — CLI 工具、规格校验、集成框架、完整文档
 - [ ] **v1 系统评审与发布** — 验收所有 48 个需求，发布初版
