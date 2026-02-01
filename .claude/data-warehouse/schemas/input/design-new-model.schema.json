@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dw:design-new-model:input:v1",
+  "title": "设计新模型输入",
+  "description": "设计新模型场景的输入校验 Schema",
+  "type": "object",
+  "required": ["business_event", "grain"],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Schema 版本号，用于未来迁移"
+    },
+    "business_event": {
+      "type": "string",
+      "minLength": 2,
+      "description": "业务事件名称，描述建模的业务活动（如：订单支付、用户注册）",
+      "errorMessage": {
+        "type": "业务事件必须是字符串",
+        "minLength": "业务事件至少需要 2 个字符"
+      }
+    },
+    "grain": {
+      "type": "string",
+      "minLength": 5,
+      "description": "粒度声明，明确一行数据代表什么（如：一笔支付对应一行记录）",
+      "errorMessage": {
+        "type": "粒度声明必须是字符串",
+        "minLength": "粒度声明至少需要 5 个字符，请详细描述"
+      }
+    },
+    "measures": {
+      "type": "array",
+      "description": "度量字段清单，定义需要统计的指标",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "度量字段名称（英文 snake_case）"
+          },
+          "desc": {
+            "type": "string",
+            "description": "度量中文描述"
+          },
+          "type": {
+            "type": "string",
+            "description": "数据类型（如 decimal(18,2)、bigint）"
+          },
+          "additivity": {
+            "type": "string",
+            "enum": ["additive", "semi-additive", "non-additive"],
+            "description": "可加性：可加/半可加/不可加"
+          }
+        }
+      }
+    },
+    "dimensions": {
+      "type": "array",
+      "description": "维度清单，可以是简单字符串或带 SCD 配置的对象",
+      "items": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "维度名称（简写）"
+          },
+          {
+            "type": "object",
+            "required": ["name"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "维度名称"
+              },
+              "scd": {
+                "type": "string",
+                "enum": ["Type1", "Type2", "Type3"],
+                "description": "SCD 策略类型"
+              },
+              "reason": {
+                "type": "string",
+                "description": "选择该 SCD 策略的原因"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "source": {
+      "type": "object",
+      "description": "数据来源信息",
+      "properties": {
+        "table": {
+          "type": "string",
+          "description": "源表名称"
+        },
+        "tables": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "多个源表名称"
+        },
+        "partition_col": {
+          "type": "string",
+          "description": "分区列名称（默认 dt）"
+        }
+      }
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["spec", "full"],
+      "default": "spec",
+      "description": "输出模式：spec=仅规格书，full=完整产物"
+    }
+  },
+  "additionalProperties": false,
+  "errorMessage": {
+    "required": {
+      "business_event": "缺少必填字段：业务事件（business_event）",
+      "grain": "缺少必填字段：粒度声明（grain）"
+    },
+    "additionalProperties": "包含未知字段，请检查输入格式"
+  }
+}

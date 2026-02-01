@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dw:design-new-model:output:v1",
+  "title": "设计新模型输出",
+  "description": "设计新模型场景的输出结构 Schema",
+  "type": "object",
+  "required": ["fact_table_definition", "layer_mapping"],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Schema 版本号"
+    },
+    "fact_table_definition": {
+      "type": "object",
+      "required": ["name", "fact_type", "grain", "columns"],
+      "description": "事实表定义",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "事实表名称"
+        },
+        "fact_type": {
+          "type": "string",
+          "enum": ["transaction", "periodic_snapshot", "accumulating_snapshot"],
+          "description": "事实表类型"
+        },
+        "grain": {
+          "type": "string",
+          "description": "粒度声明"
+        },
+        "grain_columns": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "粒度列"
+        },
+        "columns": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "type"],
+            "properties": {
+              "name": { "type": "string" },
+              "type": { "type": "string" },
+              "description": { "type": "string" },
+              "role": {
+                "type": "string",
+                "enum": ["pk", "fk", "dd", "measure", "meta"]
+              },
+              "additivity": {
+                "type": "string",
+                "enum": ["additive", "semi-additive", "non-additive"]
+              }
+            }
+          },
+          "description": "字段列表"
+        }
+      }
+    },
+    "dimension_definitions": {
+      "type": "array",
+      "description": "维度表定义列表",
+      "items": {
+        "type": "object",
+        "required": ["name", "scd_type"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "维度表名称"
+          },
+          "business_key": {
+            "type": "string",
+            "description": "业务键"
+          },
+          "surrogate_key": {
+            "type": "string",
+            "description": "代理键"
+          },
+          "scd_type": {
+            "type": "string",
+            "enum": ["Type1", "Type2", "Type3"],
+            "description": "SCD 策略"
+          },
+          "columns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "type": { "type": "string" },
+                "description": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "layer_mapping": {
+      "type": "array",
+      "description": "分层落点映射",
+      "items": {
+        "type": "object",
+        "required": ["table_name", "layer", "table_type"],
+        "properties": {
+          "table_name": {
+            "type": "string",
+            "description": "表名"
+          },
+          "layer": {
+            "type": "string",
+            "enum": ["ODS", "DWD", "DWS", "ADS"],
+            "description": "所属层"
+          },
+          "table_type": {
+            "type": "string",
+            "enum": ["fact", "dimension"],
+            "description": "表类型"
+          },
+          "reason": {
+            "type": "string",
+            "description": "落层原因"
+          }
+        }
+      }
+    },
+    "dbt_template": {
+      "type": "object",
+      "description": "dbt 模板输出",
+      "properties": {
+        "sql_file": {
+          "type": "object",
+          "properties": {
+            "path": { "type": "string" },
+            "content": { "type": "string" }
+          }
+        },
+        "schema_yml": {
+          "type": "object",
+          "properties": {
+            "path": { "type": "string" },
+            "content": { "type": "string" }
+          }
+        }
+      }
+    },
+    "mermaid_diagram": {
+      "type": "string",
+      "description": "星型模型 Mermaid ER 图"
+    },
+    "assumptions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "假设清单"
+    },
+    "pending_questions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "待确认问题"
+    }
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dw:review-existing-model:output:v1",
+  "title": "评审已有模型输出",
+  "description": "评审已有模型场景的输出结构 Schema",
+  "type": "object",
+  "required": ["summary", "issues", "quality_score"],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Schema 版本号"
+    },
+    "summary": {
+      "type": "object",
+      "required": ["conclusion", "quality_score"],
+      "description": "评审总览",
+      "properties": {
+        "conclusion": {
+          "type": "string",
+          "enum": ["pass", "conditional_pass", "fail"],
+          "description": "评审结论：通过/有条件通过/不通过"
+        },
+        "review_scope": {
+          "type": "string",
+          "enum": ["full", "partial"],
+          "description": "评审范围"
+        },
+        "missing_inputs": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "缺失的输入（导致部分评审）"
+        },
+        "p0_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "P0 问题数量"
+        },
+        "p1_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "P1 问题数量"
+        },
+        "p2_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "P2 问题数量"
+        },
+        "p3_count": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "P3 问题数量"
+        }
+      }
+    },
+    "issues": {
+      "type": "array",
+      "description": "问题清单",
+      "items": {
+        "type": "object",
+        "required": ["id", "severity", "category", "description"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "问题 ID"
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["P0", "P1", "P2", "P3"],
+            "description": "严重级别"
+          },
+          "category": {
+            "type": "string",
+            "enum": ["naming", "layering", "grain", "types", "dbt"],
+            "description": "问题类别"
+          },
+          "rule_id": {
+            "type": "string",
+            "description": "关联的检查规则 ID"
+          },
+          "description": {
+            "type": "string",
+            "description": "问题描述"
+          },
+          "location": {
+            "type": "string",
+            "description": "问题位置"
+          },
+          "current_value": {
+            "type": "string",
+            "description": "当前值"
+          },
+          "expected_value": {
+            "type": "string",
+            "description": "期望值"
+          },
+          "fix_suggestion": {
+            "type": "object",
+            "description": "修复建议",
+            "properties": {
+              "size": {
+                "type": "string",
+                "enum": ["S", "M", "L", "XL"],
+                "description": "修复规模"
+              },
+              "before": {
+                "type": "string",
+                "description": "修复前代码"
+              },
+              "after": {
+                "type": "string",
+                "description": "修复后代码"
+              },
+              "reason": {
+                "type": "string",
+                "description": "修复理由"
+              },
+              "verification": {
+                "type": "string",
+                "description": "验证方法"
+              }
+            }
+          }
+        }
+      }
+    },
+    "quality_score": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "质量分（100 分起，P1=-10，P2=-3，P3=-1）"
+    },
+    "checklist": {
+      "type": "array",
+      "description": "检查清单结果",
+      "items": {
+        "type": "object",
+        "properties": {
+          "dimension": {
+            "type": "string",
+            "description": "评审维度"
+          },
+          "passed": {
+            "type": "integer",
+            "description": "通过数"
+          },
+          "total": {
+            "type": "integer",
+            "description": "总检查项数"
+          },
+          "failed_items": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "失败项 ID 列表"
+          }
+        }
+      }
+    }
+  }
+}

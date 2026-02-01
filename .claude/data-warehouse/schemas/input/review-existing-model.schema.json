@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dw:review-existing-model:input:v1",
+  "title": "评审已有模型输入",
+  "description": "评审已有模型场景的输入校验 Schema",
+  "type": "object",
+  "required": ["model_code"],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Schema 版本号，用于未来迁移"
+    },
+    "model_code": {
+      "type": "string",
+      "minLength": 10,
+      "description": "待评审的模型代码（SQL 或 dbt 模型）",
+      "errorMessage": {
+        "type": "模型代码必须是字符串",
+        "minLength": "模型代码至少需要 10 个字符"
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "模型元信息（强烈建议提供）",
+      "properties": {
+        "layer": {
+          "type": "string",
+          "enum": ["ODS", "DWD", "DWS", "ADS"],
+          "description": "数据分层"
+        },
+        "grain": {
+          "type": "string",
+          "description": "粒度声明"
+        },
+        "model_name": {
+          "type": "string",
+          "description": "模型名称"
+        },
+        "fact_type": {
+          "type": "string",
+          "enum": ["transaction", "periodic_snapshot", "accumulating_snapshot", "dimension"],
+          "description": "表类型"
+        }
+      }
+    },
+    "schema_yml": {
+      "type": "string",
+      "description": "dbt schema.yml 配置内容（可选增强）"
+    },
+    "ddl": {
+      "type": "string",
+      "description": "CREATE TABLE DDL 语句（可选增强）"
+    },
+    "review_scope": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["naming", "layering", "grain", "types", "dbt"]
+      },
+      "description": "指定评审范围（默认全部）"
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["overview", "detailed"],
+      "default": "overview",
+      "description": "输出模式：overview=问题概览，detailed=详细修复"
+    }
+  },
+  "additionalProperties": false,
+  "errorMessage": {
+    "required": {
+      "model_code": "缺少必填字段：模型代码（model_code）"
+    },
+    "additionalProperties": "包含未知字段，请检查输入格式"
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dw:define-metrics:input:v1",
+  "title": "定义指标输入",
+  "description": "指标定义场景的输入校验 Schema",
+  "type": "object",
+  "required": ["metric_name", "business_desc"],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Schema 版本号，用于未来迁移"
+    },
+    "metric_name": {
+      "type": "string",
+      "minLength": 2,
+      "description": "指标名称（中文业务名称）",
+      "errorMessage": {
+        "type": "指标名称必须是字符串",
+        "minLength": "指标名称至少需要 2 个字符"
+      }
+    },
+    "business_desc": {
+      "type": "string",
+      "minLength": 10,
+      "description": "业务描述，说明指标的业务含义和计算口径",
+      "errorMessage": {
+        "type": "业务描述必须是字符串",
+        "minLength": "业务描述至少需要 10 个字符，请详细说明指标含义"
+      }
+    },
+    "metric_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "description": "指标 ID（英文 snake_case，可选，不填则自动生成）"
+    },
+    "formula": {
+      "type": "string",
+      "description": "计算公式草稿（如 SUM(order_amount)）"
+    },
+    "source_model": {
+      "type": "string",
+      "description": "关联 dbt 模型名称"
+    },
+    "grain": {
+      "type": "string",
+      "description": "数据粒度（如 每日/每订单）"
+    },
+    "time_field": {
+      "type": "string",
+      "description": "时间维度字段名"
+    },
+    "dimensions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "可切维度清单"
+    },
+    "depends_on": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "依赖的指标 ID（派生/复合指标需要）"
+    },
+    "filters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "field": { "type": "string" },
+          "operator": { "type": "string" },
+          "value": {}
+        }
+      },
+      "description": "默认过滤条件"
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["spec", "full"],
+      "default": "spec",
+      "description": "输出模式：spec=仅规格书，full=完整 YAML"
+    }
+  },
+  "additionalProperties": false,
+  "errorMessage": {
+    "required": {
+      "metric_name": "缺少必填字段：指标名称（metric_name）",
+      "business_desc": "缺少必填字段：业务描述（business_desc）"
+    },
+    "additionalProperties": "包含未知字段，请检查输入格式"
+  }
+}

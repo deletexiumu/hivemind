@@ -1,0 +1,234 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dw:analyze-lineage:output:v1",
+  "title": "血缘分析输出",
+  "description": "血缘分析场景的输出结构 Schema",
+  "type": "object",
+  "required": ["table_lineage"],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Schema 版本号"
+    },
+    "analysis_mode": {
+      "type": "string",
+      "enum": ["table", "column", "impact"],
+      "description": "分析模式"
+    },
+    "table_lineage": {
+      "type": "object",
+      "required": ["dependencies"],
+      "description": "表级血缘",
+      "properties": {
+        "target_model": {
+          "type": "string",
+          "description": "目标模型名"
+        },
+        "dependencies": {
+          "type": "array",
+          "description": "依赖清单",
+          "items": {
+            "type": "object",
+            "required": ["type", "object_name"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["ref", "source", "raw"],
+                "description": "引用类型"
+              },
+              "object_name": {
+                "type": "string",
+                "description": "对象名称"
+              },
+              "invocation": {
+                "type": "string",
+                "description": "调用方式"
+              },
+              "location": {
+                "type": "string",
+                "description": "代码位置"
+              }
+            }
+          }
+        },
+        "joins": {
+          "type": "array",
+          "description": "JOIN 关联清单",
+          "items": {
+            "type": "object",
+            "properties": {
+              "left_table": { "type": "string" },
+              "right_table": { "type": "string" },
+              "join_type": {
+                "type": "string",
+                "enum": ["INNER", "LEFT", "RIGHT", "FULL", "CROSS"]
+              },
+              "condition": { "type": "string" },
+              "confidence": {
+                "type": "string",
+                "enum": ["A", "B", "C", "D"]
+              },
+              "evidence": { "type": "string" },
+              "risk_flags": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          }
+        },
+        "mermaid_diagram": {
+          "type": "string",
+          "description": "Mermaid 依赖图"
+        },
+        "statistics": {
+          "type": "object",
+          "properties": {
+            "ref_count": { "type": "integer" },
+            "source_count": { "type": "integer" },
+            "raw_count": { "type": "integer" },
+            "join_count": { "type": "integer" }
+          }
+        }
+      }
+    },
+    "column_lineage": {
+      "type": "object",
+      "description": "字段级血缘（Stage 2）",
+      "properties": {
+        "mappings": {
+          "type": "array",
+          "description": "字段映射表",
+          "items": {
+            "type": "object",
+            "required": ["target_column", "source_table", "source_column"],
+            "properties": {
+              "target_column": {
+                "type": "string",
+                "description": "目标字段"
+              },
+              "source_table": {
+                "type": "string",
+                "description": "源表"
+              },
+              "source_column": {
+                "type": "string",
+                "description": "源字段"
+              },
+              "transformation": {
+                "type": "string",
+                "description": "转换逻辑"
+              },
+              "confidence": {
+                "type": "string",
+                "enum": ["A", "B", "C", "D"],
+                "description": "边置信度"
+              },
+              "evidence": {
+                "type": "string",
+                "description": "证据/位置"
+              }
+            }
+          }
+        },
+        "confidence_stats": {
+          "type": "object",
+          "properties": {
+            "A": { "type": "integer" },
+            "B": { "type": "integer" },
+            "C": { "type": "integer" },
+            "D": { "type": "integer" }
+          },
+          "description": "置信度统计"
+        },
+        "unparsed_columns": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "无法解析的字段"
+        },
+        "mermaid_diagram": {
+          "type": "string",
+          "description": "字段级 Mermaid 图"
+        }
+      }
+    },
+    "impact_assessment": {
+      "type": "object",
+      "description": "变更影响评估（Stage 3）",
+      "properties": {
+        "change_source": {
+          "type": "object",
+          "properties": {
+            "object": { "type": "string" },
+            "change_type": {
+              "type": "string",
+              "enum": ["add", "modify", "delete", "rename"]
+            },
+            "impact_type": {
+              "type": "string",
+              "enum": ["breaking", "semantic", "additive"]
+            },
+            "description": { "type": "string" }
+          }
+        },
+        "impact_levels": {
+          "type": "array",
+          "description": "各层级影响",
+          "items": {
+            "type": "object",
+            "properties": {
+              "level": { "type": "integer" },
+              "affected_objects": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": { "type": "string" },
+                    "layer": { "type": "string" },
+                    "impact_grade": {
+                      "type": "string",
+                      "enum": ["high", "medium", "low"]
+                    },
+                    "impact_type": { "type": "string" },
+                    "path_confidence": {
+                      "type": "string",
+                      "enum": ["A", "B", "C", "D"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "terminal_impacts": {
+          "type": "array",
+          "description": "末端影响（报表/应用）",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "type": { "type": "string" },
+              "impact_grade": { "type": "string" }
+            }
+          }
+        },
+        "mermaid_diagram": {
+          "type": "string",
+          "description": "影响图谱"
+        },
+        "action_items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "priority": { "type": "string" },
+              "action": { "type": "string" },
+              "target": { "type": "string" }
+            }
+          },
+          "description": "处理清单"
+        }
+      }
+    }
+  }
+}

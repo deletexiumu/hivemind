@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dw:generate-dq-rules:output:v1",
+  "title": "生成 DQ 规则输出",
+  "description": "DQ 规则生成场景的输出结构 Schema",
+  "type": "object",
+  "required": ["dbt_tests_yaml", "rules_summary"],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Schema 版本号"
+    },
+    "dbt_tests_yaml": {
+      "type": "object",
+      "description": "dbt tests YAML 配置",
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "文件路径"
+        },
+        "content": {
+          "type": "string",
+          "description": "YAML 内容"
+        }
+      }
+    },
+    "rules_summary": {
+      "type": "object",
+      "required": ["total_rules"],
+      "description": "规则摘要",
+      "properties": {
+        "total_rules": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "总规则数"
+        },
+        "by_severity": {
+          "type": "object",
+          "properties": {
+            "p0": { "type": "integer" },
+            "p1": { "type": "integer" },
+            "p2": { "type": "integer" }
+          },
+          "description": "按严重级别分布"
+        },
+        "by_type": {
+          "type": "object",
+          "properties": {
+            "unique": { "type": "integer" },
+            "not_null": { "type": "integer" },
+            "accepted_values": { "type": "integer" },
+            "relationships": { "type": "integer" },
+            "dbt_expectations": { "type": "integer" }
+          },
+          "description": "按规则类型分布"
+        }
+      }
+    },
+    "rules_list": {
+      "type": "array",
+      "description": "规则清单",
+      "items": {
+        "type": "object",
+        "required": ["column", "rule_type", "severity"],
+        "properties": {
+          "column": {
+            "type": "string",
+            "description": "字段名"
+          },
+          "rule_type": {
+            "type": "string",
+            "description": "规则类型"
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["P0", "P1", "P2"],
+            "description": "严重级别"
+          },
+          "inference_basis": {
+            "type": "string",
+            "description": "推断依据"
+          },
+          "threshold": {
+            "type": "object",
+            "description": "阈值配置",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["zero_tolerance", "mostly", "row_count"]
+              },
+              "value": {}
+            }
+          },
+          "config": {
+            "type": "object",
+            "description": "规则配置详情"
+          }
+        }
+      }
+    },
+    "layer_thresholds": {
+      "type": "object",
+      "description": "分层阈值配置",
+      "properties": {
+        "layer": {
+          "type": "string",
+          "enum": ["ODS", "DWD", "DWS", "ADS"]
+        },
+        "null_warn": { "type": "number" },
+        "null_error": { "type": "number" },
+        "unique_warn": { "type": "number" },
+        "unique_error": { "type": "number" }
+      }
+    },
+    "freshness_config": {
+      "type": "object",
+      "description": "新鲜度检测配置（source 适用）",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "field": { "type": "string" },
+        "warn_after": { "type": "string" },
+        "error_after": { "type": "string" }
+      }
+    },
+    "scd2_filter": {
+      "type": "string",
+      "description": "SCD2 有效行过滤条件"
+    },
+    "hive_notes": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Hive 方言注意事项"
+    },
+    "dependencies": {
+      "type": "object",
+      "description": "依赖说明",
+      "properties": {
+        "dbt_version": { "type": "string" },
+        "dbt_expectations_version": { "type": "string" },
+        "packages": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}

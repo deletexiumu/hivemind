@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dw:analyze-lineage:input:v1",
+  "title": "血缘分析输入",
+  "description": "血缘分析场景的输入校验 Schema",
+  "type": "object",
+  "required": ["target_model"],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Schema 版本号，用于未来迁移"
+    },
+    "target_model": {
+      "type": "string",
+      "minLength": 5,
+      "description": "待分析的目标模型代码（SQL 或 dbt 模型）",
+      "errorMessage": {
+        "type": "目标模型必须是字符串",
+        "minLength": "目标模型代码至少需要 5 个字符"
+      }
+    },
+    "model_name": {
+      "type": "string",
+      "description": "模型名称（可选，用于输出标识）"
+    },
+    "analysis_mode": {
+      "type": "string",
+      "enum": ["table", "column", "impact"],
+      "default": "table",
+      "description": "分析模式：table=表级，column=字段级，impact=影响评估"
+    },
+    "upstream_schemas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["table_name"],
+        "properties": {
+          "table_name": {
+            "type": "string",
+            "description": "上游表名"
+          },
+          "columns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "type": { "type": "string" }
+              }
+            },
+            "description": "字段清单"
+          },
+          "ddl": {
+            "type": "string",
+            "description": "DDL 定义"
+          }
+        }
+      },
+      "description": "上游表结构（提高字段级精度）"
+    },
+    "sources_yml": {
+      "type": "string",
+      "description": "dbt sources.yml 内容（区分 source 与原生表）"
+    },
+    "change_description": {
+      "type": "object",
+      "description": "变更描述（影响评估模式必需）",
+      "properties": {
+        "object": {
+          "type": "string",
+          "description": "变更对象（表名或 table.column 格式）"
+        },
+        "change_type": {
+          "type": "string",
+          "enum": ["add", "modify", "delete", "rename"],
+          "description": "变更类型"
+        },
+        "description": {
+          "type": "string",
+          "description": "变更内容描述"
+        },
+        "new_name": {
+          "type": "string",
+          "description": "新名称（rename 时使用）"
+        }
+      },
+      "if": {
+        "properties": { "change_type": { "const": "rename" } }
+      },
+      "then": {
+        "required": ["new_name"]
+      }
+    },
+    "max_depth": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10,
+      "default": 5,
+      "description": "影响评估最大追踪深度"
+    },
+    "include_confidence": {
+      "type": "boolean",
+      "default": true,
+      "description": "是否输出边级置信度"
+    },
+    "output_format": {
+      "type": "string",
+      "enum": ["markdown", "json"],
+      "default": "markdown",
+      "description": "输出格式"
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": { "analysis_mode": { "const": "impact" } }
+      },
+      "then": {
+        "required": ["change_description"],
+        "errorMessage": {
+          "required": {
+            "change_description": "影响评估模式需要提供变更描述（change_description）"
+          }
+        }
+      }
+    }
+  ],
+  "errorMessage": {
+    "required": {
+      "target_model": "缺少必填字段：目标模型（target_model）"
+    },
+    "additionalProperties": "包含未知字段，请检查输入格式"
+  }
+}

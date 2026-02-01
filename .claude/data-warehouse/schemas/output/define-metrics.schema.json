@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dw:define-metrics:output:v1",
+  "title": "定义指标输出",
+  "description": "指标定义场景的输出结构 Schema",
+  "type": "object",
+  "required": ["metric_definition"],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Schema 版本号"
+    },
+    "metric_definition": {
+      "type": "object",
+      "required": ["metric_name", "metric_id", "metric_type", "business_desc"],
+      "description": "指标定义",
+      "properties": {
+        "metric_name": {
+          "type": "string",
+          "description": "指标中文名称"
+        },
+        "metric_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "description": "指标 ID（snake_case）"
+        },
+        "metric_type": {
+          "type": "string",
+          "enum": ["atomic", "derived", "composite"],
+          "description": "指标类型：原子/派生/复合"
+        },
+        "business_desc": {
+          "type": "string",
+          "description": "业务描述"
+        },
+        "formula": {
+          "type": "string",
+          "description": "计算公式"
+        },
+        "aggregation": {
+          "type": "string",
+          "enum": ["SUM", "COUNT", "AVG", "MIN", "MAX", "COUNT_DISTINCT"],
+          "description": "聚合方式"
+        },
+        "grain": {
+          "type": "string",
+          "description": "数据粒度"
+        },
+        "time_dimension": {
+          "type": "string",
+          "description": "时间维度字段"
+        },
+        "dimensions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "可切维度"
+        },
+        "source_model": {
+          "type": "string",
+          "description": "源模型"
+        },
+        "source_field": {
+          "type": "string",
+          "description": "源字段"
+        },
+        "layer": {
+          "type": "string",
+          "enum": ["DWD", "DWS", "ADS"],
+          "description": "数据分层"
+        },
+        "depends_on": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "依赖指标 ID 列表"
+        },
+        "filters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "field": { "type": "string" },
+              "operator": { "type": "string" },
+              "value": {}
+            }
+          },
+          "description": "默认过滤条件"
+        }
+      }
+    },
+    "semantic_layer_yaml": {
+      "type": "object",
+      "description": "dbt Semantic Layer YAML 配置",
+      "properties": {
+        "semantic_model": {
+          "type": "object",
+          "description": "semantic_model 定义",
+          "properties": {
+            "path": { "type": "string" },
+            "content": { "type": "string" }
+          }
+        },
+        "metric": {
+          "type": "object",
+          "description": "metric 定义",
+          "properties": {
+            "path": { "type": "string" },
+            "content": { "type": "string" }
+          }
+        }
+      }
+    },
+    "documentation": {
+      "type": "object",
+      "description": "口径说明文档",
+      "properties": {
+        "path": { "type": "string" },
+        "content": { "type": "string" }
+      }
+    },
+    "pending_questions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "待确认问题"
+    }
+  }
+}

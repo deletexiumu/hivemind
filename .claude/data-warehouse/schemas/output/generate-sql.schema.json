@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dw:generate-sql:output:v1",
+  "title": "生成 SQL 输出",
+  "description": "SQL 生成场景的输出结构 Schema",
+  "type": "object",
+  "required": ["sql_code", "explanation"],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Schema 版本号"
+    },
+    "sql_code": {
+      "type": "string",
+      "minLength": 10,
+      "description": "生成的 SQL 代码"
+    },
+    "explanation": {
+      "type": "object",
+      "description": "SQL 说明",
+      "properties": {
+        "business_goal": {
+          "type": "string",
+          "description": "业务目标说明"
+        },
+        "data_sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "table": { "type": "string" },
+              "alias": { "type": "string" },
+              "role": { "type": "string" }
+            }
+          },
+          "description": "数据源说明"
+        },
+        "time_range": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["dynamic", "fixed"]
+            },
+            "expression": { "type": "string" },
+            "description": { "type": "string" }
+          },
+          "description": "时间范围说明"
+        },
+        "filters": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "过滤条件说明"
+        },
+        "aggregations": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "聚合逻辑说明"
+        },
+        "scd2_semantic": {
+          "type": "string",
+          "description": "SCD2 语义说明"
+        }
+      }
+    },
+    "validator_result": {
+      "type": "object",
+      "description": "Validator 自检结果",
+      "properties": {
+        "passed": {
+          "type": "boolean",
+          "description": "是否通过"
+        },
+        "p0_issues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "description": { "type": "string" },
+              "location": { "type": "string" }
+            }
+          },
+          "description": "P0 阻断问题"
+        },
+        "p1_warnings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "description": { "type": "string" },
+              "location": { "type": "string" }
+            }
+          },
+          "description": "P1 警告"
+        },
+        "p2_suggestions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string" },
+              "description": { "type": "string" }
+            }
+          },
+          "description": "P2 建议"
+        }
+      }
+    },
+    "performance_hints": {
+      "type": "array",
+      "description": "性能提示",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["partition", "join", "aggregation", "cost"],
+            "description": "提示类型"
+          },
+          "description": {
+            "type": "string",
+            "description": "提示内容"
+          },
+          "suggestion": {
+            "type": "string",
+            "description": "优化建议"
+          }
+        }
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "description": "依赖说明",
+      "items": {
+        "type": "object",
+        "properties": {
+          "table": {
+            "type": "string",
+            "description": "依赖表"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["ref", "source", "raw"],
+            "description": "引用类型"
+          },
+          "partition_filter": {
+            "type": "string",
+            "description": "分区过滤"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dw:generate-sql:input:v1",
+  "title": "生成 SQL 输入",
+  "description": "SQL 生成场景的输入校验 Schema",
+  "type": "object",
+  "required": ["requirement", "source_tables"],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Schema 版本号，用于未来迁移"
+    },
+    "requirement": {
+      "type": "string",
+      "minLength": 10,
+      "description": "取数需求描述，说明业务目标和输出预期",
+      "errorMessage": {
+        "type": "取数需求必须是字符串",
+        "minLength": "取数需求至少需要 10 个字符，请详细描述"
+      }
+    },
+    "source_tables": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "oneOf": [
+          {
+            "type": "string",
+            "description": "表名（简写）"
+          },
+          {
+            "type": "object",
+            "required": ["name"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "表名"
+              },
+              "alias": {
+                "type": "string",
+                "description": "表别名"
+              },
+              "partition_col": {
+                "type": "string",
+                "description": "分区列"
+              },
+              "partition_type": {
+                "type": "string",
+                "enum": ["STRING", "DATE", "INT"],
+                "description": "分区列类型"
+              },
+              "partition_format": {
+                "type": "string",
+                "description": "分区格式（如 yyyy-MM-dd）"
+              }
+            }
+          }
+        ]
+      },
+      "description": "数据源表清单",
+      "errorMessage": {
+        "minItems": "至少需要指定一个数据源表"
+      }
+    },
+    "output_grain": {
+      "type": "string",
+      "description": "输出粒度（一行代表什么）"
+    },
+    "output_type": {
+      "type": "string",
+      "enum": ["SELECT", "INSERT_OVERWRITE", "CTAS"],
+      "default": "SELECT",
+      "description": "输出形态"
+    },
+    "target_table": {
+      "type": "string",
+      "description": "目标表（落表时必填）"
+    },
+    "time_range": {
+      "type": "object",
+      "description": "时间范围配置",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["dynamic", "fixed"],
+          "default": "dynamic",
+          "description": "时间表达类型"
+        },
+        "start": {
+          "type": "string",
+          "description": "开始时间/表达式"
+        },
+        "end": {
+          "type": "string",
+          "description": "结束时间/表达式"
+        },
+        "lookback_days": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "回溯天数"
+        }
+      }
+    },
+    "filters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "field": { "type": "string" },
+          "operator": { "type": "string" },
+          "value": {}
+        }
+      },
+      "description": "过滤条件"
+    },
+    "scd2_semantic": {
+      "type": "string",
+      "enum": ["is_current", "as_of"],
+      "description": "SCD2 取数语义（有维表时必填）"
+    },
+    "as_of_field": {
+      "type": "string",
+      "description": "as-of 对齐字段（scd2_semantic=as_of 时必填）"
+    },
+    "aggregations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "function": {
+            "type": "string",
+            "enum": ["SUM", "COUNT", "AVG", "MIN", "MAX", "COUNT_DISTINCT"]
+          },
+          "field": { "type": "string" },
+          "alias": { "type": "string" }
+        }
+      },
+      "description": "聚合配置"
+    },
+    "group_by": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "分组字段"
+    },
+    "allow_full_scan": {
+      "type": "boolean",
+      "default": false,
+      "description": "是否允许全量扫描"
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["confirm", "generate"],
+      "default": "confirm",
+      "description": "输出模式：confirm=确认需求，generate=直接生成"
+    }
+  },
+  "additionalProperties": false,
+  "errorMessage": {
+    "required": {
+      "requirement": "缺少必填字段：取数需求（requirement）",
+      "source_tables": "缺少必填字段：数据源表（source_tables）"
+    },
+    "additionalProperties": "包含未知字段，请检查输入格式"
+  }
+}

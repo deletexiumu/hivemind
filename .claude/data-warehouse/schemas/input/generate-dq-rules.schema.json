@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dw:generate-dq-rules:input:v1",
+  "title": "生成 DQ 规则输入",
+  "description": "DQ 规则生成场景的输入校验 Schema",
+  "type": "object",
+  "required": ["model_name", "columns"],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Schema 版本号，用于未来迁移"
+    },
+    "model_name": {
+      "type": "string",
+      "minLength": 3,
+      "description": "模型/表名称",
+      "errorMessage": {
+        "type": "模型名称必须是字符串",
+        "minLength": "模型名称至少需要 3 个字符"
+      }
+    },
+    "columns": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name", "type"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "字段名称"
+          },
+          "type": {
+            "type": "string",
+            "description": "字段类型（如 STRING、BIGINT、DECIMAL(18,2)）"
+          },
+          "description": {
+            "type": "string",
+            "description": "字段中文描述"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["pk", "fk", "amount", "count", "status", "time", "partition", "soft_delete"],
+            "description": "字段角色标注"
+          },
+          "nullable": {
+            "type": "boolean",
+            "default": true,
+            "description": "是否可为空"
+          },
+          "accepted_values": {
+            "type": "array",
+            "items": {},
+            "description": "允许的取值范围"
+          }
+        }
+      },
+      "description": "字段清单",
+      "errorMessage": {
+        "minItems": "至少需要指定一个字段"
+      }
+    },
+    "target_type": {
+      "type": "string",
+      "enum": ["source", "model"],
+      "default": "model",
+      "description": "目标类型：source 或 model"
+    },
+    "layer": {
+      "type": "string",
+      "enum": ["ODS", "DWD", "DWS", "ADS"],
+      "description": "数据分层（影响阈值策略）"
+    },
+    "materialization": {
+      "type": "string",
+      "enum": ["table", "view", "incremental", "ephemeral"],
+      "description": "物化方式"
+    },
+    "partition": {
+      "type": "object",
+      "description": "分区配置",
+      "properties": {
+        "column": {
+          "type": "string",
+          "description": "分区列名"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["STRING", "DATE", "INT"],
+          "description": "分区列类型"
+        },
+        "format": {
+          "type": "string",
+          "description": "分区格式"
+        },
+        "granularity": {
+          "type": "string",
+          "enum": ["day", "hour"],
+          "description": "分区粒度"
+        }
+      }
+    },
+    "test_window": {
+      "type": "object",
+      "description": "测试窗口配置",
+      "properties": {
+        "lookback_days": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 7,
+          "description": "测试回溯天数"
+        },
+        "allow_full_scan": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否允许全量扫描"
+        }
+      }
+    },
+    "scd2": {
+      "type": "object",
+      "description": "SCD2 配置（维度表/历史表适用）",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "是否启用 SCD2"
+        },
+        "current_filter": {
+          "type": "string",
+          "description": "当前有效行过滤条件"
+        }
+      }
+    },
+    "freshness": {
+      "type": "object",
+      "description": "新鲜度检测配置（仅 source 适用）",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "field": {
+          "type": "string",
+          "description": "新鲜度检测字段"
+        },
+        "warn_after_hours": {
+          "type": "integer"
+        },
+        "error_after_hours": {
+          "type": "integer"
+        }
+      }
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["preview", "generate"],
+      "default": "preview",
+      "description": "输出模式：preview=规则预览，generate=完整 YAML"
+    }
+  },
+  "additionalProperties": false,
+  "errorMessage": {
+    "required": {
+      "model_name": "缺少必填字段：模型名称（model_name）",
+      "columns": "缺少必填字段：字段清单（columns）"
+    },
+    "additionalProperties": "包含未知字段，请检查输入格式"
+  }
+}
