@@ -35,12 +35,12 @@
 
 ## 当前位置
 
-**Phase:** 6 of 8 (治理场景) - Complete
-**Plan:** 4 of 4 complete
-**Status:** Phase 6 Complete
-**Last activity:** 2026-02-01 - Completed 06-04-PLAN.md (血缘分析场景)
+**Phase:** 7 of 8 (SQL 生成 + 血缘) - In Progress
+**Plan:** 1 of 3 complete
+**Status:** Phase 7 In Progress
+**Last activity:** 2026-02-01 - Completed 07-01-PLAN.md (SQL 生成核心提示系统)
 
-**Progress:** █████████░ 100% (18/18 plans)
+**Progress:** █████████░ 86% (19/22 plans)
 
 **已完成：**
 - [✓] 48 个 v1 需求分析
@@ -67,9 +67,12 @@
 - [✓] **06-02: 指标定义场景（prompt.md + output-template.md + 2 案例）**
 - [✓] **06-03: DQ 规则生成场景（prompt.md + output-template.md + 2 案例）**
 - [✓] **06-04: 血缘分析场景（prompt.md + output-template.md + 2 案例）**
+- [✓] **07-01: SQL 生成核心提示系统（prompt.md + output-template.md + time-expressions.md）**
 
 **待执行：**
-- [ ] Phase 7-8 递进执行
+- [ ] 07-02: SQL 生成案例库 + 血缘增强
+- [ ] 07-03: 变更影响评估
+- [ ] Phase 8 工具化
 
 ---
 
@@ -131,6 +134,10 @@
 | 血缘精度等级 | A/B/C/D 四级（高/中/低/需人工） | 平衡自动化与准确性，D 级需人工确认 | ✓ 06-04 确认 |
 | dbt 血缘优先解析 | ref()/source() > 原生表名 | dbt 项目中 ref/source 更可靠 | ✓ 06-04 确认 |
 | 静态解析优先 | AST 解析 > LLM 推断 | 静态解析确定性高 | ✓ 06-04 确认 |
+| 8 类必问项（SQL 生成） | 取数目标/数据源/分区/时间/过滤/SCD2/聚合/成本 | 覆盖 SQL 生成所有关键信息 | ✓ 07-01 确认 |
+| Validator P0/P1/P2 分级（SQL） | P0 阻断（分区/笛卡尔积）、P1 警告（JOIN/SCD2）、P2 提示（性能） | 与评审场景一致的分级机制 | ✓ 07-01 确认 |
+| 动态时间表达优先 | DATE_SUB/TRUNC/ADD_MONTHS > 硬编码日期 | 确保 SQL 可重复执行 | ✓ 07-01 确认 |
+| 分区谓词模板 | 裸字段比较常量，禁止对分区列做函数 | 保证分区裁剪生效 | ✓ 07-01 确认 |
 
 ---
 
@@ -144,9 +151,9 @@
 | **4** | 设计场景 | 6 | **Complete** | 100% |
 | **5** | 评审场景 | 8 | **Complete** | 100% |
 | **6** | 治理场景 | 13 | **Complete** | 100% |
-| **7** | SQL 生成 + 血缘 | 12 | Pending | 0% |
+| **7** | SQL 生成 + 血缘 | 12 | **In Progress** | 33% |
 | **8** | 工具化 | 3 | Pending | 0% |
-| **整体** | **全系统 v1** | **48** | In Progress | **81%** |
+| **整体** | **全系统 v1** | **48** | In Progress | **86%** |
 
 ---
 
@@ -224,6 +231,10 @@
 | .claude/data-warehouse/prompts/scenarios/analyze-lineage/output-template.md | 1.0 | 2026-02-01 | **新增** |
 | .claude/data-warehouse/prompts/scenarios/analyze-lineage/examples/table-level.md | 1.0 | 2026-02-01 | **新增** |
 | .claude/data-warehouse/prompts/scenarios/analyze-lineage/examples/column-level.md | 1.0 | 2026-02-01 | **新增** |
+| .planning/phases/07-sql-generation-lineage/07-01-SUMMARY.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/prompts/scenarios/generate-sql/prompt.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/prompts/scenarios/generate-sql/output-template.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/prompts/scenarios/generate-sql/time-expressions.md | 1.0 | 2026-02-01 | **新增** |
 
 ---
 
@@ -323,8 +334,8 @@
 
 ## 会话连续性要点
 
-**Last session:** 2026-02-01T02:00:00Z
-**Stopped at:** Completed 06-04-PLAN.md (血缘分析场景) - Phase 6 Complete
+**Last session:** 2026-02-01T05:14:00Z
+**Stopped at:** Completed 07-01-PLAN.md (SQL 生成核心提示系统) - Phase 7 In Progress
 **Resume file:** None
 
 **如果重启对话，这些是最关键的上下文：**
@@ -357,7 +368,11 @@
    - 06-02: 指标定义场景（prompt.md + output-template.md + 2 案例）✓
    - 06-03: DQ 规则场景（prompt.md + output-template.md + 2 案例）✓
    - 06-04: 血缘分析场景（prompt.md + output-template.md + 2 案例）✓
-10. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束 + 命名规范 + Token 限制 + 星型模型优先 + 双受众文档 + 维度表落层 DWD + 回刷窗口约束 + SCD2 右开区间 + lookback 分层配置 + P0 门禁机制 + 质量分计算 + 指标三分法 + 字段类型驱动 DQ 规则 + 分层阈值量化 + Stage 1 必问项（grain/时间/维度） + 派生指标依赖声明 + 过滤条件位置 + 8 类必问项（DQ 规则） + SCD2 有效行过滤 + Hive 分区过滤语法 + 两段式血缘交互 + 血缘精度等级 A-D + dbt 血缘优先解析 + 静态解析优先
+10. **Phase 7 进行中**：
+    - 07-01: SQL 生成核心提示系统（prompt.md + output-template.md + time-expressions.md）✓
+    - 07-02: SQL 生成案例库 + 血缘增强（待执行）
+    - 07-03: 变更影响评估（待执行）
+11. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束 + 命名规范 + Token 限制 + 星型模型优先 + 双受众文档 + 维度表落层 DWD + 回刷窗口约束 + SCD2 右开区间 + lookback 分层配置 + P0 门禁机制 + 质量分计算 + 指标三分法 + 字段类型驱动 DQ 规则 + 分层阈值量化 + Stage 1 必问项（grain/时间/维度） + 派生指标依赖声明 + 过滤条件位置 + 8 类必问项（DQ 规则） + SCD2 有效行过滤 + Hive 分区过滤语法 + 两段式血缘交互 + 血缘精度等级 A-D + dbt 血缘优先解析 + 静态解析优先 + 8 类必问项（SQL 生成 A-H） + Validator P0/P1/P2 分级 + 动态时间表达优先 + 分区谓词模板
 
 ---
 
