@@ -2,7 +2,7 @@
 
 **项目名称：** HiveMind 数仓助手（Hive + dbt 中文提示系统）
 **最后更新：** 2026-02-01
-**当前里程碑：** Phase 6 Complete
+**当前里程碑：** Phase 7 Complete
 
 ---
 
@@ -35,10 +35,10 @@
 
 ## 当前位置
 
-**Phase:** 7 of 8 (SQL 生成 + 血缘) - In Progress
-**Plan:** 3 of 4 complete
-**Status:** Phase 7 In Progress
-**Last activity:** 2026-02-01 - Completed 07-04-PLAN.md (血缘增强案例)
+**Phase:** 7 of 8 (SQL 生成 + 血缘) - Complete
+**Plan:** 4 of 4 complete
+**Status:** Phase 7 Complete
+**Last activity:** 2026-02-01 - Completed 07-03-PLAN.md (SQL 生成案例库)
 
 **Progress:** █████████░ 95% (21/22 plans)
 
@@ -69,10 +69,10 @@
 - [✓] **06-04: 血缘分析场景（prompt.md + output-template.md + 2 案例）**
 - [✓] **07-01: SQL 生成核心提示系统（prompt.md + output-template.md + time-expressions.md）**
 - [✓] **07-02: 血缘分析增强（JOIN 关联识别 + 边级置信度 + 变更影响评估模板）**
+- [✓] **07-03: SQL 生成案例库（simple-select + aggregation-with-join + time-window-query）**
 - [✓] **07-04: 血缘增强案例（join-relationship.md + impact-assessment.md）**
 
 **待执行：**
-- [ ] 07-03: SQL 生成案例库
 - [ ] Phase 8 工具化（3 个计划）
 
 ---
@@ -143,6 +143,8 @@
 | 路径置信度传播 | min(路径上所有边) | 保守策略，任一不确定边降低整体可信度 | ✓ 07-02 确认 |
 | 三段式交互（血缘） | Stage 1/2/3（表级/字段级/影响评估） | 表级快速概览，字段级按需展开，影响评估独立模式 | ✓ 07-02 确认 |
 | 影响类型分类 | Breaking/语义变更/仅新增 | 与影响等级（高/中/低）正交，更精确的变更分类 | ✓ 07-02 确认 |
+| SQL 案例复杂度分级 | 简单（0 JOIN）/中等（2 JOIN + SCD2）/复杂（INSERT OVERWRITE） | 覆盖常见取数场景 | ✓ 07-03 确认 |
+| SQL 案例结构统一 | 输入 -> Stage 1 确认 -> Stage 2 产物 -> 要点 | 与设计场景案例结构一致 | ✓ 07-03 确认 |
 
 ---
 
@@ -156,7 +158,7 @@
 | **4** | 设计场景 | 6 | **Complete** | 100% |
 | **5** | 评审场景 | 8 | **Complete** | 100% |
 | **6** | 治理场景 | 13 | **Complete** | 100% |
-| **7** | SQL 生成 + 血缘 | 12 | **In Progress** | 67% |
+| **7** | SQL 生成 + 血缘 | 12 | **Complete** | 100% |
 | **8** | 工具化 | 3 | Pending | 0% |
 | **整体** | **全系统 v1** | **48** | In Progress | **91%** |
 
@@ -247,6 +249,10 @@
 | .planning/phases/07-sql-generation-lineage/07-04-SUMMARY.md | 1.0 | 2026-02-01 | **新增** |
 | .claude/data-warehouse/prompts/scenarios/analyze-lineage/examples/join-relationship.md | 1.0 | 2026-02-01 | **新增** |
 | .claude/data-warehouse/prompts/scenarios/analyze-lineage/examples/impact-assessment.md | 1.0 | 2026-02-01 | **新增** |
+| .planning/phases/07-sql-generation-lineage/07-03-SUMMARY.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/prompts/scenarios/generate-sql/examples/simple-select.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/prompts/scenarios/generate-sql/examples/aggregation-with-join.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/prompts/scenarios/generate-sql/examples/time-window-query.md | 1.0 | 2026-02-01 | **新增** |
 
 ---
 
@@ -346,8 +352,8 @@
 
 ## 会话连续性要点
 
-**Last session:** 2026-02-01T05:15:21Z
-**Stopped at:** Completed 07-04-PLAN.md (血缘增强案例) - Phase 7 In Progress
+**Last session:** 2026-02-01T05:21:00Z
+**Stopped at:** Completed 07-03-PLAN.md (SQL 生成案例库) - Phase 7 Complete
 **Resume file:** None
 
 **如果重启对话，这些是最关键的上下文：**
@@ -380,10 +386,10 @@
    - 06-02: 指标定义场景（prompt.md + output-template.md + 2 案例）✓
    - 06-03: DQ 规则场景（prompt.md + output-template.md + 2 案例）✓
    - 06-04: 血缘分析场景（prompt.md + output-template.md + 2 案例）✓
-10. **Phase 7 进行中**：
+10. **Phase 7 已完成**：
     - 07-01: SQL 生成核心提示系统（prompt.md + output-template.md + time-expressions.md）✓
     - 07-02: 血缘分析增强（JOIN 关联识别 + 边级置信度 + 变更影响评估模板）✓
-    - 07-03: SQL 生成案例库（待执行）
+    - 07-03: SQL 生成案例库（simple-select + aggregation-with-join + time-window-query）✓
     - 07-04: 血缘增强案例（join-relationship.md + impact-assessment.md）✓
 11. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束 + 命名规范 + Token 限制 + 星型模型优先 + 双受众文档 + 维度表落层 DWD + 回刷窗口约束 + SCD2 右开区间 + lookback 分层配置 + P0 门禁机制 + 质量分计算 + 指标三分法 + 字段类型驱动 DQ 规则 + 分层阈值量化 + Stage 1 必问项（grain/时间/维度） + 派生指标依赖声明 + 过滤条件位置 + 8 类必问项（DQ 规则） + SCD2 有效行过滤 + Hive 分区过滤语法 + 两段式血缘交互 + 血缘精度等级 A-D + dbt 血缘优先解析 + 静态解析优先 + 8 类必问项（SQL 生成 A-H） + Validator P0/P1/P2 分级 + 动态时间表达优先 + 分区谓词模板 + 边级置信度 + 路径置信度传播 + 三段式交互（血缘）+ 影响类型分类
 
@@ -397,7 +403,7 @@
 - [x] **Phase 4 设计新模型实现** — 提示、模板、案例、评审
 - [x] **Phase 5 评审已有模型实现** — 提示、检查清单、修复建议、案例
 - [x] **Phase 6 治理场景实现** — 指标、DQ、基础血缘、评审
-- [ ] **Phase 7 SQL 生成 + 血缘增强** — SQL 生成、血缘追踪、影响评估、评审
+- [x] **Phase 7 SQL 生成 + 血缘增强** — SQL 生成、血缘追踪、影响评估、评审
 - [ ] **Phase 8 工具化** — CLI 工具、规格校验、集成框架、完整文档
 - [ ] **v1 系统评审与发布** — 验收所有 48 个需求，发布初版
 
