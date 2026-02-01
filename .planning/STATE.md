@@ -36,11 +36,11 @@
 ## 当前位置
 
 **Phase:** 7 of 8 (SQL 生成 + 血缘) - In Progress
-**Plan:** 2 of 3 complete
+**Plan:** 3 of 4 complete
 **Status:** Phase 7 In Progress
-**Last activity:** 2026-02-01 - Completed 07-02-PLAN.md (血缘分析增强)
+**Last activity:** 2026-02-01 - Completed 07-04-PLAN.md (血缘增强案例)
 
-**Progress:** █████████░ 91% (20/22 plans)
+**Progress:** █████████░ 95% (21/22 plans)
 
 **已完成：**
 - [✓] 48 个 v1 需求分析
@@ -69,10 +69,11 @@
 - [✓] **06-04: 血缘分析场景（prompt.md + output-template.md + 2 案例）**
 - [✓] **07-01: SQL 生成核心提示系统（prompt.md + output-template.md + time-expressions.md）**
 - [✓] **07-02: 血缘分析增强（JOIN 关联识别 + 边级置信度 + 变更影响评估模板）**
+- [✓] **07-04: 血缘增强案例（join-relationship.md + impact-assessment.md）**
 
 **待执行：**
 - [ ] 07-03: SQL 生成案例库
-- [ ] Phase 8 工具化
+- [ ] Phase 8 工具化（3 个计划）
 
 ---
 
@@ -243,6 +244,9 @@
 | .claude/data-warehouse/prompts/scenarios/analyze-lineage/prompt.md | 1.1.0 | 2026-02-01 | **更新** |
 | .claude/data-warehouse/prompts/scenarios/analyze-lineage/output-template.md | 1.1.0 | 2026-02-01 | **更新** |
 | .claude/data-warehouse/prompts/scenarios/analyze-lineage/impact-analysis-template.md | 1.0 | 2026-02-01 | **新增** |
+| .planning/phases/07-sql-generation-lineage/07-04-SUMMARY.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/prompts/scenarios/analyze-lineage/examples/join-relationship.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/prompts/scenarios/analyze-lineage/examples/impact-assessment.md | 1.0 | 2026-02-01 | **新增** |
 
 ---
 
@@ -342,8 +346,8 @@
 
 ## 会话连续性要点
 
-**Last session:** 2026-02-01T05:14:00Z
-**Stopped at:** Completed 07-02-PLAN.md (血缘分析增强) - Phase 7 In Progress
+**Last session:** 2026-02-01T05:15:21Z
+**Stopped at:** Completed 07-04-PLAN.md (血缘增强案例) - Phase 7 In Progress
 **Resume file:** None
 
 **如果重启对话，这些是最关键的上下文：**
@@ -380,6 +384,7 @@
     - 07-01: SQL 生成核心提示系统（prompt.md + output-template.md + time-expressions.md）✓
     - 07-02: 血缘分析增强（JOIN 关联识别 + 边级置信度 + 变更影响评估模板）✓
     - 07-03: SQL 生成案例库（待执行）
+    - 07-04: 血缘增强案例（join-relationship.md + impact-assessment.md）✓
 11. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束 + 命名规范 + Token 限制 + 星型模型优先 + 双受众文档 + 维度表落层 DWD + 回刷窗口约束 + SCD2 右开区间 + lookback 分层配置 + P0 门禁机制 + 质量分计算 + 指标三分法 + 字段类型驱动 DQ 规则 + 分层阈值量化 + Stage 1 必问项（grain/时间/维度） + 派生指标依赖声明 + 过滤条件位置 + 8 类必问项（DQ 规则） + SCD2 有效行过滤 + Hive 分区过滤语法 + 两段式血缘交互 + 血缘精度等级 A-D + dbt 血缘优先解析 + 静态解析优先 + 8 类必问项（SQL 生成 A-H） + Validator P0/P1/P2 分级 + 动态时间表达优先 + 分区谓词模板 + 边级置信度 + 路径置信度传播 + 三段式交互（血缘）+ 影响类型分类
 
 ---
