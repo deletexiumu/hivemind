@@ -2,7 +2,7 @@
 
 **项目名称：** HiveMind 数仓助手（Hive + dbt 中文提示系统）
 **最后更新：** 2026-02-01
-**当前里程碑：** Phase 5 Complete
+**当前里程碑：** Phase 6 In Progress
 
 ---
 
@@ -35,12 +35,12 @@
 
 ## 当前位置
 
-**Phase:** 5 of 8 (评审场景) - Complete
-**Plan:** 3 of 3 complete
-**Status:** Phase 5 Complete
-**Last activity:** 2026-02-01 - Completed 05-03-PLAN.md (评审案例库)
+**Phase:** 6 of 8 (治理场景) - In Progress
+**Plan:** 1 of 4 complete
+**Status:** Phase 6 In Progress
+**Last activity:** 2026-02-01 - Completed 06-01-PLAN.md (治理上下文基础)
 
-**Progress:** █████████░ 88% (14/16 plans)
+**Progress:** █████████░ 94% (15/16 plans)
 
 **已完成：**
 - [✓] 48 个 v1 需求分析
@@ -63,9 +63,10 @@
 - [✓] **05-01: 问题分级（P0-P3）+ 检查清单（33 条规则）**
 - [✓] **05-02: 主提示文件 prompt.md + 输出模板 + 修复建议模板**
 - [✓] **05-03: 3 个评审案例（good-model/naming-issues/multiple-issues）**
+- [✓] **06-01: 治理上下文基础（metrics-core.md + dq-rules-core.md）**
 
 **待执行：**
-- [ ] Phase 6-8 递进执行
+- [ ] Phase 6-8 递进执行（06-02 至 06-04 + Phase 7-8）
 
 ---
 
@@ -114,6 +115,9 @@
 | 修复建议分档 | S/M/L/XL 四档详细度规则 | 确保输出一致性和可操作性 | ✓ 05-02 确认 |
 | 案例质量等级覆盖 | 高/中/低三级（通过/有条件通过/不通过） | 覆盖完整评审结论范围 | ✓ 05-03 确认 |
 | 案例规则 ID 引用 | 每个问题关联 review-checklist.md 规则 ID | 确保案例与检查清单一致性 | ✓ 05-03 确认 |
+| 指标三分法与 MetricFlow 映射 | 原子→simple，派生→derived/ratio，复合→derived 嵌套 | 与 dbt Semantic Layer 2.0 官方格式对齐 | ✓ 06-01 确认 |
+| 字段类型驱动 DQ 规则 | _id→unique，_amt→范围检测，_status→accepted_values | 遵循 naming.md 命名规范 | ✓ 06-01 确认 |
+| 分层阈值量化 | ODS 5%/10%，DWD-DWS 1%/5%，ADS 0%/1% | 遵循 06-CONTEXT.md 用户决策 | ✓ 06-01 确认 |
 
 ---
 
@@ -126,10 +130,10 @@
 | **3** | 平台约束 | 3 | **Complete** | 100% |
 | **4** | 设计场景 | 6 | **Complete** | 100% |
 | **5** | 评审场景 | 8 | **Complete** | 100% |
-| **6** | 治理场景 | 13 | Pending | 0% |
+| **6** | 治理场景 | 13 | **In Progress** | 25% |
 | **7** | SQL 生成 + 血缘 | 12 | Pending | 0% |
 | **8** | 工具化 | 3 | Pending | 0% |
-| **整体** | **全系统 v1** | **48** | In Progress | **79%** |
+| **整体** | **全系统 v1** | **48** | In Progress | **81%** |
 
 ---
 
@@ -189,6 +193,9 @@
 | .claude/data-warehouse/prompts/scenarios/review-existing-model/examples/good-model.md | 1.0 | 2026-02-01 | **新增** |
 | .claude/data-warehouse/prompts/scenarios/review-existing-model/examples/naming-issues.md | 1.0 | 2026-02-01 | **新增** |
 | .claude/data-warehouse/prompts/scenarios/review-existing-model/examples/multiple-issues.md | 1.0 | 2026-02-01 | **新增** |
+| .planning/phases/06-governance-scenarios/06-01-SUMMARY.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/context/governance/metrics-core.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/context/governance/dq-rules-core.md | 1.0 | 2026-02-01 | **新增** |
 
 ---
 
@@ -288,8 +295,8 @@
 
 ## 会话连续性要点
 
-**Last session:** 2026-02-01T00:50:00Z
-**Stopped at:** Completed 05-03-PLAN.md (评审案例库) - Phase 5 Complete
+**Last session:** 2026-02-01T01:52:00Z
+**Stopped at:** Completed 06-01-PLAN.md (治理上下文基础) - Phase 6 In Progress
 **Resume file:** None
 
 **如果重启对话，这些是最关键的上下文：**
@@ -317,7 +324,12 @@
    - 05-01: 问题分级（P0-P3）+ 检查清单（33 条规则）✓
    - 05-02: 主提示文件 prompt.md + 输出模板 + 修复建议模板 ✓
    - 05-03: 3 个评审案例（good-model/naming-issues/multiple-issues）✓
-9. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束 + 命名规范 + Token 限制 + 星型模型优先 + 双受众文档 + 维度表落层 DWD + 回刷窗口约束 + SCD2 右开区间 + lookback 分层配置 + P0 门禁机制 + 质量分计算
+9. **Phase 6 进行中**：
+   - 06-01: 治理上下文基础（metrics-core.md + dq-rules-core.md）✓
+   - 06-02: 指标定义场景（待执行）
+   - 06-03: DQ 规则场景（待执行）
+   - 06-04: 血缘分析场景（待执行）
+10. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束 + 命名规范 + Token 限制 + 星型模型优先 + 双受众文档 + 维度表落层 DWD + 回刷窗口约束 + SCD2 右开区间 + lookback 分层配置 + P0 门禁机制 + 质量分计算 + 指标三分法 + 字段类型驱动 DQ 规则 + 分层阈值量化
 
 ---
 
