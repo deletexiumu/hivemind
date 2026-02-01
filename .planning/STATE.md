@@ -36,11 +36,11 @@
 ## 当前位置
 
 **Phase:** 8 of 8 (工具化) - In Progress
-**Plan:** 1 of 5 complete
+**Plan:** 2 of 3 complete
 **Status:** Phase 8 In Progress
-**Last activity:** 2026-02-01 - Completed 08-01-PLAN.md (配置与 Schema)
+**Last activity:** 2026-02-01 - Completed 08-02-PLAN.md (场景输入模板)
 
-**Progress:** █████████░ 96% (22/26 plans)
+**Progress:** █████████░ 96% (23/24 plans)
 
 **已完成：**
 - [✓] 48 个 v1 需求分析
@@ -72,9 +72,10 @@
 - [✓] **07-03: SQL 生成案例库（simple-select + aggregation-with-join + time-window-query）**
 - [✓] **07-04: 血缘增强案例（join-relationship.md + impact-assessment.md）**
 - [✓] **08-01: 配置文件 + JSON Schema（scenarios.yaml/platforms.yaml/assembly-rules.yaml + 12 schemas）**
+- [✓] **08-02: 场景输入模板（6 个 input-template.md）**
 
 **待执行：**
-- [ ] Phase 8 工具化（4 个计划剩余）
+- [ ] Phase 8 工具化（1 个计划剩余）
 
 ---
 
@@ -364,7 +365,7 @@
 ## 会话连续性要点
 
 **Last session:** 2026-02-01T10:10:00Z
-**Stopped at:** Completed 08-01-PLAN.md (配置与 Schema) - Phase 8 In Progress
+**Stopped at:** Completed 08-02-PLAN.md (场景输入模板) - Phase 8 In Progress
 **Resume file:** None
 
 **如果重启对话，这些是最关键的上下文：**
