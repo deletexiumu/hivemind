@@ -36,11 +36,11 @@
 ## 当前位置
 
 **Phase:** 8 of 8 (工具化) - Complete
-**Plan:** 3 of 3 complete
+**Plan:** 5 of 5 complete
 **Status:** Phase 8 Complete - v1 Ready for Audit
-**Last activity:** 2026-02-01 - Completed 08-04-PLAN.md (/dw:* 命令文件)
+**Last activity:** 2026-02-01 - Completed 08-05-PLAN.md (README.md + extending.md)
 
-**Progress:** ██████████ 100% (24/24 plans)
+**Progress:** ██████████ 100% (26/26 plans)
 
 **已完成：**
 - [✓] 48 个 v1 需求分析
@@ -75,6 +75,7 @@
 - [✓] **08-02: 场景输入模板（6 个 input-template.md）**
 - [✓] **08-03: 核心辅助脚本（assemble.js/validate.js/scaffold.js + package.json）**
 - [✓] **08-04: /dw:* 命令文件（6 场景命令 + 3 工具命令）**
+- [✓] **08-05: 使用文档（README.md + extending.md）**
 
 **待执行：**
 - [ ] v1 里程碑审计（/gsd:audit-milestone）
@@ -161,6 +162,7 @@
 | 命令 context 引用 | 从 prompt.md frontmatter includes 获取 | 确保命令与场景提示上下文一致 | ✓ 08-04 确认 |
 | 工具命令调用 | node scripts/xxx.js $ARGUMENTS | 与 08-03 脚本对接 | ✓ 08-04 确认 |
 | .gitignore 命令排除 | `!.claude/commands/dw/` | 命令文件需版本控制 | ✓ 08-04 确认 |
+| 文档结构 | README + extending 分离 | 用户先快速上手，开发者再深度扩展 | ✓ 08-05 确认 |
 
 ---
 
@@ -290,6 +292,9 @@
 | .claude/commands/dw/assemble.md | 1.0 | 2026-02-01 | **新增** |
 | .claude/commands/dw/validate.md | 1.0 | 2026-02-01 | **新增** |
 | .claude/commands/dw/new-scenario.md | 1.0 | 2026-02-01 | **新增** |
+| .planning/phases/08-tooling/08-05-SUMMARY.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/README.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/docs/extending.md | 1.0 | 2026-02-01 | **新增** |
 
 ---
 
@@ -389,8 +394,8 @@
 
 ## 会话连续性要点
 
-**Last session:** 2026-02-01T10:18:00Z
-**Stopped at:** Completed 08-04-PLAN.md (/dw:* 命令文件) - Phase 8 Complete
+**Last session:** 2026-02-01T10:28:00Z
+**Stopped at:** Completed 08-05-PLAN.md (README.md + extending.md) - Phase 8 Complete
 **Resume file:** None
 
 **如果重启对话，这些是最关键的上下文：**
@@ -433,6 +438,7 @@
     - 08-02: 场景输入模板（6 个 input-template.md）✓
     - 08-03: 核心辅助脚本（assemble.js/validate.js/scaffold.js + package.json）✓
     - 08-04: /dw:* 命令文件（6 场景命令 + 3 工具命令）✓
+    - 08-05: 使用文档（README.md + extending.md）✓
 12. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束 + 命名规范 + Token 限制 + 星型模型优先 + 双受众文档 + 维度表落层 DWD + 回刷窗口约束 + SCD2 右开区间 + lookback 分层配置 + P0 门禁机制 + 质量分计算 + 指标三分法 + 字段类型驱动 DQ 规则 + 分层阈值量化 + Stage 1 必问项（grain/时间/维度） + 派生指标依赖声明 + 过滤条件位置 + 8 类必问项（DQ 规则） + SCD2 有效行过滤 + Hive 分区过滤语法 + 两段式血缘交互 + 血缘精度等级 A-D + dbt 血缘优先解析 + 静态解析优先 + 8 类必问项（SQL 生成 A-H） + Validator P0/P1/P2 分级 + 动态时间表达优先 + 分区谓词模板 + 边级置信度 + 路径置信度传播 + 三段式交互（血缘）+ 影响类型分类
 
 ---
