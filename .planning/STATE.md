@@ -73,6 +73,7 @@
 - [✓] **07-04: 血缘增强案例（join-relationship.md + impact-assessment.md）**
 - [✓] **08-01: 配置文件 + JSON Schema（scenarios.yaml/platforms.yaml/assembly-rules.yaml + 12 schemas）**
 - [✓] **08-02: 场景输入模板（6 个 input-template.md）**
+- [✓] **08-03: 核心辅助脚本（assemble.js/validate.js/scaffold.js + package.json）**
 - [✓] **08-04: /dw:* 命令文件（6 场景命令 + 3 工具命令）**
 
 **待执行：**
@@ -152,6 +153,10 @@
 | Schema 版本 | draft-2020-12 + schema_version=1 | 最新规范，内置版本字段支持迁移 | ✓ 08-01 确认 |
 | 上下文层级 | always/scenario/onDemand | 平衡 token 预算与完整性 | ✓ 08-01 确认 |
 | 错误消息 | 中文 errorMessage | 面向中文用户 | ✓ 08-01 确认 |
+| 脚本模块系统 | ESM only (type: module) | 与现代 npm 生态一致，避免 CommonJS 兼容问题 | ✓ 08-03 确认 |
+| Node.js 版本 | >= 22 | 支持到 2027-04，原生 ESM | ✓ 08-03 确认 |
+| 脚本分级校验 | CRITICAL/WARNING/INFO | 与评审场景 P0/P1/P2 对齐 | ✓ 08-03 确认 |
+| 脚本 exit code | 0/1/2 (成功/业务失败/参数错误) | 标准 CLI 退出码语义 | ✓ 08-03 确认 |
 | /dw:* 命令格式 | 与 /gsd:* 风格一致 | 保持项目风格统一，降低用户学习成本 | ✓ 08-04 确认 |
 | 命令 context 引用 | 从 prompt.md frontmatter includes 获取 | 确保命令与场景提示上下文一致 | ✓ 08-04 确认 |
 | 工具命令调用 | node scripts/xxx.js $ARGUMENTS | 与 08-03 脚本对接 | ✓ 08-04 确认 |
@@ -270,6 +275,11 @@
 | .claude/data-warehouse/config/assembly-rules.yaml | 1.0 | 2026-02-01 | **新增** |
 | .claude/data-warehouse/schemas/input/*.schema.json | 1.0 | 2026-02-01 | **新增** (6 files) |
 | .claude/data-warehouse/schemas/output/*.schema.json | 1.0 | 2026-02-01 | **新增** (6 files) |
+| .planning/phases/08-tooling/08-03-SUMMARY.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/package.json | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/scripts/assemble.js | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/scripts/validate.js | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/scripts/scaffold.js | 1.0 | 2026-02-01 | **新增** |
 | .planning/phases/08-tooling/08-04-SUMMARY.md | 1.0 | 2026-02-01 | **新增** |
 | .claude/commands/dw/design.md | 1.0 | 2026-02-01 | **新增** |
 | .claude/commands/dw/review.md | 1.0 | 2026-02-01 | **新增** |
@@ -421,6 +431,7 @@
 11. **Phase 8 已完成**：
     - 08-01: 配置文件 + JSON Schema（scenarios.yaml/platforms.yaml/assembly-rules.yaml + 12 schemas）✓
     - 08-02: 场景输入模板（6 个 input-template.md）✓
+    - 08-03: 核心辅助脚本（assemble.js/validate.js/scaffold.js + package.json）✓
     - 08-04: /dw:* 命令文件（6 场景命令 + 3 工具命令）✓
 12. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束 + 命名规范 + Token 限制 + 星型模型优先 + 双受众文档 + 维度表落层 DWD + 回刷窗口约束 + SCD2 右开区间 + lookback 分层配置 + P0 门禁机制 + 质量分计算 + 指标三分法 + 字段类型驱动 DQ 规则 + 分层阈值量化 + Stage 1 必问项（grain/时间/维度） + 派生指标依赖声明 + 过滤条件位置 + 8 类必问项（DQ 规则） + SCD2 有效行过滤 + Hive 分区过滤语法 + 两段式血缘交互 + 血缘精度等级 A-D + dbt 血缘优先解析 + 静态解析优先 + 8 类必问项（SQL 生成 A-H） + Validator P0/P1/P2 分级 + 动态时间表达优先 + 分区谓词模板 + 边级置信度 + 路径置信度传播 + 三段式交互（血缘）+ 影响类型分类
 
