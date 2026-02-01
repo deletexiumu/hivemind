@@ -1,0 +1,93 @@
+# platforms.yaml
+# 平台配置
+#
+# 定义支持的数仓平台及其上下文文件清单
+# 当前支持：Hive + dbt-hive
+# 扩展：添加新平台只需新增配置项 + 对应 context/platform/*.md 文件
+#
+# Version: 1.0.0
+# Last Updated: 2026-02-01
+
+schema_version: 1
+
+# 平台配置列表
+platforms:
+  # -----------------------------------------
+  # 平台: Hive 数仓 (Hive 4.x + dbt-hive 1.10.0)
+  # -----------------------------------------
+  - id: hive
+    name: Hive 数仓
+    description: |
+      Apache Hive 4.x + dbt-hive 1.10.0 技术栈
+      适用于离线 T+1 批处理场景
+    version_supported: "4.x"
+    dbt_adapter: dbt-hive
+    dbt_adapter_version: "1.10.0"
+
+    # 核心约束文件（精简版 *-core.md）
+    context_files:
+      # 平台约束
+      - path: context/platform/hive-constraints-core.md
+        description: Hive 平台核心约束（分区/类型/函数）
+        level: always
+        estimated_tokens: 800
+
+      - path: context/platform/dbt-hive-limitations-core.md
+        description: dbt-hive 适配器限制（无 Snapshots/ephemeral）
+        level: always
+        estimated_tokens: 700
+
+    # 完整版文档（按需加载）
+    full_docs:
+      - path: context/platform/hive-constraints.md
+        description: Hive 平台完整约束文档
+        level: onDemand
+        estimated_tokens: 2000
+
+      - path: context/platform/dbt-hive-limitations.md
+        description: dbt-hive 完整限制文档
+        level: onDemand
+        estimated_tokens: 1800
+
+      - path: context/platform/incremental-strategies.md
+        description: 增量策略指南
+        level: onDemand
+        estimated_tokens: 1500
+
+    # 平台特定配置
+    config:
+      # 分区配置
+      partition:
+        default_column: dt
+        default_format: "yyyy-MM-dd"
+        supported_types: [STRING, DATE, INT]
+
+      # 回刷窗口（天）
+      lookback_days:
+        ods: 7
+        dwd: 30
+        dws: 30
+        ads: 90
+
+      # 物化策略
+      materialization:
+        default: incremental
+        incremental_strategy: insert_overwrite
+        file_format: orc
+        supported:
+          - table
+          - view
+          - incremental
+        unsupported:
+          - ephemeral  # dbt-hive 不支持
+
+      # SCD2 实现方式（无原生 Snapshots）
+      scd2:
+        method: manual
+        current_flag: is_current
+        valid_from: dw_valid_from
+        valid_to: dw_valid_to
+        end_date_value: "9999-12-31"
+
+# 默认平台
+default_platform: hive

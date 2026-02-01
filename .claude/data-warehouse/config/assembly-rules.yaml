@@ -1,0 +1,169 @@
+# assembly-rules.yaml
+# 提示组装规则
+#
+# 定义上下文加载策略、token 预算、优先级等组装逻辑
+# 用于 /dw:assemble 命令的运行时组装
+#
+# Version: 1.0.0
+# Last Updated: 2026-02-01
+
+schema_version: 1
+
+# -----------------------------------------
+# Token 预算配置
+# -----------------------------------------
+token_budget:
+  # 组装后总上限（输入 + 输出预留）
+  max_tokens: 4000
+
+  # 输出预留（为模型响应保留的空间）
+  reserve_output: 1500
+
+  # 可用于输入的 token 数 = max_tokens - reserve_output
+  available_input: 2500
+
+  # 警告阈值（超过此比例时发出警告）
+  warning_threshold: 0.8
+
+  # 硬限制（超过此比例时阻断）
+  hard_limit: 1.0
+
+# -----------------------------------------
+# 上下文加载级别
+# -----------------------------------------
+# 三级加载策略：always > scenario > onDemand
+# - always: 总是加载，不计入场景预算
+# - scenario: 场景触发时加载
+# - onDemand: 用户显式请求或检测到需要时加载
+
+context_levels:
+  # Level 1: 始终加载（核心约束）
+  # 这些文件在任何场景下都会注入
+  always:
+    - path: context/platform/hive-constraints-core.md
+      description: Hive 核心约束
+      estimated_tokens: 800
+
+    - path: context/platform/dbt-hive-limitations-core.md
+      description: dbt-hive 核心限制
+      estimated_tokens: 700
+
+    - path: docs/naming-core.md
+      description: 命名规范核心
+      estimated_tokens: 600
+
+  # Level 2: 场景触发加载
+  # 根据 scenarios.yaml 中的 requires_context 动态加载
+  scenario:
+    description: |
+      场景级上下文由 scenarios.yaml 的 requires_context 字段定义
+      组装时根据场景 ID 查询对应配置
+
+  # Level 3: 按需加载
+  # 用户显式请求或基于输入内容检测
+  onDemand:
+    - path: context/methodology/scd-strategies-core.md
+      description: SCD 策略（当输入提及维度变更时）
+      trigger_keywords: [SCD, Type2, 历史, 拉链, 变更追踪]
+      estimated_tokens: 700
+
+    - path: context/governance/metrics-core.md
+      description: 指标规范（当输入提及指标定义时）
+      trigger_keywords: [指标, 度量, metric, KPI, 口径]
+      estimated_tokens: 600
+
+    - path: context/governance/dq-rules-core.md
+      description: DQ 规则（当输入提及数据质量时）
+      trigger_keywords: [DQ, 质量, 校验, test, 异常]
+      estimated_tokens: 650
+
+# -----------------------------------------
+# 优先级排序
+# -----------------------------------------
+# 当 token 超限需要裁剪时，按此优先级保留
+# 数字越小优先级越高（保留）
+
+priority_order:
+  # 平台约束最高优先级（必须遵守）
+  platform: 1
+
+  # 方法论次之（建模原则）
+  methodology: 2
+
+  # 分层规范（落层决策）
+  layers: 3
+
+  # 治理规范（指标/DQ）
+  governance: 4
+
+  # 命名规范（可在响应中补充说明）
+  naming: 5
+
+  # 示例（超限时可裁剪）
+  examples: 6
+
+# -----------------------------------------
+# 组装规则
+# -----------------------------------------
+assembly:
+  # 是否检测循环引用
+  detect_circular_includes: true
+
+  # 最大包含深度（防止过深递归）
+  max_include_depth: 10
+
+  # 是否输出组装 trace（调试用）
+  output_trace: false
+
+  # 是否验证路径安全（防止路径越界）
+  validate_path_security: true
+
+  # 基础目录约束
+  base_dir: .claude/data-warehouse
+
+  # 文件加载时是否检查 frontmatter
+  require_frontmatter: true
+
+  # 缺失文件处理策略
+  missing_file_strategy: warn  # warn | error | skip
+
+# -----------------------------------------
+# 裁剪策略
+# -----------------------------------------
+# 当超出 token 预算时的处理方式
+
+truncation:
+  # 裁剪模式
+  mode: priority  # priority | proportional | none
+
+  # 优先裁剪的类别（按 priority_order 反向）
+  truncate_first:
+    - examples
+    - naming
+    - governance
+
+  # 保护的类别（不裁剪）
+  protected:
+    - platform
+
+  # 裁剪后最小保留（每个文件至少保留的行数）
+  min_lines_per_file: 10
+
+  # 是否在输出中标记裁剪
+  mark_truncation: true
+
+# -----------------------------------------
+# 缓存配置
+# -----------------------------------------
+cache:
+  # 是否启用上下文缓存
+  enabled: true
+
+  # 缓存键包含的因素
+  cache_key_includes:
+    - file_path
+    - file_hash
+    - tool_version
+
+  # 缓存过期时间（秒，0 表示不过期）
+  ttl: 0

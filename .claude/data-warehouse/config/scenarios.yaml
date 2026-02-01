@@ -1,0 +1,136 @@
+# scenarios.yaml
+# 场景配置映射
+#
+# 定义 6 个核心场景的配置，包含提示文件路径、上下文依赖、token 预算等
+# 配置读取优先级：项目级 > 环境变量 > 全局默认
+#
+# Version: 1.0.0
+# Last Updated: 2026-02-01
+
+schema_version: 1
+
+# 场景配置列表
+scenarios:
+  # -----------------------------------------
+  # 场景 1: 设计新模型
+  # -----------------------------------------
+  - id: design-new-model
+    name: 设计新模型
+    description: |
+      根据业务事件/粒度/指标需求设计星型模型，
+      支持事务/周期快照/累积快照三种事实表类型，
+      输出建模规格书 + DDL + dbt 模板
+    prompt_file: prompts/scenarios/design-new-model/prompt.md
+    output_template: prompts/scenarios/design-new-model/output-template.md
+    # 上下文依赖：从 prompt.md frontmatter includes 提取
+    requires_context:
+      - context/methodology/dimensional-modeling-core
+      - context/methodology/fact-table-types-core
+      - context/methodology/scd-strategies-core
+      - context/layers/layering-system-core
+      - context/platform/hive-constraints-core
+      - context/platform/dbt-hive-limitations-core
+      - docs/naming-core
+    max_tokens: 1500
+    examples_dir: prompts/scenarios/design-new-model/examples
+
+  # -----------------------------------------
+  # 场景 2: 评审已有模型
+  # -----------------------------------------
+  - id: review-existing-model
+    name: 评审已有模型
+    description: |
+      对现有 SQL/dbt 模型进行五维度评审（命名/分层/粒度/类型/dbt配置），
+      输出问题清单 + 质量分 + 修复建议
+    prompt_file: prompts/scenarios/review-existing-model/prompt.md
+    output_template: prompts/scenarios/review-existing-model/output-template.md
+    requires_context:
+      - prompts/scenarios/review-existing-model/issue-classification
+      - prompts/scenarios/review-existing-model/review-checklist
+      - prompts/scenarios/review-existing-model/fix-suggestions
+      - context/methodology/dimensional-modeling-core
+      - context/methodology/fact-table-types-core
+      - context/methodology/scd-strategies-core
+      - context/layers/layering-system-core
+      - context/platform/hive-constraints-core
+      - context/platform/dbt-hive-limitations-core
+      - docs/naming-core
+    max_tokens: 1500
+    examples_dir: prompts/scenarios/review-existing-model/examples
+
+  # -----------------------------------------
+  # 场景 3: 生成导数 SQL
+  # -----------------------------------------
+  - id: generate-sql
+    name: 生成导数 SQL
+    description: |
+      根据取数口径/过滤条件/时间窗生成 Hive SQL，
+      包含分区过滤验证 + 动态时间表达 + SCD2 语义锁定
+    prompt_file: prompts/scenarios/generate-sql/prompt.md
+    output_template: prompts/scenarios/generate-sql/output-template.md
+    requires_context:
+      - context/platform/hive-constraints-core
+      - context/layers/layering-system-core
+      - docs/naming-core
+    max_tokens: 1400
+    examples_dir: prompts/scenarios/generate-sql/examples
+    # 额外资源文件
+    resources:
+      - prompts/scenarios/generate-sql/time-expressions.md
+
+  # -----------------------------------------
+  # 场景 4: 定义指标
+  # -----------------------------------------
+  - id: define-metrics
+    name: 定义指标
+    description: |
+      根据指标名称和业务描述输出标准化指标定义，
+      生成 dbt Semantic Layer 2.0 YAML 配置
+    prompt_file: prompts/scenarios/define-metrics/prompt.md
+    output_template: prompts/scenarios/define-metrics/output-template.md
+    requires_context:
+      - context/governance/metrics-core
+      - context/methodology/fact-table-types-core
+      - context/layers/layering-system-core
+      - docs/naming-core
+    max_tokens: 1500
+    examples_dir: prompts/scenarios/define-metrics/examples
+
+  # -----------------------------------------
+  # 场景 5: 生成 DQ 规则
+  # -----------------------------------------
+  - id: generate-dq-rules
+    name: 生成 DQ 规则
+    description: |
+      根据表/模型定义自动生成 dbt tests 配置，
+      支持字段类型驱动规则推断 + 分层阈值适配
+    prompt_file: prompts/scenarios/generate-dq-rules/prompt.md
+    output_template: prompts/scenarios/generate-dq-rules/output-template.md
+    requires_context:
+      - context/governance/dq-rules-core
+      - context/layers/layering-system-core
+      - context/platform/hive-constraints-core
+      - context/platform/dbt-hive-limitations-core
+      - docs/naming-core
+    max_tokens: 1500
+    examples_dir: prompts/scenarios/generate-dq-rules/examples
+
+  # -----------------------------------------
+  # 场景 6: 血缘分析
+  # -----------------------------------------
+  - id: analyze-lineage
+    name: 血缘分析
+    description: |
+      分析 SQL/dbt 模型的表级和字段级血缘关系，
+      识别 JOIN 关联 + 边级置信度 + 变更影响评估
+    prompt_file: prompts/scenarios/analyze-lineage/prompt.md
+    output_template: prompts/scenarios/analyze-lineage/output-template.md
+    requires_context:
+      - context/platform/dbt-hive-limitations-core
+      - context/layers/layering-system-core
+      - docs/naming-core
+    max_tokens: 1400
+    examples_dir: prompts/scenarios/analyze-lineage/examples
+    # 额外资源文件
+    resources:
+      - prompts/scenarios/analyze-lineage/impact-analysis-template.md
