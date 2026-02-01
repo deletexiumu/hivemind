@@ -697,6 +697,16 @@ Plans:
 **依赖关系：** 依赖 Phase 1-6（全部前置能力）
 **后续赋能：** Phase 8 (工具化) 的集成与编排
 
+**Plans:** 4 plans
+
+Plans:
+- [ ] 07-01-PLAN.md — SQL 生成核心提示（prompt.md + output-template.md + time-expressions.md）
+- [ ] 07-02-PLAN.md — 血缘增强（prompt.md 更新 + output-template.md 更新 + impact-analysis-template.md）
+- [ ] 07-03-PLAN.md — SQL 生成案例（simple-select + aggregation-with-join + time-window-query）
+- [ ] 07-04-PLAN.md — 血缘增强案例（join-relationship + impact-assessment）
+
+**Phase Status:** Planned
+
 ---
 
 ### Phase 8: 工具化
