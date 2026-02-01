@@ -5,9 +5,11 @@ CLAUDE.md
 /research.claude/
 commands.html
 
-# Local test installs (excluding project data-warehouse assets)
+# Local test installs (excluding project data-warehouse assets and commands)
 .claude/*
 !.claude/data-warehouse/
+!.claude/commands/
+!.claude/commands/dw/
 
 # Build artifacts (committed to npm, not git)
 hooks/dist/
