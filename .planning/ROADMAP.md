@@ -760,13 +760,13 @@ Plans:
 **Plans:** 5 plans
 
 Plans:
-- [ ] 08-01-PLAN.md — 配置文件 + JSON Schema（scenarios.yaml, platforms.yaml, assembly-rules.yaml, 12 个 schema）
-- [ ] 08-02-PLAN.md — 6 个场景输入模板（input-template.md）
-- [ ] 08-03-PLAN.md — 辅助脚本（assemble.js, validate.js, scaffold.js, package.json）
-- [ ] 08-04-PLAN.md — 9 个 /dw:* 命令文件
-- [ ] 08-05-PLAN.md — 使用文档（README.md, extending.md）
+- [x] 08-01-PLAN.md — 配置文件 + JSON Schema（scenarios.yaml, platforms.yaml, assembly-rules.yaml, 12 个 schema）✓
+- [x] 08-02-PLAN.md — 6 个场景输入模板（input-template.md）✓
+- [x] 08-03-PLAN.md — 辅助脚本（assemble.js, validate.js, scaffold.js, package.json）✓
+- [x] 08-04-PLAN.md — 9 个 /dw:* 命令文件 ✓
+- [x] 08-05-PLAN.md — 使用文档（README.md, extending.md）✓
 
-**Phase Status:** Pending
+**Phase Status:** Complete (2026-02-01)
 
 ---
 
@@ -799,8 +799,8 @@ Plans:
 | 5 | 评审场景 | 8 | ✓ Complete | 100% |
 | 6 | 治理场景 | 13 | ✓ Complete | 100% |
 | 7 | SQL 生成 | 12 | ✓ Complete | 100% |
-| 8 | 工具化 | 3 | Pending | 0% |
-| **总计** | **全系统** | **48** | **In Progress** | **94%** |
+| 8 | 工具化 | 3 | ✓ Complete | 100% |
+| **总计** | **全系统** | **48** | **✓ Complete** | **100%** |
 
 ---
 
