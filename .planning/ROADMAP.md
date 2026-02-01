@@ -548,6 +548,14 @@ Plans:
 **依赖关系：** 依赖 Phase 1-5（基础、方法论、平台、设计、评审）
 **后续赋能：** Phase 7 (SQL 生成) 的血缘信息输入，Phase 8 (工具化) 的集成
 
+**Plans:** 4 plans
+
+Plans:
+- [ ] 06-01-PLAN.md — 治理上下文（metrics-core.md + dq-rules-core.md）
+- [ ] 06-02-PLAN.md — 指标定义场景（METRICS）提示 + 模板 + 案例
+- [ ] 06-03-PLAN.md — DQ 规则生成场景（DQRULES）提示 + 模板 + 案例
+- [ ] 06-04-PLAN.md — 血缘分析场景（LINEAGE）提示 + 模板 + 案例
+
 ---
 
 ### Phase 7: 场景 3 实现（SQL 生成 + 血缘增强）
@@ -947,7 +955,7 @@ npm run gsd -- /gsd:assemble-prompt \
 | 3 | 平台约束 | 3 | ✓ Complete | 100% |
 | 4 | 设计场景 | 6 | ✓ Complete | 100% |
 | 5 | 评审场景 | 8 | ✓ Complete | 100% |
-| 6 | 治理场景 | 13 | Pending | 0% |
+| 6 | 治理场景 | 13 | Planned | 0% |
 | 7 | SQL 生成 | 12 | Pending | 0% |
 | 8 | 工具化 | 3 | Pending | 0% |
 | **总计** | **全系统** | **48** | **In Progress** | **63%** |
