@@ -700,12 +700,12 @@ Plans:
 **Plans:** 4 plans
 
 Plans:
-- [ ] 07-01-PLAN.md — SQL 生成核心提示（prompt.md + output-template.md + time-expressions.md）
-- [ ] 07-02-PLAN.md — 血缘增强（prompt.md 更新 + output-template.md 更新 + impact-analysis-template.md）
-- [ ] 07-03-PLAN.md — SQL 生成案例（simple-select + aggregation-with-join + time-window-query）
-- [ ] 07-04-PLAN.md — 血缘增强案例（join-relationship + impact-assessment）
+- [x] 07-01-PLAN.md — SQL 生成核心提示（prompt.md + output-template.md + time-expressions.md）✓
+- [x] 07-02-PLAN.md — 血缘增强（prompt.md 更新 + output-template.md 更新 + impact-analysis-template.md）✓
+- [x] 07-03-PLAN.md — SQL 生成案例（simple-select + aggregation-with-join + time-window-query）✓
+- [x] 07-04-PLAN.md — 血缘增强案例（join-relationship + impact-assessment）✓
 
-**Phase Status:** Planned
+**Phase Status:** Complete (2026-02-01)
 
 ---
 
@@ -968,9 +968,9 @@ npm run gsd -- /gsd:assemble-prompt \
 | 4 | 设计场景 | 6 | ✓ Complete | 100% |
 | 5 | 评审场景 | 8 | ✓ Complete | 100% |
 | 6 | 治理场景 | 13 | ✓ Complete | 100% |
-| 7 | SQL 生成 | 12 | Pending | 0% |
+| 7 | SQL 生成 | 12 | ✓ Complete | 100% |
 | 8 | 工具化 | 3 | Pending | 0% |
-| **总计** | **全系统** | **48** | **In Progress** | **79%** |
+| **总计** | **全系统** | **48** | **In Progress** | **94%** |
 
 ---
 
