@@ -36,11 +36,11 @@
 ## 当前位置
 
 **Phase:** 6 of 8 (治理场景) - In Progress
-**Plan:** 2 of 4 complete
+**Plan:** 3 of 4 complete
 **Status:** Phase 6 In Progress
-**Last activity:** 2026-02-01 - Completed 06-02-PLAN.md (指标定义场景)
+**Last activity:** 2026-02-01 - Completed 06-03-PLAN.md (DQ 规则生成场景)
 
-**Progress:** █████████░ 94% (16/17 plans)
+**Progress:** █████████░ 95% (17/18 plans)
 
 **已完成：**
 - [✓] 48 个 v1 需求分析
@@ -65,9 +65,10 @@
 - [✓] **05-03: 3 个评审案例（good-model/naming-issues/multiple-issues）**
 - [✓] **06-01: 治理上下文基础（metrics-core.md + dq-rules-core.md）**
 - [✓] **06-02: 指标定义场景（prompt.md + output-template.md + 2 案例）**
+- [✓] **06-03: DQ 规则生成场景（prompt.md + output-template.md + 2 案例）**
 
 **待执行：**
-- [ ] Phase 6-8 递进执行（06-03 至 06-04 + Phase 7-8）
+- [ ] Phase 6-8 递进执行（06-04 + Phase 7-8）
 
 ---
 
@@ -122,6 +123,9 @@
 | Stage 1 必问项（指标） | grain、时间字段、可切维度 | Codex 共识，确保 semantic_model 完整性 | ✓ 06-02 确认 |
 | 派生指标依赖声明 | type_params.metrics + meta.depends_on | 前者 MetricFlow 必需，后者支持血缘分析工具 | ✓ 06-02 确认 |
 | 过滤条件位置（指标） | metric 层 filter 而非 measure | 保持 measure 通用性，业务过滤在指标层 | ✓ 06-02 确认 |
+| 8 类必问项（DQ 规则） | 目标/字段/分区/窗口/SCD2/阈值/新鲜度/Hive 方言 | 覆盖 DQ 规则生成所有关键信息 | ✓ 06-03 确认 |
+| SCD2 有效行过滤 | where: "is_current = 1" | 历史行不参与自然键唯一性检测 | ✓ 06-03 确认 |
+| Hive 分区过滤语法 | date_sub(current_date, N) | 统一控制扫描范围 | ✓ 06-03 确认 |
 
 ---
 
@@ -134,7 +138,7 @@
 | **3** | 平台约束 | 3 | **Complete** | 100% |
 | **4** | 设计场景 | 6 | **Complete** | 100% |
 | **5** | 评审场景 | 8 | **Complete** | 100% |
-| **6** | 治理场景 | 13 | **In Progress** | 50% |
+| **6** | 治理场景 | 13 | **In Progress** | 75% |
 | **7** | SQL 生成 + 血缘 | 12 | Pending | 0% |
 | **8** | 工具化 | 3 | Pending | 0% |
 | **整体** | **全系统 v1** | **48** | In Progress | **81%** |
@@ -205,6 +209,11 @@
 | .claude/data-warehouse/prompts/scenarios/define-metrics/output-template.md | 1.0 | 2026-02-01 | **新增** |
 | .claude/data-warehouse/prompts/scenarios/define-metrics/examples/atomic-metric.md | 1.0 | 2026-02-01 | **新增** |
 | .claude/data-warehouse/prompts/scenarios/define-metrics/examples/derived-metric.md | 1.0 | 2026-02-01 | **新增** |
+| .planning/phases/06-governance-scenarios/06-03-SUMMARY.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/prompts/scenarios/generate-dq-rules/prompt.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/prompts/scenarios/generate-dq-rules/output-template.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/prompts/scenarios/generate-dq-rules/examples/fact-table-dq.md | 1.0 | 2026-02-01 | **新增** |
+| .claude/data-warehouse/prompts/scenarios/generate-dq-rules/examples/dim-table-dq.md | 1.0 | 2026-02-01 | **新增** |
 
 ---
 
@@ -304,8 +313,8 @@
 
 ## 会话连续性要点
 
-**Last session:** 2026-02-01T01:57:00Z
-**Stopped at:** Completed 06-02-PLAN.md (指标定义场景) - Phase 6 In Progress
+**Last session:** 2026-02-01T02:00:00Z
+**Stopped at:** Completed 06-03-PLAN.md (DQ 规则生成场景) - Phase 6 In Progress
 **Resume file:** None
 
 **如果重启对话，这些是最关键的上下文：**
@@ -336,9 +345,9 @@
 9. **Phase 6 进行中**：
    - 06-01: 治理上下文基础（metrics-core.md + dq-rules-core.md）✓
    - 06-02: 指标定义场景（prompt.md + output-template.md + 2 案例）✓
-   - 06-03: DQ 规则场景（待执行）
+   - 06-03: DQ 规则场景（prompt.md + output-template.md + 2 案例）✓
    - 06-04: 血缘分析场景（待执行）
-10. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束 + 命名规范 + Token 限制 + 星型模型优先 + 双受众文档 + 维度表落层 DWD + 回刷窗口约束 + SCD2 右开区间 + lookback 分层配置 + P0 门禁机制 + 质量分计算 + 指标三分法 + 字段类型驱动 DQ 规则 + 分层阈值量化 + Stage 1 必问项（grain/时间/维度） + 派生指标依赖声明 + 过滤条件位置
+10. 关键决策已确认：Kimball + ODS/DWD/DWS/ADS + 模块化提示 + dbt-hive 约束 + 命名规范 + Token 限制 + 星型模型优先 + 双受众文档 + 维度表落层 DWD + 回刷窗口约束 + SCD2 右开区间 + lookback 分层配置 + P0 门禁机制 + 质量分计算 + 指标三分法 + 字段类型驱动 DQ 规则 + 分层阈值量化 + Stage 1 必问项（grain/时间/维度） + 派生指标依赖声明 + 过滤条件位置 + 8 类必问项（DQ 规则） + SCD2 有效行过滤 + Hive 分区过滤语法
 
 ---
 
